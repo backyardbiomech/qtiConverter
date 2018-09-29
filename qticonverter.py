@@ -3,10 +3,10 @@
 import zipfile
 
 # put the name of the file here (best if it's in the same folder, otherwise need the full path
-inputFile = '12_photosynthesis.txt'
+inputFile = 'VP14_endocrine1.txt'
 
 # put the desire name for the test bank in Canvas here (don't include spaces in the name)
-bankName = '12_photosynthesis'
+bankName = inputFile[0:-4]# 'VP11_autonomic1'
 
 '''
 put the parsing character here (that is after your question or answer identifiers.
