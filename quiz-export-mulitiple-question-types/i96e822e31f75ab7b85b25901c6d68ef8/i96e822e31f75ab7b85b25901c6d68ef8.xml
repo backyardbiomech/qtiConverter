@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="i96e822e31f75ab7b85b25901c6d68ef8" title="import quiz with image">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>cc_maxattempts</fieldlabel>
+        <fieldentry>1</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    <section ident="root_section">
+      <item ident="i636c52d0172570354eca1802d52cc79d" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i55f938a67ab7cf53e63554ec5e98d843</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;
+&lt;p&gt;Multiple answers question text, above the image:&lt;/p&gt;
+&lt;p&gt;&lt;img src="%24IMS-CC-FILEBASE%24/Quiz%20Files/testImport_466828/testImage%20copy.png" width="314" height="178"&gt;&lt;/p&gt;
+&lt;p&gt;text below the image.&lt;/p&gt;
+&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="4091">
+                <material>
+                  <mattext texttype="text/plain">correct answer1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5668">
+                <material>
+                  <mattext texttype="text/plain">correct answer2</mattext>
+                </material>
+              </response_label>
+              <response_label ident="3782">
+                <material>
+                  <mattext texttype="text/plain">correct answer3</mattext>
+                </material>
+              </response_label>
+              <response_label ident="730">
+                <material>
+                  <mattext texttype="text/plain">incorrect answer4</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">4091</varequal>
+                <varequal respident="response1">5668</varequal>
+                <varequal respident="response1">3782</varequal>
+                <not>
+                  <varequal respident="response1">730</varequal>
+                </not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="i27a18a321a0ef2c023ca984a9c0dd6f5" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i6ba2f80857492d6cd1dce16267f9200c</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;
+&lt;p&gt;multiple choice question, text above the image:&lt;/p&gt;
+&lt;p&gt;&lt;img src="%24IMS-CC-FILEBASE%24/Quiz%20Files/testImport_466828/testImage.png" width="314" height="178"&gt;&lt;/p&gt;
+&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="43597">
+                <material>
+                  <mattext texttype="text/plain">correct answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="74265">
+                <material>
+                  <mattext texttype="text/plain">incorrect answer 2</mattext>
+                </material>
+              </response_label>
+              <response_label ident="1374">
+                <material>
+                  <mattext texttype="text/plain">incorrect answer 3</mattext>
+                </material>
+              </response_label>
+              <response_label ident="32406">
+                <material>
+                  <mattext texttype="text/plain">incorrect answer 4</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">43597</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="ia0f2325297f019a50df969a81c50e806" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>true_false_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i6992120389288e2998c279608a591a20</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;True and False question text. False is the correct answer.&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="1598">
+                <material>
+                  <mattext texttype="text/plain">True</mattext>
+                </material>
+              </response_label>
+              <response_label ident="7229">
+                <material>
+                  <mattext texttype="text/plain">False</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">7229</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="i69f6c6617b24b80de49899fcfedd0188" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>short_answer_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i99d00808cddedd3d9f1abf7f3e6b92d6</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;Fill in the blank question text _______ and more text.&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_str ident="response1" rcardinality="Single">
+            <render_fib>
+              <response_label ident="answer1" rshuffle="No"/>
+            </render_fib>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">correct answer 1</varequal>
+              <varequal respident="response1">correct answer 2</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="ib5933459edd0cb77922cc0ef3922bc96" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>fill_in_multiple_blanks_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i584dde8a535a1a87963c6c6553980636</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;Fill in multiple blank question type: here is blank 1: [blank1] and here is the other blank: [blank2].&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response_blank1">
+            <material>
+              <mattext>blank1</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="8519">
+                <material>
+                  <mattext texttype="text/plain">blank 1 correct answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="6480">
+                <material>
+                  <mattext texttype="text/plain">blank 1 correct answer 2</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+          <response_lid ident="response_blank2">
+            <material>
+              <mattext>blank2</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="5391">
+                <material>
+                  <mattext texttype="text/plain">blank 2 correct answer 1</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_blank1">8519</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">50.00</setvar>
+          </respcondition>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_blank2">5391</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">50.00</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="ie465b2c4d1ebe15828ea29885e2bd2a6" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_dropdowns_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>20</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i8a2287e25380654c1139f540d62455e1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;Multiple dropdown question type. Dropdown one follows this: [drop1], and dropdown two follows this: [drop2]. And then [drop3].&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response_drop1">
+            <material>
+              <mattext>drop1</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="3789">
+                <material>
+                  <mattext texttype="text/plain">drop1 correct answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="539">
+                <material>
+                  <mattext texttype="text/plain">drop1 incorrect answer</mattext>
+                </material>
+              </response_label>
+              <response_label ident="745">
+                <material>
+                  <mattext texttype="text/plain">drop1 incorrect answer 2</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+          <response_lid ident="response_drop2">
+            <material>
+              <mattext>drop2</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="568">
+                <material>
+                  <mattext texttype="text/plain">drop2 correct answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="5607">
+                <material>
+                  <mattext texttype="text/plain">drop2 incorrect answer</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+          <response_lid ident="response_drop3">
+            <material>
+              <mattext>drop3</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="9419">
+                <material>
+                  <mattext texttype="text/plain">drop3 correct answer</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2238">
+                <material>
+                  <mattext texttype="text/plain">drop3 incorrect answer</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_drop1">3789</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">33.33</setvar>
+          </respcondition>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_drop2">568</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">33.33</setvar>
+          </respcondition>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_drop3">9419</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">33.33</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="ic27a2089c87635ff68286ac5249b5d21" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>matching_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i61428467e316464ef8b80db40f4c86a7</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;Matching question text.&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_lid ident="response_265">
+            <material>
+              <mattext texttype="text/plain">left side 1</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="7583">
+                <material>
+                  <mattext>right side answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2050">
+                <material>
+                  <mattext>right side answer 2</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9873">
+                <material>
+                  <mattext>right side distractor 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8289">
+                <material>
+                  <mattext>right side distractor 2</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+          <response_lid ident="response_2535">
+            <material>
+              <mattext texttype="text/plain">left side 2</mattext>
+            </material>
+            <render_choice>
+              <response_label ident="7583">
+                <material>
+                  <mattext>right side answer 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="2050">
+                <material>
+                  <mattext>right side answer 2</mattext>
+                </material>
+              </response_label>
+              <response_label ident="9873">
+                <material>
+                  <mattext>right side distractor 1</mattext>
+                </material>
+              </response_label>
+              <response_label ident="8289">
+                <material>
+                  <mattext>right side distractor 2</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_265">7583</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">50.00</setvar>
+          </respcondition>
+          <respcondition>
+            <conditionvar>
+              <varequal respident="response_2535">2050</varequal>
+            </conditionvar>
+            <setvar varname="SCORE" action="Add">50.00</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="id6d125a256827f524a5161ff6e4ac21b" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>numerical_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>iae09582b96c69d41f4090ed3659e33f0</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;
+&lt;p&gt;Numerical answer question text.&lt;/p&gt;
+&lt;p&gt;first correct answer is exactly 5 with error 1&lt;/p&gt;
+&lt;p&gt;second answer is range from 10-12&lt;/p&gt;
+&lt;/div&gt;</mattext>
+          </material>
+          <response_str ident="response1" rcardinality="Single">
+            <render_fib fibtype="Decimal">
+              <response_label ident="answer1"/>
+            </render_fib>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <or>
+                <varequal respident="response1">5.0</varequal>
+                <and>
+                  <vargte respident="response1">4.0</vargte>
+                  <varlte respident="response1">6.0</varlte>
+                </and>
+              </or>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+          <respcondition continue="No">
+            <conditionvar>
+              <vargte respident="response1">10.0</vargte>
+              <varlte respident="response1">12.0</varlte>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+      <item ident="i351c682b28a28f38a851cdedf37d139b" title="Question">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>essay_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1.0</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>assessment_question_identifierref</fieldlabel>
+              <fieldentry>i48fc70c4f3dd25eb4956c744437c6b19</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;Essay question text. Students will get a text field to compose answer.&lt;/p&gt;&lt;/div&gt;</mattext>
+          </material>
+          <response_str ident="response1" rcardinality="Single">
+            <render_fib>
+              <response_label ident="answer1" rshuffle="No"/>
+            </render_fib>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <other/>
+            </conditionvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+    </section>
+  </assessment>
+</questestinterop>

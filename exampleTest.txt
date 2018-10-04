@@ -1,0 +1,30 @@
+1. The majority of the water found on Earth is:
+image: exampleImage.png
+A. ice
+B. water vapor
+C. fresh water
+*D. salt water
+
+2. Nitrogen cycling is important to understand because nitrogen is found in which class of biological macromolecule?
+*A. proteins
+B. carbohydrates
+C. lipids
+D. nitrogen is not found in any biological molecule
+
+3. When we burn fossil fuels like oil, we are releasing energy that originally came from
+*A. the sun via photosynthesis in old plants
+B. the sun via cellular respiration in old plants
+C. volcanic heat
+D. the big bang (the formation of the universe)
+
+4. Fertilizers help plants grow, yet run-off of fertilizers causes dead zones in oceans. This is because the excess nitrogen and phosphorus in the fertilizers
+*A. increase marine algal and phytoplankton growth, which then die, and the decomposition of those cells via cell respiration takes all of the oxygen out of the water, meaning none is left for animals
+B. are toxic to animals in even small amounts
+C. increase marine algal and phytoplankton growth which increase photosynthesis which takes all of the oxygen out of the water, meaning none is left for animals
+D. increase the growth of predators like sharks which then eat everything else they can see
+
+5. Nitrogen enters terrestrial food webs from 
+*A. fixation and nitrification by bacteria
+B. the atmosphere where nitrogen makes up 80% of the air we breathe
+C. denitrification by bacteria
+D. fertilizers
