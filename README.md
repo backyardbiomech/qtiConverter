@@ -4,7 +4,7 @@ This script will convert a simply formatted text document containing multiple ch
 
 ## Installation and running
 
-1. From the `dist` folder here, download the `atiConverterApp.app` file (it might be a zip archive of that)
+1. Download the zip `atiConverterApp.app.zip` file
 2. Save it on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
