@@ -2,11 +2,11 @@
 
 This script will convert a simply formatted text document containing multiple choice questions into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
 
-## Installation
+## Installation and running
 
-1. Download the `atiConverterApp.py` file
-2. Save it somehere meaningful to you
-3. Right now, it's a command line program only, so no other installation is necessary
+1. From the `dist` folder here, download the `atiConverterApp.app` file (it might be a zip archive of that)
+2. Save it on the Desktop or somewhere else easily accessible
+3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
 ## Preparing the files
 
@@ -24,16 +24,19 @@ This script will convert a simply formatted text document containing multiple ch
     
 2. Save the text file containing questions in it's own folder. 
     + the name of the file will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default containing all of the questions
-    + save any images you want to include as their own files in that same folder.
+    + save any images you want to include as their own files in that same folder. **NOTE FOR IMAGES:** all images will be sized to a "safe" size for display in Canvas (314px wide). You can drag to resize the image once it's inserted in Canvas.
     + For now, avoid spaces in the name of any of the files (.txt and images). Whatever you name your image files should be what you include on the "image: " line in the text document.
     
 ## Running the application
 
-1. For now, this is command line only. The basic call is
+1. The easiest is to drag your text file containing the questions onto the app.
+
+2. The harder is to download the actual python script from Bitbucket, and run it from the command line:
+The basic call is
 ```
-qtiConverterApp.py --ifile /path/to/text/file.txt
+qtiConverterApp.py /path/to/text/file.txt
 ```
-changing the path to your text file as needed.
+changing the path to your text file as needed. You can add `--sep ')'` is you use parenthesis after your question numbers and answer letters.
 
 2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1\_export.zip`. This is the folder you will import in Canvas, and it *should* include all of your images and questions.
     
