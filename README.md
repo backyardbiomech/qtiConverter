@@ -15,7 +15,7 @@ This script will convert a simply formatted text document containing multiple ch
     - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MS: multiple selection, MT: matching, SA: short answer (fill in the blank),
  MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions) **NOTE: right now, multiple choice is the only supported question type.**
     - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line.
-    - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question.
+    - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator**.
     - the question text is followed on the next line (no blank line, just the next line) by answers
         - answers begin with a letter followed by the same separator as the question
         - correct answer(s) are marked with a \* before the letter (at the start of the line)
@@ -29,16 +29,16 @@ This script will convert a simply formatted text document containing multiple ch
     
 ## Running the application
 
-1. The easiest is to drag your text file containing the questions onto the app.
+1. The easiest method is to drag your text file containing the questions onto the app.
 
-2. The harder is to download the actual python script from Bitbucket, and run it from the command line:
+2. The harder method is to download the actual python script from Bitbucket, and run it from the command line:
 The basic call is
 ```
 qtiConverterApp.py /path/to/text/file.txt
 ```
-changing the path to your text file as needed. You can add `--sep ')'` is you use parenthesis after your question numbers and answer letters.
+changing the path to your text file as needed. You can add `--sep ')'` if you use parentheses after your question numbers and answer letters.
 
-2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1\_export.zip`. This is the folder you will import in Canvas, and it *should* include all of your images and questions.
+2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the folder you will import in Canvas, and it *should* include all of your images and questions.
     
 ## Canvas Importing and Quiz Making Process
 
@@ -60,33 +60,32 @@ changing the path to your text file as needed. You can add `--sep ')'` is you us
 ### Things to consider:
 
 + Right now, this only works for multiple choice questions, with only one correct answer
-+ All questions will be imported as being worth 1 point. This can be changed as you are creating your quiz in Canvas and pulling from the question bank
-+ To print backup copies of quizzes, you can 
-    1. Change the quiz to NOT show "one question at a time. Preview the quiz. Print.
++ All questions will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
++ To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
 
 ### Sample text document format:
 
 1\. Some question text here  
-A. incorrect.  
-B. incorrect.  
-*C. correct.  
-D. incorrect.  
-E. incorrect.  
+A. incorrect answer text.  
+B. incorrect answer text.  
+*C. correct answer text.  
+D. incorrect answer text.  
+E. incorrect answer text.  
 
 MC  
  1\. Some question text here  
-*A. correct.  
-B. incorrect.  
-C. correct.  
-D. incorrect.  
-E. incorrect.
+*A. correct answer text.  
+B. incorrect answer text.  
+C. correct answer text.  
+D. incorrect answer text.  
+E. incorrect answer text.
 
 MC  
 image: imageFileName.jpg  
  1\. Some question text here  
-*A. correct.  
-B. incorrect.  
-C. correct.  
-D. incorrect.  
-E. incorrect.
+*A. correct answer text.  
+B. incorrect answer text.  
+C. correct answer text.  
+D. incorrect answer text.  
+E. incorrect answer text.
