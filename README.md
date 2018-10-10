@@ -2,10 +2,10 @@
 
 This script will convert a simply formatted text document containing multiple choice questions into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
 
-## Installation and running
+## Installation and basic usage
 
-1. Download the zip `atiConverterApp.app.zip` file
-2. Save it on the Desktop or somewhere else easily accessible
+1. Download the zip `atiConverterApp.app.zip` file and un-zip it
+2. Save the uncompressed application on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
 ## Preparing the files
