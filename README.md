@@ -10,7 +10,7 @@ This script will convert a simply formatted text document containing multiple ch
 
 ## Preparing the files
 
-1. make a simple text file (MS Word can "Save As" a .txt files). Note that no formatting or embedded images will not be saved (formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
+1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). (Formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
     - one blank line between questions (hereafter question blocks), no blank lines within question blocks
     - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MS: multiple selection, MT: matching, SA: short answer (fill in the blank),
  MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions) **NOTE: right now, multiple choice is the only supported question type.**
