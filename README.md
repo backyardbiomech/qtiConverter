@@ -1,6 +1,12 @@
-# QTI converter READ ME
+# QTI converter
 
 This script will convert a simply formatted text document containing multiple choice questions into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
+
+## Installation
+
+1. Download the `atiConverterApp.py` file
+2. Save it somehere meaningful to you
+3. Right now, it's a command line program only, so no other installation is necessary
 
 ## Preparing the files
 
@@ -65,7 +71,7 @@ B. incorrect.
 D. incorrect.  
 E. incorrect.  
 
-MC
+MC  
  1\. Some question text here  
 *A. correct.  
 B. incorrect.  
@@ -73,8 +79,8 @@ C. correct.
 D. incorrect.  
 E. incorrect.
 
-MC
-image: imageFileName.jpg
+MC  
+image: imageFileName.jpg  
  1\. Some question text here  
 *A. correct.  
 B. incorrect.  
