@@ -1,0 +1,14 @@
+MC
+image: testImage.png
+1. this is the question text
+*A. correct answer A
+B. inccorect answer B
+C. incorrect answer C
+D. inccorect answer D
+
+MC
+1. this is question 2 text
+A. inccorect anwers A
+*B. this is the correct answer
+C. incorrect answer C
+D. inccorect answer D

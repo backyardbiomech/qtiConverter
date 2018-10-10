@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+              <assessment ident="assessID" title="bank1">
+                <qtimetadata>
+                  <qtimetadatafield>
+                    <fieldlabel>cc_maxattempts</fieldlabel>
+                    <fieldentry>1</fieldentry>
+                  </qtimetadatafield>
+                </qtimetadata>
+                <section ident="root_section">
+            
+
+            <item ident="MC0" title="Question">
+                <itemmetadata>
+                  <qtimetadata>
+                    <qtimetadatafield>
+                      <fieldlabel>question_type</fieldlabel>
+                      <fieldentry>multiple_choice_question</fieldentry>
+                    </qtimetadatafield>
+                    <qtimetadatafield>
+                      <fieldlabel>points_possible</fieldlabel>
+                      <fieldentry>1.0</fieldentry>
+                    </qtimetadatafield>
+                    <qtimetadatafield>
+                      <fieldlabel>assessment_question_identifierref</fieldlabel>
+                      <fieldentry>i29529708ad95a6ff171e20abdfa2a8d9</fieldentry>
+                    </qtimetadatafield>
+                  </qtimetadata>
+                </itemmetadata>
+                <presentation>
+                  <material>
+                      <mattext texttype="text/html">&lt;img src="%24IMS-CC-FILEBASE%24/testImage.png" width="314"&gt;
+                &lt;p&gt;this is the question text&lt;/p&gt;
+                </mattext>
+                  </material>
+                  
+            <response_lid ident="response1" rcardinality="Single">
+              <render_choice>
+             <response_label ident="1">
+                        <material>
+                          <mattext texttype="text/plain">correct answer A</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="2">
+                        <material>
+                          <mattext texttype="text/plain">inccorect answer B</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="3">
+                        <material>
+                          <mattext texttype="text/plain">incorrect answer C</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="4">
+                        <material>
+                          <mattext texttype="text/plain">inccorect answer D</mattext>
+                        </material>
+                        </response_label>
+                        </render_choice>
+                  </response_lid>
+                </presentation>
+                <resprocessing>
+                  <outcomes>
+                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                  </outcomes>
+                  <respcondition continue="No">
+                    <conditionvar>
+                    <varequal respident="response1">1</varequal>
+                    </conditionvar>
+                    <setvar action="Set" varname="SCORE">100</setvar>
+                  </respcondition>
+                </resprocessing>
+              </item>
+            
+
+            <item ident="MC1" title="Question">
+                <itemmetadata>
+                  <qtimetadata>
+                    <qtimetadatafield>
+                      <fieldlabel>question_type</fieldlabel>
+                      <fieldentry>multiple_choice_question</fieldentry>
+                    </qtimetadatafield>
+                    <qtimetadatafield>
+                      <fieldlabel>points_possible</fieldlabel>
+                      <fieldentry>1.0</fieldentry>
+                    </qtimetadatafield>
+                    <qtimetadatafield>
+                      <fieldlabel>assessment_question_identifierref</fieldlabel>
+                      <fieldentry>i29529708ad95a6ff171e20abdfa2a8d9</fieldentry>
+                    </qtimetadatafield>
+                  </qtimetadata>
+                </itemmetadata>
+                <presentation>
+                  <material>
+                      <mattext texttype="text/html">this is question 2 text</mattext>
+                  </material>
+                  
+            <response_lid ident="response1" rcardinality="Single">
+              <render_choice>
+             <response_label ident="1">
+                        <material>
+                          <mattext texttype="text/plain">inccorect anwers A</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="2">
+                        <material>
+                          <mattext texttype="text/plain">this is the correct answer</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="3">
+                        <material>
+                          <mattext texttype="text/plain">incorrect answer C</mattext>
+                        </material>
+                        </response_label>
+                         <response_label ident="4">
+                        <material>
+                          <mattext texttype="text/plain">inccorect answer D</mattext>
+                        </material>
+                        </response_label>
+                        </render_choice>
+                  </response_lid>
+                </presentation>
+                <resprocessing>
+                  <outcomes>
+                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                  </outcomes>
+                  <respcondition continue="No">
+                    <conditionvar>
+                    <varequal respident="response1">2</varequal>
+                    </conditionvar>
+                    <setvar action="Set" varname="SCORE">100</setvar>
+                  </respcondition>
+                </resprocessing>
+              </item>
+            
+
+                </section>
+              </assessment>
+            </questestinterop>
+            
