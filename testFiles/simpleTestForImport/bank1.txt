@@ -6,9 +6,30 @@ B. inccorect answer B
 C. incorrect answer C
 D. inccorect answer D
 
-MC
+MA
 1. this is question 2 text
 A. inccorect anwers A
 *B. this is the correct answer
-C. incorrect answer C
+*C. this is also a correct answer
 D. inccorect answer D
+
+SA
+1. Fill in the answer in this blank ________.
+A. correct text
+B. corect tect
+
+ES
+1. This is the question for an essay question. No correct answer provided.
+
+MB
+1. THis is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2].
+blank1: correct answer for 1, another correct answer for 1
+blank2: correct answer for 2, another correct answer for 2
+
+MD
+1. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2].
+*drop1: correct answer for 1
+drop1: incorrect answer for 1
+drop1: incorrect answer for 1
+drop2: incorrect answer for 2
+*drop2: correct answer for 2

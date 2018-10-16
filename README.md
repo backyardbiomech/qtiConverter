@@ -4,7 +4,7 @@ This script will convert a simply formatted text document containing multiple ch
 
 ## Installation and basic usage
 
-1. Download the zip `atiConverterApp.app.zip` file and un-zip it
+1. Download the zip `qtiConverterApp.app.zip` file and un-zip it
 2. Save the uncompressed application on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
@@ -12,13 +12,12 @@ This script will convert a simply formatted text document containing multiple ch
 
 1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). (Formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
     - one blank line between questions (hereafter question blocks), no blank lines within question blocks
-    - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MS: multiple selection, MT: matching, SA: short answer (fill in the blank),
- MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions) **NOTE: right now, multiple choice is the only supported question type.**
+    - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching, SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions) **NOTE: right now, multiple choice, multiple answers, short answer (fill in the blank), and essays are the only supported question types.**
     - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line.
     - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator**.
     - the question text is followed on the next line (no blank line, just the next line) by answers
         - answers begin with a letter followed by the same separator as the question
-        - correct answer(s) are marked with a \* before the letter (at the start of the line)
+        - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
     - Questions can have any number followed by a period or closing parenthesis (whatever character follows the question number must be the same as whatever character follows the answer letter)
     - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas). See below for the import process.
     
@@ -59,8 +58,9 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 ### Things to consider:
 
-+ Right now, this only works for multiple choice questions, with only one correct answer
++ Right now, this does not work for all question types. It **does** work for multiple choice, multiple answers, short answers, and essays.
 + All questions will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
++ If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
 
@@ -73,11 +73,11 @@ B. incorrect answer text.
 D. incorrect answer text.  
 E. incorrect answer text.  
 
-MC  
+MA  
  1\. Some question text here  
 *A. correct answer text.  
-B. incorrect answer text.  
-C. correct answer text.  
+*B. another correct answer text.  
+*C. another correct answer text.  
 D. incorrect answer text.  
 E. incorrect answer text.
 
@@ -89,3 +89,11 @@ B. incorrect answer text.
 C. correct answer text.  
 D. incorrect answer text.  
 E. incorrect answer text.
+
+SA
+1. Fill in some blank ______ like that one.
+A. correct answer 1
+B. correct anser too allowing for mispellings
+
+ES
+1. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!

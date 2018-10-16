@@ -13,7 +13,7 @@
  the only blank lines are between questions
  each question is formatted by:
  first line is a 2 letter indicator of question type (MC: multiple choice, 
- MS: multiple selection, MT: matching, SA: short answer (fill in the blank),
+ MA: multiple answers, MT: matching, SA: short answer (fill in the blank),
  MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions)
  second line is any image associated with the question. The line should read
  image: imageFileName.jpg
@@ -44,6 +44,7 @@ import argparse
 from pathlib import Path
 import shutil
 import zipfile
+import re
 
 class makeQti():
         def __init__(self, ifile, sep):
@@ -78,8 +79,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MS', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX']
-            self.typeDict = {'MC':'multiple_choice_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -128,7 +129,8 @@ class makeQti():
                 else:
                     self.imagePath = ''
                 # parse the question based on type
-                self.qNumber= q    
+                self.qNumber= q
+                # get the question type and parse it
                 self.typeChooser()
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
@@ -152,8 +154,164 @@ class makeQti():
             '''
             if self.questionType == 'MC': # multiple choice with one answer
                 self.parseMC()
+            if self.questionType == 'MA': # multiple choice with more than one answer
+                self.parseMC()
+            if self.questionType == 'SA':
+                self.parseSA()
+            if self.questionType == 'ES':
+                self.parseES()
+            if self.questionType == 'MB':
+                self.parseMB()
+            if self.questionType == 'MD':
+                self.parseMD()
             # add other question types here
-                
+        
+        def parseMD(self):
+            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            # make an identifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            # parse through the question looking for blank names surrounded by []
+            dropNames = re.findall(r'\[(\w+)\]', quest)
+            #format should be *drop1: correct answer for 1 \n
+            # initizaliz a dict to hold all answers dropAns[dropName] = {'respID': 'response text', 'corr': 'respID'}
+            dropAns = {}
+            #loop through drop names
+            for dropName in dropNames:
+                dropAns[dropName] = {}
+            #loop through line of answers
+            for a in range(1, len(self.fullText)):
+                line = self.fullText[a].split(':',1)
+                respID = 'resp' + str(a)
+                if line[0][0] == '*':
+                    dropAns[dropName]['corr'] = respID
+                    line[0] = line[0][1:]
+                dropAns[dropName][respID] = line[1]
+        ### WORKING HERE###
+                        
+            
+        def parseMB(self):
+            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            # make an identifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            # parse through the question looking for blank names surrounded by []
+            blankNames = re.findall(r'\[(\w+)\]', quest)
+            #loop through each blank answer
+            # format should be blank1: answer 1, answer 2 \n
+            blankCorr = {}
+            for a in range(1, len(self.fullText)):
+                ans = []
+                #get the blank name and a list of answers
+                bName = self.fullText[a].split(':',1)[0]
+                ans = self.fullText[a].split(':',1)[1].split(',')
+                ans = [x.strip() for x in ans]
+                # put into dict
+                blankCorr[bName] = ans
+            questionTextResponse = ''
+            for blank, ans in blankCorr.items():
+                questionTextResponse += '''<response_lid ident="{}">
+                                        <material>
+                                            <mattext>{}</mattext>
+                                        </material>
+                                        <render_choice>
+                                        '''.format(blank,blank)
+                for i in range(len(ans)):
+                    resID = 'resp'+str(i)
+                    questionTextResponse += '''<response_label ident="{}">
+                                                <material>
+                                                    <mattext texttype="text/plain">{}</mattext>
+                                                </material>
+                                            </response_label>
+                                            '''.format(resID, ans[i])
+            
+                questionTextResponse +=''' </render_choice>
+                                        </response_lid>
+                                        '''
+            #get the score per blank
+            perBlank = 100/len(blankCorr)
+            questionTextResponse += '''</presentation>
+            <resprocessing>
+                <outcomes>
+                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                </outcomes>
+            '''
+            for blank,ans in blankCorr.items():
+                questionTextResponse += '''<respcondition>
+                                        <conditionvar>
+                                            <varequal respident="{}">{}</varequal>
+                                        </conditionvar>
+                                        <setvar varname="SCORE" action="Add">{}</setvar>
+                                    </respcondition>
+                '''.format(blank,'resp0',perBlank)
+            questionTextResponse += '''</respcondition>
+                            </resprocessing>
+                        </item>
+                        '''
+            self.writeText = questionTextStart + questionTextResponse 
+            
+        def parseES(self):
+            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            # make an identifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            questionTextResponse = '''<response_str ident="response1" rcardinality="Single">
+                                    <render_fib>
+                                        <response_label ident="answer1" rshuffle="No"/>
+                                    </render_fib>
+                                </response_str>
+                            </presentation>
+                            <resprocessing>
+                                <outcomes>
+                                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                                </outcomes>
+                                <respcondition continue="No">
+                                    <conditionvar>
+                                        <other/>
+                                    </conditionvar>
+                                </respcondition>
+                            </resprocessing>
+                        </item>
+                        '''
+            self.writeText = questionTextStart + questionTextResponse
+            
+        def parseSA(self):
+            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            corr = []
+            # make a list of correct answers
+            for a in range(1, len(self.fullText)):
+                corr.append(self.fullText[a].split(self.sep,1)[1])
+            # make an identifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            questionTextResponse = '''<response_str ident="response1" rcardinality="Single">
+                                    <render_fib>
+                                        <response_label ident="answer1" rshuffle="No"/>
+                                    </render_fib>
+                                </response_str>
+                            </presentation>
+                            <resprocessing>
+                                <outcomes>
+                                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                                </outcomes>
+                                <respcondition continue="No">
+                                    <conditionvar>
+                                    '''
+            for ans in corr:
+                questionTextResponse +='''<varequal respident="response1">{}</varequal>
+                '''.format(ans)
+            questionTextResponse += '''</conditionvar>
+                                    <setvar action="Set" varname="SCORE">100</setvar>
+                                </respcondition>
+                            </resprocessing>
+                        </item>
+                        '''
+            self.writeText = questionTextStart + questionTextResponse
+                      
         def parseMC(self):
             quest = self.fullText[0].split(self.sep, 1) [1][1:]
             answers = []
@@ -166,7 +324,7 @@ class makeQti():
                     corr.append(str(a))
                 answers.append(ans.split(self.sep, 1)[1][1:])
             # make an identifier for the question
-            itid = 'MC' + str(self.qNumber)
+            itid = str(self.questionType) + str(self.qNumber)
             # build the question text
             questionTextStart = self.questionText(quest, itid)
             questionTextResponse = self.questionTextResponses(answers, corr)
@@ -176,12 +334,16 @@ class makeQti():
             # set some strings based on question type
             if self.questionType == 'MC':
                 respid = 'response1'
-                rcard = 'Single' 
+                rcard = 'Single'
+            if self.questionType == 'MA':
+                respid = 'response1'
+                rcard = 'Multiple'
             out1 = '''
             <response_lid ident="{}" rcardinality="{}">
               <render_choice>
             '''.format(respid, rcard,)
             #loop through answers and add
+            respList=[]
             for a in range(len(answers)):
                 #make a string to track which answer is which
                 resp = str(a+1)
@@ -191,6 +353,7 @@ class makeQti():
                         </material>
                         </response_label>
                         '''.format(resp, answers[a])
+                respList.append(resp)
             # done with answers, add stuff for end of question
             out1 += '''</render_choice>
                   </response_lid>
@@ -205,12 +368,31 @@ class makeQti():
             if len(corr) == 1:
             #single answer multiple choice
                 out1 += '''<varequal respident="{}">{}</varequal>
-                    </conditionvar>
+                      '''.format(respid, corr[0])
+            if len(corr) > 1: #more than one correct answer
+                out1 += '''<and>
+                '''
+                for ans in range(len(corr)):
+                    out1 += '''<varequal respident="{}">{}</varequal>
+                    '''.format(respid, corr[ans])
+                    respList.remove(corr[ans])
+                if len(respList) > 0:
+                    out1 += '''<not>
+                    '''
+                    for ans in range(len(respList)):
+                      out1 += '''<varequal respident="{}">{}</varequal>
+                      '''.format(respid, respList[ans])
+                    out1 += '''</not>
+                    '''
+                out1 += '''</and>
+                '''
+            # final bits
+            out1 += '''</conditionvar>
                     <setvar action="Set" varname="SCORE">100</setvar>
                   </respcondition>
                 </resprocessing>
               </item>
-            '''.format(respid, corr[0])
+              '''
             return out1
             
         def questionText(self, quest, itid):
