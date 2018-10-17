@@ -1,6 +1,6 @@
 # QTI converter
 
-This script will convert a simply formatted text document containing multiple choice questions into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
+This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
 
 ## Installation and basic usage
 
@@ -11,14 +11,13 @@ This script will convert a simply formatted text document containing multiple ch
 ## Preparing the files
 
 1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). (Formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
-    - one blank line between questions (hereafter question blocks), no blank lines within question blocks
-    - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching, SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions) **NOTE: right now, multiple choice, multiple answers, short answer (fill in the blank), and essays are the only supported question types.**
-    - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line.
-    - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator**.
+    - one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks
+    - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching (not yet functional), SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional) 
+    - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line. The image file of that name should be saved in the same folder as the text document.
+    - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator and is preferred**.
     - the question text is followed on the next line (no blank line, just the next line) by answers
-        - answers begin with a letter followed by the same separator as the question
+        - MC answers begin with a letter followed by the same separator as the question
         - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
-    - Questions can have any number followed by a period or closing parenthesis (whatever character follows the question number must be the same as whatever character follows the answer letter)
     - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas). See below for the import process.
     
 2. Save the text file containing questions in it's own folder. 
@@ -37,12 +36,12 @@ qtiConverterApp.py /path/to/text/file.txt
 ```
 changing the path to your text file as needed. You can add `--sep ')'` if you use parentheses after your question numbers and answer letters.
 
-2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the folder you will import in Canvas, and it *should* include all of your images and questions.
+2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the zip you will import in Canvas, and it *should* include all of your images and questions.
     
 ## Canvas Importing and Quiz Making Process
 
-1. in Canvas, go to `Course settings > Import course content`. Select `QTI .zip file`. Choose the zip file from your computer.
-    + You don’t need to select a question bank in Canvas. This will create a new question bank and a quiz with the name you input in the python script.
+1. In Canvas, go to `Course settings > Import course content`. Select `QTI .zip file`. Choose the zip file from your computer.
+    + You don’t need to select a question bank in Canvas. It will automatically create a new question bank and a quiz with the name you input in the python script.
     + Note that the default options also mean that it will not overwrite any questions or banks you already have. So you if import multiple times (or different folders with the same name), you will end up with multiple question banks and quizzes with the **same name** in Canvas! This can get very confusing. 
 
 2. Click import and wait for it to finish!  All of the questions will show up in your course test banks (go to quizzes, click the three dots that mean “more options”, and manage question banks).
@@ -58,15 +57,18 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 ### Things to consider:
 
-+ Right now, this does not work for all question types. It **does** work for multiple choice, multiple answers, short answers, and essays.
++ If the question types are confusing, try making different sample exam questions in Canvas.
++ Right now, this does not work for matching, numerical, or text box question types.
 + All questions will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
 + If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
 
-### Sample text document format:
+### Samples
 
-1\. Some question text here  
+This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
+
+1\. Some question text here. This is a multiple choice question by default since there isn't an indicator code above it.
 A. incorrect answer text.  
 B. incorrect answer text.  
 *C. correct answer text.  
@@ -74,7 +76,7 @@ D. incorrect answer text.
 E. incorrect answer text.  
 
 MA  
- 1\. Some question text here  
+ 1\. This is a multiple answer (select all that apply) question.
 *A. correct answer text.  
 *B. another correct answer text.  
 *C. another correct answer text.  
@@ -83,7 +85,7 @@ E. incorrect answer text.
 
 MC  
 image: imageFileName.jpg  
- 1\. Some question text here  
+ 1\. Some question text here. This is a multiple choice question with an image.  
 *A. correct answer text.  
 B. incorrect answer text.  
 C. correct answer text.  
@@ -91,9 +93,22 @@ D. incorrect answer text.
 E. incorrect answer text.
 
 SA
-1. Fill in some blank ______ like that one.
+1\. Fill in a blank ______ like that one.
 A. correct answer 1
 B. correct anser too allowing for mispellings
 
 ES
-1. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!
+1\. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!
+
+MB
+1\. THis is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas.
+blank1: correct answer for 1, another correct answer for 1
+blank2: correct answer for 2, another correct answer for 2
+
+MD
+1\. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2]. Notice the square brackets around the indicators (no spaces!). Use those indicators below, followed by a colon to provide the options you want students to have for each dropdown. Correct answers for each dropdown are indicated by \*.
+*drop1: correct answer for 1
+drop1: incorrect answer for 1
+drop1: incorrect answer for 1
+drop2: incorrect answer for 2
+*drop2: correct answer for 2

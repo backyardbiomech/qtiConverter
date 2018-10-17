@@ -185,12 +185,63 @@ class makeQti():
                 line = self.fullText[a].split(':',1)
                 respID = 'resp' + str(a)
                 if line[0][0] == '*':
-                    dropAns[dropName]['corr'] = respID
+                    # remove the *
                     line[0] = line[0][1:]
-                dropAns[dropName][respID] = line[1]
-        ### WORKING HERE###
-                        
+                    dropAns[line[0]]['corr'] = respID
+                    
+                dropAns[line[0]][respID] = line[1]
+            # generate the responses
+            questionTextResponse = ''
+            #loop back through dropAns dict to make the answers
             
+            for dropName, resp in dropAns.items():
+                # parse the first part fo the responses
+                questionTextResponse += '''<response_lid ident="{}">
+                                                <material>
+                                                  <mattext>{}</mattext>
+                                                </material>
+                                                <render_choice>
+                                                    '''.format('response_' + dropName, dropName)
+                #loop through responses for that drop
+                for respID, respText in resp.items():
+                    # if the item is a response (and not the correct indicator)
+                    if 'resp' in respID:       
+                        # parse the response
+                        questionTextResponse += '''<response_label ident="{}">
+                                                    <material>
+                                                      <mattext texttype="text/plain">{}</mattext>
+                                                    </material>
+                                                  </response_label>
+                        '''.format(respID, respText)
+                questionTextResponse += '''</render_choice>
+                                      </response_lid>
+                                            '''
+            questionTextResponse += '''</presentation>
+                                        <resprocessing>
+                                          <outcomes>
+                                            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                                          </outcomes>
+            '''
+            #get the score per drop
+            perDrop = 100/len(dropAns)
+            #add the score calculations for each drop
+            
+            for dropName, resp in dropAns.items():
+                
+                corrRespID = dropAns[dropName]['corr']
+                questionTextResponse += '''<respcondition>
+                                            <conditionvar>
+                                              <varequal respident="{}">{}</varequal>
+                                            </conditionvar>
+                                            <setvar varname="SCORE" action="Add">{}</setvar>
+                                          </respcondition>
+                '''.format('response_' + dropName, corrRespID, perDrop)
+            # close it out
+            questionTextResponse += '''</resprocessing>
+                                      </item>'''
+            # write it
+            self.writeText = questionTextStart + questionTextResponse
+                
         def parseMB(self):
             quest = self.fullText[0].split(self.sep, 1) [1][1:]
             # make an identifier for the question
@@ -246,8 +297,7 @@ class makeQti():
                                         <setvar varname="SCORE" action="Add">{}</setvar>
                                     </respcondition>
                 '''.format(blank,'resp0',perBlank)
-            questionTextResponse += '''</respcondition>
-                            </resprocessing>
+            questionTextResponse += '''</resprocessing>
                         </item>
                         '''
             self.writeText = questionTextStart + questionTextResponse 
