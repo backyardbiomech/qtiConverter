@@ -45,7 +45,23 @@ from pathlib import Path
 import shutil
 import zipfile
 import re
+import xml.etree.ElementTree as ET
 
+def indent(elem, level=0):
+  i = "\n" + level*"  "
+  if len(elem):
+    if not elem.text or not elem.text.strip():
+      elem.text = i + "  "
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+    for elem in elem:
+      indent(elem, level+1)
+    if not elem.tail or not elem.tail.strip():
+      elem.tail = i
+  else:
+    if level and (not elem.tail or not elem.tail.strip()):
+      elem.tail = i
+      
 class makeQti():
         def __init__(self, ifile, sep):
             self.ifile = Path(ifile)
@@ -140,6 +156,23 @@ class makeQti():
             with self.manFile.open('a') as f:
                 f.write(self.manFooter)
             
+            #import with xml parser, clean up, export
+            
+            ET.register_namespace("", "http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1")
+            tree = ET.parse(str(self.manFile))
+            root = tree.getroot()
+            indent(root)
+            mydata = ET.tostring(root, encoding='utf8').decode('utf8')
+            myfile = open(str(self.manFile), 'w')
+            myfile.write(mydata)
+
+            ET.register_namespace("", "http://www.imsglobal.org/xsd/ims_qtiasiv1p2")
+            tree = ET.parse(str(self.outFile))
+            root = tree.getroot()
+            indent(root)
+            mydata = ET.tostring(root, encoding='utf8').decode('utf8')
+            myfile = open(str(self.outFile), 'w')
+            myfile.write(mydata)
             
             # compress the folder    
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
