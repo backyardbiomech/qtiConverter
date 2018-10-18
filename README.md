@@ -78,7 +78,7 @@ D. incorrect answer text.
 E. incorrect answer text.  
 
 MA  
-1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggested added "select all that apply" or similar to the question. All of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers.  
+1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggest adding "select all that apply" or similar to the question. All of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers.  
 \*A. correct answer text.  
 \*B. another correct answer text.  
 \*C. another correct answer text.  
