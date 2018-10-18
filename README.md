@@ -78,7 +78,7 @@ D. incorrect answer text.
 E. incorrect answer text.  
 
 MA  
- 1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggested added "select all that apply" or similar to the question. All of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers.  
+1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggested added "select all that apply" or similar to the question. All of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers.  
 \*A. correct answer text.  
 \*B. another correct answer text.  
 \*C. another correct answer text.  
@@ -87,7 +87,7 @@ E. incorrect answer text.
 
 MC  
 image: imageFileName.jpg  
- 1\. Some question text here. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type (but not yet to answers)!  
+1\. Some question text here. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type (but not yet to answers)!  
 \*A. correct answer text.  
 B. incorrect answer text.  
 C. correct answer text.  
@@ -115,7 +115,7 @@ drop1: incorrect answer for 1
 drop2: incorrect answer for 2  
 \*drop2: correct answer for 2  
 
-MT
+MT  
 1\. This is a matching question. It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.  
 [right2]left1: first left option  
 [right2]left2: second left option  
