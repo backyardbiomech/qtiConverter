@@ -94,34 +94,34 @@ C. correct answer text.
 D. incorrect answer text.  
 E. incorrect answer text.
 
-SA
-1\. Fill in a blank \_\_\____ like that one. notice letter followed by period below.
-A. correct answer 1
+SA  
+1\. Fill in a blank \_\_\____ like that one. notice letter followed by period below.  
+A. correct answer 1  
 B. correct anser too allowing for mispellings
 
-ES
+ES  
 1\. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!
 
-MB
-1\. This is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas. Canvas awards partial credit based on the number of blanks.
-blank1: correct answer for 1, another correct answer for 1
+MB  
+1\. This is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas. Canvas awards partial credit based on the number of blanks.  
+blank1: correct answer for 1, another correct answer for 1  
 blank2: correct answer for 2, another correct answer for 2
 
-MD
-1\. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2]. Notice the square brackets around the indicators (no spaces!). Use those indicators below, followed by a colon to provide the options you want students to have for each dropdown. Correct answers for each dropdown are indicated by \*. Canvas awards partial credit based on the number of dropdowns.
-\*drop1: correct answer for 1
-drop1: incorrect answer for 1
-drop1: incorrect answer for 1
-drop2: incorrect answer for 2
-\*drop2: correct answer for 2
+MD  
+1\. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2]. Notice the square brackets around the indicators (no spaces!). Use those indicators below, followed by a colon to provide the options you want students to have for each dropdown. Correct answers for each dropdown are indicated by \*. Canvas awards partial credit based on the number of dropdowns.  
+\*drop1: correct answer for 1  
+drop1: incorrect answer for 1  
+drop1: incorrect answer for 1  
+drop2: incorrect answer for 2  
+\*drop2: correct answer for 2  
 
 MT
-1\. This is a matching question. It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.
-[right2]left1: first left option
-[right2]left2: second left option
-[right1]left3: third left option
-right1: first right option correct for third left
-right2: second right option correct for first and second left
-right3: third right option distractor
-right4: fourth right option distractor
-right5: fifth right option distractor
+1\. This is a matching question. It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.  
+[right2]left1: first left option  
+[right2]left2: second left option  
+[right1]left3: third left option  
+right1: first right option correct for third left  
+right2: second right option correct for first and second left  
+right3: third right option distractor  
+right4: fourth right option distractor  
+right5: fifth right option distractor  
