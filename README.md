@@ -70,6 +70,7 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
 
+```
 1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, &lt;br&gt; This will now be on a new line once you've imported to Canvas. Paste two in a row &lt;br&gt; &lt;br&gt; to get a blank line inserted.  
 A. incorrect answer text.  
 B. incorrect answer text.  
@@ -125,3 +126,4 @@ right2: second right option correct for first and second left
 right3: third right option distractor  
 right4: fourth right option distractor  
 right5: fifth right option distractor  
+```
