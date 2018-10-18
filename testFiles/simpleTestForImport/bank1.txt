@@ -33,3 +33,14 @@ drop1: incorrect answer for 1
 drop1: incorrect answer for 1
 drop2: incorrect answer for 2
 *drop2: correct answer for 2
+
+MT
+1. This is a matching question.
+[right2]left1: first left option
+[right2]left2: second left option
+[right1]left3: third left option
+right1: first right option correct for third left
+right2: second right option correct for first and second left
+right3: third right option correct for first and second left
+right4: fourth right option distractor
+right5: fifth right option distractor
