@@ -60,7 +60,7 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 ### Things to consider:
 
 + If the question types are confusing, try making different sample exam questions in Canvas.
-+ Right now, this does not work for matching, numerical, or text box question types.
++ Right now, this does not work for numerical, or text box question types.
 + All questions will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
 + If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
