@@ -9,8 +9,8 @@ from setuptools import setup
 
 APP = ['qtiConverterApp.py']
 DATA_FILES = []
-OPTIONS = {'argv_emulation': True,
-            'excludes': "PyQt5, scipy, jupyter, jupyterlab,numpy,pandas,jupyter_console,matplotlib,statsmodels,ipython"}
+OPTIONS = {'argv_emulation': True}#,
+            #'excludes': "PyQt5, scipy, jupyter, jupyterlab,numpy,pandas,jupyter_console,matplotlib,statsmodels,ipython"}
 
 setup(
     app=APP,

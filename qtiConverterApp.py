@@ -165,7 +165,8 @@ class makeQti():
             mydata = ET.tostring(root, encoding='utf8').decode('utf8')
             myfile = open(str(self.manFile), 'w')
             myfile.write(mydata)
-
+            myfile.close()
+            
             ET.register_namespace("", "http://www.imsglobal.org/xsd/ims_qtiasiv1p2")
             tree = ET.parse(str(self.outFile))
             root = tree.getroot()
@@ -173,6 +174,7 @@ class makeQti():
             mydata = ET.tostring(root, encoding='utf8').decode('utf8')
             myfile = open(str(self.outFile), 'w')
             myfile.write(mydata)
+            myfile.close()
             
             # compress the folder    
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
@@ -635,7 +637,7 @@ class makeQti():
   <organizations/>
   <resources>
     <resource identifier="{}" type="imsqti_xmlv1p2">
-      <file href="{}1234/1234.xml"/>
+      <file href="{}"/>
     </resource>'''.format(self.bankName, self.outFile.parent.name + '/' + self.outFile.name)
 
         def makeFooter(self):
