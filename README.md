@@ -11,6 +11,7 @@ This program will convert a simply formatted text document containing most quest
 ## Likely errors
 
 If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). Check for the following:
+
 + make sure you have a separator after every question number and answer letter
 + make sure you don't have new lines within a question text (see below on how to insert them if you need them)
 + make sure you don't have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.
