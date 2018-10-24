@@ -118,9 +118,11 @@ class makeQti():
             # parse the questions in a loop
             for q in range(len(self.data)):
                 self.imagePath = ''
-                # parse the questions and answers based on new lines
+                # parse the questions and answers based on new lines  
                 # self.fullText is a list, each item is a line from the question in the text file
                 self.fullText = self.data[q].split('\n')
+                # delete any blank linesin fullText (should only happen on the last question)
+                self.fullText = [x for x in self.fullText if len(x) > 0]
                 self.questionType = self.fullText[0]
                 # if not question type is indicated, assume multiple choice
                 if self.questionType not in self.typeList:
@@ -172,6 +174,7 @@ class makeQti():
             root = tree.getroot()
             indent(root)
             mydata = ET.tostring(root, encoding='utf8').decode('utf8')
+            print('here')
             myfile = open(str(self.outFile), 'w')
             myfile.write(mydata)
             myfile.close()
