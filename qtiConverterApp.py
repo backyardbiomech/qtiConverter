@@ -1,50 +1,40 @@
 #!/usr/bin/env python3
 
 '''
- QTI creator for Canvas quizzes
- makeQti -path/to/file -separator
+qtiConverterApp.py path/to/file -separator
+
+Create QTI zip files from text files to import to Canvas as quizzes.
+
+Inputs
+------
+
+ifile : string
+        path to a properly formatted file containing questions and answers
+separator : str, optional
+            punctuation that separates question and answer numbers from the text. '.' (default) or ')'
+            
+Returns
+-------
+zip file : saves a compressed (zip) file containing all material that needs to be uploaded as a QTI file to Canvas
+            
+Notes
+-----
+Any images associated with questions or answers must be saved as separate files (jpg or png) in the same folder as the text file.
  
- the input file is a text file
- separator is usually ')' or ',', and indicates what follows the question
- numbers and answer letters in the text file
- Any images associated with questions or answers must be saved as separate files (jpg or png) in the same folder as the text file
- 
- the text file shoiuld be formatted as follows:
- the only blank lines are between questions
- each question is formatted by:
- first line is a 2 letter indicator of question type (MC: multiple choice, 
- MA: multiple answers, MT: matching, SA: short answer (fill in the blank),
- MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (instructions)
- second line is any image associated with the question. The line should read
- image: imageFileName.jpg
- questions begin with a number followed by separator
- question text is followed on the next line (no blank line) by answers
- answers begin with a letter followed by the same separator
- correct answer(s) are marked with a * before the letter (at the start of the line)
- 
- For example:
- 
- MC
- image: simpleMath.jpg
- 1. What is 2+4?
- A. 4
- *B. 6
- C. 8
- 
- MS
- image: cars.png
- 2. Which of the following are Japanese car manufacturers?
- *A. Toyota
- B. Ford
- *C. Nissan
- D. Chevrolet
- 
+Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
+
+Tested on macOS 10.12.6 and 10.13.6
+Last edited 2018.10.23
+
+Written by Brandon E. Jackson, Ph.D.
+brandon.e.jackson@gmail.com
 '''
 import argparse
 from pathlib import Path
 import shutil
 import zipfile
 import re
+import html
 import xml.etree.ElementTree as ET
 
 def indent(elem, level=0):
@@ -123,6 +113,8 @@ class makeQti():
                 self.fullText = self.data[q].split('\n')
                 # delete any blank linesin fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
+                # replace characters with html appropriate characters
+                self.fullText = [html.escape(x) for x in self.fullText]
                 self.questionType = self.fullText[0]
                 # if not question type is indicated, assume multiple choice
                 if self.questionType not in self.typeList:
@@ -172,9 +164,7 @@ class makeQti():
             ET.register_namespace("", "http://www.imsglobal.org/xsd/ims_qtiasiv1p2")
             tree = ET.parse(str(self.outFile))
             root = tree.getroot()
-            indent(root)
             mydata = ET.tostring(root, encoding='utf8').decode('utf8')
-            print('here')
             myfile = open(str(self.outFile), 'w')
             myfile.write(mydata)
             myfile.close()
@@ -207,7 +197,7 @@ class makeQti():
             # add other question types here
         
         def parseMT(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -291,7 +281,7 @@ class makeQti():
                                           
             
         def parseMD(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -367,7 +357,7 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse
                 
         def parseMB(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -427,7 +417,7 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse 
             
         def parseES(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -453,7 +443,7 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse
             
         def parseSA(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             corr = []
             # make a list of correct answers
             for a in range(1, len(self.fullText)):
@@ -487,12 +477,12 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse
                       
         def parseMC(self):
-            quest = self.fullText[0].split(self.sep, 1) [1][1:]
+            quest = self.fullText[0].split(self.sep, 1)[1].strip()
             answers = []
             corr = []
             # make a list of answers
             for a in range(1,len(self.fullText)):
-                ans = self.fullText[a]
+                ans = self.fullText[a].strip()
                 # get the correct answer
                 if ans[0] == '*':
                     corr.append(str(a))
@@ -573,7 +563,7 @@ class makeQti():
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0:
-                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" width="314"&gt;
+                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" width="314" /&gt;
                 &lt;p&gt;{}&lt;/p&gt;
                 '''.format(self.imagePath, quest)
             

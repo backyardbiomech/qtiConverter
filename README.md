@@ -8,6 +8,15 @@ This program will convert a simply formatted text document containing most quest
 2. Save the uncompressed application on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
+## Likely errors
+
+If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). Check for the following:
++ make sure you have a separator after every question number and answer letter
++ make sure you don't have new lines within a question text (see below on how to insert them if you need them)
++ make sure you don't have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.
++ make sure you don't have extra blank lines at the end of the document. Your best bet is to highlight all the empty space below your last question and hit delete
++ If you view this README as a text file (not the html on bitbucket), you will see slashes (\) after question numbers in the sample questions. You SHOULD NOT include those slashes.
+
 ## Preparing the files
 
 1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). (Formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
