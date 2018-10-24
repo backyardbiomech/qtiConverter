@@ -596,7 +596,7 @@ class makeQti():
         def loadBank(self):
             with self.ifile.open(mode = 'r', encoding = "utf-8") as f:
                 data=f.read()
-            re.sub('\n{3,100}', '\n\n', data.strip())
+            data = re.sub('\n{3,100}', '\n\n', data.strip())
             self.data=data.split('\n\n')
         
         def addResMan(self, img):    
