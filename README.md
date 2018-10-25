@@ -20,10 +20,10 @@ If the application crashes after you drop your file on it, you probably have a f
 
 ## Preparing the files
 
-1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). (Formatting, like **bold** and *italics* may be possible in future versions of this software). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
+1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
     - one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks.
-    - If you **must** have a paragraph break within a question, copy and paste the odd characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
-        - `&lt;br&gt;`
+    - If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
+        - `<br>`
     - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching (not yet functional), SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional) 
     - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line. The image file of that name should be saved in the same folder as the text document.
     - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator and is preferred**.
@@ -31,6 +31,19 @@ If the application crashes after you drop your file on it, you probably have a f
         - MC answers begin with a letter followed by the same separator as the question
         - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
     - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas). See below for the import process.
+    - **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, ^superscript^, and ~subscript~. This will work in questions **and** in answers.
+        1.  The easiest way is to use MarkDown formatting marks.
+            + Surrounding some word or characters with two asterix, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
+            + One asterix on either side, like `*this*` indicates *italics*
+            + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc^2^
+            + tildes like `H~2~O` will make it subscript (H~2~O). 
+            + The key is to **surround** what you want to format with the marks.
+        2. You may also use standard html tags, where you surround the word or characters you want to format as appropriate:
+            + *italics*: `this <em>word</em>` yields: this *word*
+            + **bold**: `this <strong>word</strong>` yields: this **word**
+            + superscript: `E = mc<sup>2</sup>` yields: E = mc^2^
+            + subscript: `H<sub>2</sub>O` yields: H~2~O
+        3. You may use both styles in the same document
     
 2. Save the text file containing questions in it's own folder. 
     + the name of the file will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default containing all of the questions
@@ -80,7 +93,7 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
 
-1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, &lt;br&gt; This will now be on a new line once you've imported to Canvas. Paste two in a row &lt;br&gt; &lt;br&gt; to get a blank line inserted.  
+1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, `<br>` This will now be on a new line once you've imported to Canvas. Paste two in a row `<br><br>` to get a blank line inserted.  
 A. incorrect answer text.  
 B. incorrect answer text.  
 \*C. correct answer text.  

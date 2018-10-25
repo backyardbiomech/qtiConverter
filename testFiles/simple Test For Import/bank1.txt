@@ -1,0 +1,46 @@
+MC
+image: testImage.png
+1. this is the question text
+*A. correct answer A
+B. inccorect answer B
+C. incorrect answer C
+D. inccorect answer D
+
+MA
+1. this is question 2 text
+A. inccorect anwers A
+*B. this is the correct answer
+*C. this is also a correct answer
+D. inccorect answer D
+
+SA
+1. Fill in the answer in this blank ________.
+A. correct text
+B. corect tect
+
+ES
+1. This is the question for an essay question. No correct answer provided.
+
+MB
+1. THis is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2].
+blank1: correct answer for 1, another correct answer for 1
+blank2: correct answer for 2, another correct answer for 2
+
+MD
+1. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2].
+*drop1: correct answer for 1
+drop1: incorrect answer for 1
+drop1: incorrect answer for 1
+drop2: incorrect answer for 2
+*drop2: correct answer for 2
+
+MT
+1. This is a matching question. &lt;br&gt;It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. &lt;br&gt;All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. &lt;br&gt;Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.
+[right2]left1: first left option
+[right2]left2: second left option
+[right1]left3: third left option
+right1: first right option correct for third left
+right2: second right option correct for first and second left
+right3: third right option
+right4: fourth right option distractor
+right5: fifth right option distractor

@@ -55,6 +55,9 @@ def indent(elem, level=0):
       
 class makeQti():
         def __init__(self, ifile, sep):
+            print(ifile)
+            ifile = ifile.replace('\ ', ' ')
+            print(ifile)
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images

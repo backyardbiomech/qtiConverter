@@ -55,6 +55,8 @@ def indent(elem, level=0):
       
 class makeQti():
         def __init__(self, ifile, sep):
+            ifile = ifile.replace('\ ', ' ')
+            print(ifile)
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
@@ -114,6 +116,8 @@ class makeQti():
                 self.fullText = self.data[q].split('\n')
                 # delete any blank linesin fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
+                # convert Markdown formatting to html formatting before escaping html
+                # bold
                 # replace characters with html appropriate characters
                 self.fullText = [html.escape(x) for x in self.fullText]
                 self.questionType = self.fullText[0]
@@ -197,8 +201,24 @@ class makeQti():
                 self.parseMT()
             # add other question types here
         
+        def processFormatting(self, text):
+            # process markdown characters
+            # process bold
+            text = re.sub('(\*{2}([a-zA-Z0-9\s]+)\*{2})', ' <strong>\\2</strong> ', text)
+            # process italics
+            text = re.sub('(\*{1}([a-zA-Z0-9\s]+)\*{1})', ' <em>\\2</em> ', text)
+            # process superscript
+            text = re.sub('(\^{1}([a-zA-Z0-9\s]+)\^{1})', ' <sup>\\2</sup> ', text)
+            # process subscript
+            text = re.sub('(\~{1}([a-zA-Z0-9\s]+)\~{1})', ' <sub>\\2</sub> ', text)
+            # escape html characters
+            text = html.escape(text)
+            # return
+            return text
+            
         def parseMT(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -229,17 +249,17 @@ class makeQti():
                     #get the number in the bracket corresponding to the correct answer
                     corrNum = re.findall(r'\[(\w+)\]', line[0])
                     #assign to the dict
-                    leftAns[leftName] = {'text': line[1], 'corr': corrNum[0]}
+                    leftAns[leftName] = {'text': self.processFormatting(line[1]), 'corr': corrNum[0]}
                 #otherwise, it is a right answer
                 else:
                     rightRespId = line[0]
-                    rightAns[rightRespId] = {'text': line[1]}
+                    rightAns[rightRespId] = {'text': self.processFormatting(line[1])}
             # generate the responses
             questionTextResponse = ''
             for leftID, leftData in leftAns.items():
                 questionTextResponse += '''<response_lid ident="{}">
                 <material>
-                  <mattext texttype="text/plain">{}</mattext>
+                  <mattext texttype="text/html">{}</mattext>
                 </material>
                 <render_choice>
                     '''.format(leftID, leftData['text'])
@@ -283,6 +303,7 @@ class makeQti():
             
         def parseMD(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -304,7 +325,7 @@ class makeQti():
                     line[0] = line[0][1:]
                     dropAns[line[0]]['corr'] = respID
                     
-                dropAns[line[0]][respID] = line[1]
+                dropAns[line[0]][respID] = self.processFormatting(line[1])
             # generate the responses
             questionTextResponse = ''
             #loop back through dropAns dict to make the answers
@@ -324,7 +345,7 @@ class makeQti():
                         # parse the response
                         questionTextResponse += '''<response_label ident="{}">
                                                     <material>
-                                                      <mattext texttype="text/plain">{}</mattext>
+                                                      <mattext texttype="text/html">{}</mattext>
                                                     </material>
                                                   </response_label>
                         '''.format(respID, respText)
@@ -359,6 +380,7 @@ class makeQti():
                 
         def parseMB(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -374,6 +396,7 @@ class makeQti():
                 bName = self.fullText[a].split(':',1)[0]
                 ans = self.fullText[a].split(':',1)[1].split(',')
                 ans = [x.strip() for x in ans]
+                ans = [self.processFormatting(x) for x in ans]
                 # put into dict
                 blankCorr[bName] = ans
             questionTextResponse = ''
@@ -388,7 +411,7 @@ class makeQti():
                     resID = 'resp'+str(i)
                     questionTextResponse += '''<response_label ident="{}">
                                                 <material>
-                                                    <mattext texttype="text/plain">{}</mattext>
+                                                    <mattext texttype="text/html">{}</mattext>
                                                 </material>
                                             </response_label>
                                             '''.format(resID, ans[i])
@@ -419,6 +442,7 @@ class makeQti():
             
         def parseES(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -445,10 +469,12 @@ class makeQti():
             
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
             corr = []
             # make a list of correct answers
             for a in range(1, len(self.fullText)):
-                corr.append(self.fullText[a].split(self.sep,1)[1])
+                answer = self.processFormatting(self.fullText[a].split(self.sep,1)[1])
+                corr.append(answer)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -479,6 +505,7 @@ class makeQti():
                       
         def parseMC(self):
             quest = self.fullText[0].split(self.sep, 1)[1].strip()
+            quest = self.processFormatting(quest)
             answers = []
             corr = []
             # make a list of answers
@@ -487,7 +514,8 @@ class makeQti():
                 # get the correct answer
                 if ans[0] == '*':
                     corr.append(str(a))
-                answers.append(ans.split(self.sep, 1)[1][1:])
+                answer = self.processFormatting(ans.split(self.sep, 1)[1][1:])
+                answers.append(answer)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -514,7 +542,7 @@ class makeQti():
                 resp = str(a+1)
                 out1 += ''' <response_label ident="{}">
                         <material>
-                          <mattext texttype="text/plain">{}</mattext>
+                          <mattext texttype="text/html">{}</mattext>
                         </material>
                         </response_label>
                         '''.format(resp, answers[a])
