@@ -37,6 +37,7 @@ import re
 import html
 import re
 import xml.etree.ElementTree as ET
+import subprocess
 
 def indent(elem, level=0):
   i = "\n" + level*"  "
@@ -53,10 +54,15 @@ def indent(elem, level=0):
     if level and (not elem.tail or not elem.tail.strip()):
       elem.tail = i
       
+def errorDisplay(q):
+    applescript = """
+    display dialog "The seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
+    """.format(str(q+1))
+    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+
 class makeQti():
         def __init__(self, ifile, sep):
             ifile = ifile.replace('\ ', ' ')
-            print(ifile)
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
@@ -146,7 +152,10 @@ class makeQti():
                 # parse the question based on type
                 self.qNumber= q
                 # get the question type and parse it
-                self.typeChooser()
+                try:
+                    self.typeChooser()
+                except:
+                    errorDisplay(self.qNumber)
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
