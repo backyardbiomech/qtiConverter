@@ -204,13 +204,13 @@ class makeQti():
         def processFormatting(self, text):
             # process markdown characters
             # process bold
-            text = re.sub('(\*{2}([a-zA-Z0-9\s]+)\*{2})', ' <strong>\\2</strong> ', text)
+            text = re.sub('(\*{2}([a-zA-Z0-9\s]+)\*{2})', '<strong>\\2</strong>', text)
             # process italics
-            text = re.sub('(\*{1}([a-zA-Z0-9\s]+)\*{1})', ' <em>\\2</em> ', text)
+            text = re.sub('(\*{1}([a-zA-Z0-9\s]+)\*{1})', '<em>\\2</em>', text)
             # process superscript
-            text = re.sub('(\^{1}([a-zA-Z0-9\s]+)\^{1})', ' <sup>\\2</sup> ', text)
+            text = re.sub('(\^{1}([a-zA-Z0-9\s]+)\^{1})', '<sup>\\2</sup>', text)
             # process subscript
-            text = re.sub('(\~{1}([a-zA-Z0-9\s]+)\~{1})', ' <sub>\\2</sub> ', text)
+            text = re.sub('(\~{1}([a-zA-Z0-9\s]+)\~{1})', '<sub>\\2</sub>', text)
             # escape html characters
             text = html.escape(text)
             # return
