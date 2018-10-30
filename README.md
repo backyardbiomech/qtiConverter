@@ -104,7 +104,7 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
     + If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.
     + Save and close the script file
     + Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
-```
+```bash
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
 cd ~/Desktop
