@@ -88,6 +88,30 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 + If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
+### Tips
+
++ If there is a formatting error in one of your questions, you should get a dialog box on screen telling you which question has the problem. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question counted from the top has the problem. The most likely problems are:
+    + a question type indicator that isn't one of the options
+    + new lines in the question
+    + improperly formatted answers
+    + missing separators (usually periods or colons) after question numbers or answer indicators
++ You can drag the app (once you've unzipped the download and moved the app to where ever you want it, like the Desktop) to the Mac Dock so that it is always available to drag and drop a file.
++ One of the most powerful plain text editors on Mac is BBEdit, by BareBones software. You can download and use for free (when the free demo is over, you only lose some very advanced functions. I do all of my coding and writing in the free version). If you make a lot of quizzes, I suggest using BBEdit to edit the text since it is faster and more stable than Word.
+    + If you use BBEdit, after installing it, click on the script icon in the menu (looks like a scroll)
+    + select `Open Scripts Folder` to open a Finder window to the location where BBEdit scripts are saved. Right-click on the name of that window and it will show you the path to get there.
+    + Back in BBEdit, make a new file, and save that file in that scripts folder location. Name the file something easy to recognize like `text2qti.sh`. The `sh` at the end is important!
+    + In BBEdit, copy and paste the following into the file:
+```
+#!/bin/bash
+PATH=$PATH:/usr/local/bin
+cd ~/Desktop
+./qtiConverterApp.py "$BB_DOC_PATH"
+```
+    + If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.
+    + Save and close the script file
+    + Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
+
+
 
 ### Samples
 
