@@ -100,16 +100,17 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
     + If you use BBEdit, after installing it, click on the script icon in the menu (looks like a scroll)
     + select `Open Scripts Folder` to open a Finder window to the location where BBEdit scripts are saved. Right-click on the name of that window and it will show you the path to get there.
     + Back in BBEdit, make a new file, and save that file in that scripts folder location. Name the file something easy to recognize like `text2qti.sh`. The `sh` at the end is important!
-    + In BBEdit, copy and paste the following into the file:
+    + In BBEdit, copy and paste the code below into the file:
+    + If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.
+    + Save and close the script file
+    + Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
 ```
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
 cd ~/Desktop
 ./qtiConverterApp.py "$BB_DOC_PATH"
 ```
-    + If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.
-    + Save and close the script file
-    + Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
+
 
 
 
