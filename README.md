@@ -2,11 +2,17 @@
 
 This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
 
-## Installation and basic usage
+## Installation and basic usage (Mac)
 
-1. Download the zip `qtiConverterApp.app.zip` file and un-zip it
-2. Save the uncompressed application on the Desktop or somewhere else easily accessible
+1. Download the `qtiConverterApp.app` file and un-zip it
+2. Save the application on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
+
+## Installation and basic usage (Windows)
+1. Download the `WindowsQtiConverterExe` folder.
+2. Save the whole folder somewhere easy to remember.
+3. Create your quiz txt file and save it. Find the file and right-click on it. Select Open with > Choose another app > More apps > Look for another app on this PC > and then navigate to that downloaded folder and drill in until you can select `qtiConverterApp.exe`
+4. Note on Windows, the error display dialogue will not work, so you will have to track down any formatting errors. 
 
 ## Likely errors
 
