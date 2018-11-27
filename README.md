@@ -19,13 +19,25 @@ This program will convert a simply formatted text document containing most quest
 
 ## Likely errors
 
-If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). Check for the following:
+If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). If that's the problem, you should get an error dialog that reports which question has the problem. Check for the following:
 
-+ make sure you have a separator after every question number and answer letter
++ make sure you have a separator (a period) after every question number and answer letter
 + make sure you don't have new lines within a question text (see below on how to insert them if you need them)
 + make sure you don't have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.
 + make sure you don't have extra blank lines at the end of the document. Your best bet is to highlight all the empty space below your last question and hit delete
 + If you view this README as a text file (not the html on bitbucket), you will see slashes (\) after question numbers in the sample questions. You SHOULD NOT include those slashes.
+
+If you don't get the format error dialog, and you just get a dialog with a crash warning, and buttons for "Terminate" and "Console", then do the following:
+
+1. Open a terminal window (cmd-space, type terminal, enter)
+2. In Finder, right-click on qtiConverterApp.app (the thing you drop your file on to) and select `Show package contents`
+3. Navigate to `Contents > MacOS` and open
+4. Right-click on qtiConverterApp, hold down the `alt-option` key, and select `Copy qtiConverterApp as Pathname'
+5. Go to Terminal, enter a single quote, paste, enter another single quote, then add a space
+6. In Finder, find your text file, right-click, hold down alt, copy as Pathname
+7. In Terminal, enter a single quote, paste, enter a single quote.
+8. hit Enter.
+9. That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.
 
 ## Preparing the files
 

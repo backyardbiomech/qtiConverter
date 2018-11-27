@@ -19,14 +19,26 @@
 <li>Note on Windows, the error display dialogue will not work, so you will have to track down any formatting errors.</li>
 </ol>
 <h2 id="likely-errors">Likely errors</h2>
-<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). Check for the following:</p>
+<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). If that’s the problem, you should get an error dialog that reports which question has the problem. Check for the following:</p>
 <ul>
-<li>make sure you have a separator after every question number and answer letter</li>
+<li>make sure you have a separator (a period) after every question number and answer letter</li>
 <li>make sure you don’t have new lines within a question text (see below on how to insert them if you need them)</li>
 <li>make sure you don’t have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.</li>
 <li>make sure you don’t have extra blank lines at the end of the document. Your best bet is to highlight all the empty space below your last question and hit delete</li>
 <li>If you view this README as a text file (not the html on bitbucket), you will see slashes () after question numbers in the sample questions. You SHOULD NOT include those slashes.</li>
 </ul>
+<p>If you don’t get the format error dialog, and you just get a dialog with a crash warning, and buttons for “Terminate” and “Console”, then do the following:</p>
+<ol type="1">
+<li>Open a terminal window (cmd-space, type terminal, enter)</li>
+<li>In Finder, right-click on qtiConverterApp.app (the thing you drop your file on to) and select <code>Show package contents</code></li>
+<li>Navigate to <code>Contents &gt; MacOS</code> and open</li>
+<li>Right-click on qtiConverterApp, hold down the <code>alt-option</code> key, and select `Copy qtiConverterApp as Pathname’</li>
+<li>Go to Terminal, enter a single quote, paste, enter another single quote, then add a space</li>
+<li>In Finder, find your text file, right-click, hold down alt, copy as Pathname</li>
+<li>In Terminal, enter a single quote, paste, enter a single quote.</li>
+<li>hit Enter.</li>
+<li>That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.</li>
+</ol>
 <h2 id="preparing-the-files">Preparing the files</h2>
 <ol type="1">
 <li>make a simple text file (MS Word can “Save As” a .txt files; Note that formatting or embedded images will not be saved). The exact formatting of this document is <strong>extremely</strong> important. See the bottom of this document for examples:
