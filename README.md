@@ -4,7 +4,10 @@ This program will convert a simply formatted text document containing most quest
 
 ## Installation and basic usage (Mac)
 
-1. Download the `qtiConverterApp.app` file and un-zip it
+1. [Download](https://bitbucket.org/haliaetus13/qticonverter_dist/get/HEAD.zip) the `qtiConverterApp.app` folder:
+    + That will download a zipped folder called something like `haliaetus13-qticonverter_dist-1ba8171684b7`. 
+    + Inside you will find the app, and a pdf version of this README.
+    + You may rename the folder, or just move the readme and app out of the folder.
 2. Save the application on the Desktop or somewhere else easily accessible
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it.
 
