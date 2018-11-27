@@ -4,7 +4,7 @@ This program will convert a simply formatted text document containing most quest
 
 ## Installation and basic usage (Mac)
 
-1. [Download](https://bitbucket.org/haliaetus13/qticonverter_dist/get/HEAD.zip) the `qtiConverterApp.app` folder:
+1. [**Click here to download**](https://bitbucket.org/haliaetus13/qticonverter_dist/get/HEAD.zip) the `qtiConverterApp.app` folder:
     + That will download a zipped folder called something like `haliaetus13-qticonverter_dist-1ba8171684b7`. 
     + Inside you will find the app, and a pdf version of this README.
     + You may rename the folder, or just move the readme and app out of the folder.

@@ -2,7 +2,12 @@
 <p>This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.</p>
 <h2 id="installation-and-basic-usage-mac">Installation and basic usage (Mac)</h2>
 <ol type="1">
-<li>Download the <code>qtiConverterApp.app</code> file and un-zip it</li>
+<li><a href="https://bitbucket.org/haliaetus13/qticonverter_dist/get/HEAD.zip"><strong>Click here to download</strong></a> the <code>qtiConverterApp.app</code> folder:
+<ul>
+<li>That will download a zipped folder called something like <code>haliaetus13-qticonverter_dist-1ba8171684b7</code>.</li>
+<li>Inside you will find the app, and a pdf version of this README.</li>
+<li>You may rename the folder, or just move the readme and app out of the folder.</li>
+</ul></li>
 <li>Save the application on the Desktop or somewhere else easily accessible</li>
 <li>Once you’ve created your text file and organized images, just drag your text file onto the icon for the app to run it.</li>
 </ol>
@@ -123,10 +128,10 @@
 <li>Save and close the script file</li>
 <li>Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!</li>
 </ul>
-<pre class="sourceCode bash"><code class="sourceCode bash"><div class="sourceLine" id="1" href="#1" data-line-number="1"><span class="co">#!/bin/bash</span></div>
-<div class="sourceLine" id="2" href="#2" data-line-number="2"><span class="va">PATH=$PATH</span>:/usr/local/bin</div>
-<div class="sourceLine" id="3" href="#3" data-line-number="3"><span class="bu">cd</span> ~/Desktop</div>
-<div class="sourceLine" id="4" href="#4" data-line-number="4"><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></div></code></pre></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="co">#!/bin/bash</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="va">PATH=$PATH</span>:/usr/local/bin</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="bu">cd</span> ~/Desktop</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></a></code></pre></div></li>
 </ul>
 <h3 id="samples">Samples</h3>
 <p>This should give you some idea of how to format the text document. Note that each sample “question” below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles &gt; simpleTestForImport &gt; bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.</p>
