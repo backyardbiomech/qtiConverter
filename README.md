@@ -23,8 +23,6 @@ If the application crashes after you drop your file on it, you probably have a f
 
 + make sure you have a separator (a period) after every question number and answer letter
 + make sure you don't have new lines within a question text (see below on how to insert them if you need them)
-+ make sure you don't have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.
-+ make sure you don't have extra blank lines at the end of the document. Your best bet is to highlight all the empty space below your last question and hit delete
 + If you view this README as a text file (not the html on bitbucket), you will see slashes (\) after question numbers in the sample questions. You SHOULD NOT include those slashes.
 
 If you don't get the format error dialog, and you just get a dialog with a crash warning, and buttons for "Terminate" and "Console", then do the following:
@@ -41,7 +39,9 @@ If you don't get the format error dialog, and you just get a dialog with a crash
 
 ## Preparing the files
 
-1. make a simple text file (MS Word can "Save As" a .txt files; Note that formatting or embedded images will not be saved). The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
+1. Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, **not** .rtf) encoded in UTF-8.
+    + MS Word can "Save As" a .txt file, but make sure when given the option that you select encoding as `Unicode (UTF-8)`, and `End lines with: CR only`. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.
+    + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
     - one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks.
     - If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
         - `<br>`
