@@ -1,87 +1,3 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README.md</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">README.md</h1>
-</header>
 <h1 id="qti-converter">QTI converter</h1>
 <p>This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.</p>
 <h2 id="installation-and-basic-usage-mac">Installation and basic usage (Mac)</h2>
@@ -107,8 +23,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>make sure you have a separator (a period) after every question number and answer letter</li>
 <li>make sure you don’t have new lines within a question text (see below on how to insert them if you need them)</li>
-<li>make sure you don’t have extra blank lines between questions. You must have one blank line between the answers of one question and the beginning of the next question, and it should handle two blank lines, but fails with more than two blank lines.</li>
-<li>make sure you don’t have extra blank lines at the end of the document. Your best bet is to highlight all the empty space below your last question and hit delete</li>
 <li>If you view this README as a text file (not the html on bitbucket), you will see slashes () after question numbers in the sample questions. You SHOULD NOT include those slashes.</li>
 </ul>
 <p>If you don’t get the format error dialog, and you just get a dialog with a crash warning, and buttons for “Terminate” and “Console”, then do the following:</p>
@@ -125,8 +39,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <h2 id="preparing-the-files">Preparing the files</h2>
 <ol type="1">
-<li>make a simple text file (MS Word can “Save As” a .txt files; Note that formatting or embedded images will not be saved). The exact formatting of this document is <strong>extremely</strong> important. See the bottom of this document for examples:
+<li>Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, <strong>not</strong> .rtf) encoded in UTF-8.
 <ul>
+<li>MS Word can “Save As” a .txt file, but make sure when given the option that you select encoding as <code>Unicode (UTF-8)</code>, and <code>End lines with: CR only</code>. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.</li>
+<li>Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is <strong>extremely</strong> important. See the bottom of this document for examples:</li>
 <li>one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks.</li>
 <li>If you <strong>must</strong> have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
 <ul>
@@ -279,5 +195,3 @@ right2: second right option correct for first and second left<br />
 right3: third right option distractor<br />
 right4: fourth right option distractor<br />
 right5: fifth right option distractor</p>
-</body>
-</html>

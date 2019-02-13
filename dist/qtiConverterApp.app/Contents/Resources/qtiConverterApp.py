@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-'''
+"""
 qtiConverterApp.py path/to/file -separator
 
 Create QTI zip files from text files to import to Canvas as quizzes.
@@ -19,7 +19,7 @@ zip file : saves a compressed (zip) file containing all material that needs to b
             
 Notes
 -----
-Any images associated with questions or answers must be saved as separate files (jpg or png) in the same folder as the text file.
+Any associated images must be saved as separate files (jpg or png) in the same folder as the text file.
  
 Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
 
@@ -28,7 +28,9 @@ Last edited 2018.10.23
 
 Written by Brandon E. Jackson, Ph.D.
 brandon.e.jackson@gmail.com
-'''
+"""
+
+
 import argparse
 from pathlib import Path
 import shutil
@@ -39,26 +41,29 @@ import re
 import xml.etree.ElementTree as ET
 import subprocess
 
+
 def indent(elem, level=0):
-  i = "\n" + level*"  "
-  if len(elem):
-    if not elem.text or not elem.text.strip():
-      elem.text = i + "  "
-    if not elem.tail or not elem.tail.strip():
-      elem.tail = i
-    for elem in elem:
-      indent(elem, level+1)
-    if not elem.tail or not elem.tail.strip():
-      elem.tail = i
-  else:
-    if level and (not elem.tail or not elem.tail.strip()):
-      elem.tail = i
-      
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
+
 def errorDisplay(q):
     applescript = """
-    display dialog "The seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
+    display dialog "There seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
     """.format(str(q+1))
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+
 
 class makeQti():
         def __init__(self, ifile, sep):
@@ -66,14 +71,14 @@ class makeQti():
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
-            self.fpath = self.ifile.parent #self.ifile.rsplit('/',1)[0] + '/'
+            self.fpath = self.ifile.parent # self.ifile.rsplit('/',1)[0] + '/'
             self.sep = sep
             # make the outputfile and question bank name based on the input file
             self.bankName = str(self.ifile.name)[0:-4]
             # make a new directory within the current to contain the new files
             self.newDirPath = self.fpath / (self.bankName + '_export')
             self.newDirPath.mkdir(exist_ok = True)
-            #self.newDirPath will contain images, imsmanifest.xml, and a folder that contains the main xml file
+            # self.newDirPath will contain images, imsmanifest.xml, and a folder that contains the main xml file
             # make that folder
             self.newXmlPath = self.newDirPath / self.bankName
             self.newXmlPath.mkdir(exist_ok = True)
@@ -635,7 +640,12 @@ class makeQti():
         def loadBank(self):
             with self.ifile.open(mode = 'r', encoding = "utf-8") as f:
                 data=f.read()
-            data = re.sub('\n{3,100}', '\n\n', data.strip())
+            # get rid of hidden spaces on new lines
+            data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)
+            # get rid of hidden tabs before new lines
+            data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
+            # combine multiple new lines into just the needed two
+            data = re.sub('\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
             self.data=data.split('\n\n')
         
         def addResMan(self, img):    

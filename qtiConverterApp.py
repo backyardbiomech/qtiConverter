@@ -125,7 +125,7 @@ class makeQti():
                 # parse the questions and answers based on new lines  
                 # self.fullText is a list, each item is a line from the question in the text file
                 self.fullText = self.data[q].split('\n')
-                # delete any blank linesin fullText (should only happen on the last question)
+                # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
                 # convert Markdown formatting to html formatting before escaping html
                 # bold
@@ -644,6 +644,8 @@ class makeQti():
             data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden tabs before new lines
             data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
+            # get rid of hidden spaces and tabsbefore lines
+            data = re.sub('^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
             # combine multiple new lines into just the needed two
             data = re.sub('\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
             self.data=data.split('\n\n')

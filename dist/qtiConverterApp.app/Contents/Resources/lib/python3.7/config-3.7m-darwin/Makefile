@@ -28,17 +28,17 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 
 # === Variables set by configure
 VERSION=	3.7
-srcdir=		.
+srcdir=		/Users/distiller/miniconda3/conda-bld/python_1542132358095/work
+VPATH=		/Users/distiller/miniconda3/conda-bld/python_1542132358095/work
+abs_srcdir=	/Users/distiller/miniconda3/conda-bld/python_1542132358095/work
+abs_builddir=	/Users/distiller/miniconda3/conda-bld/python_1542132358095/work/build-static
 
-abs_srcdir=	/private/tmp/python-20181106-38551-1gm2uxc/Python-3.7.1
-abs_builddir=	/private/tmp/python-20181106-38551-1gm2uxc/Python-3.7.1
 
-
-CC=		clang
-CXX=		clang++
+CC=		x86_64-apple-darwin13.4.0-clang
+CXX=		x86_64-apple-darwin13.4.0-clang++
 MAINCC=		$(CC)
 LINKCC=		$(PURIFY) $(MAINCC)
-AR=		ar
+AR=		x86_64-apple-darwin13.4.0-ar
 READELF=	:
 SOABI=		cpython-37m-darwin
 LDVERSION=	$(VERSION)$(ABIFLAGS)
@@ -47,12 +47,12 @@ GITTAG=
 GITBRANCH=	
 PGO_PROF_GEN_FLAG=-fprofile-instr-generate
 PGO_PROF_USE_FLAG=-fprofile-instr-use=code.profclangd
-LLVM_PROF_MERGER=/usr/bin/xcrun llvm-profdata merge -output=code.profclangd *.profclangr
+LLVM_PROF_MERGER=/Users/distiller/miniconda3/conda-bld/python_1542132358095/_build_env/bin/llvm-profdata merge -output=code.profclangd *.profclangr
 LLVM_PROF_FILE=LLVM_PROFILE_FILE="code-%p.profclangr"
 LLVM_PROF_ERR=no
-DTRACE=         /usr/sbin/dtrace
+DTRACE=         
 DFLAGS=         
-DTRACE_HEADERS= Include/pydtrace_probes.h
+DTRACE_HEADERS= 
 DTRACE_OBJS=    
 
 GNULD=		no
@@ -73,21 +73,21 @@ INSTALL_DATA=	${INSTALL} -m 644
 # Also, making them read-only seems to be a good idea...
 INSTALL_SHARED= ${INSTALL} -m 555
 
-MKDIR_P=	./install-sh -c -d
+MKDIR_P=	/Users/distiller/miniconda3/conda-bld/python_1542132358095/work/install-sh -c -d
 
 MAKESETUP=      $(srcdir)/Modules/makesetup
 
 # Compiler options
-OPT=		-DNDEBUG -g -fwrapv -O3 -Wall
-BASECFLAGS=	 -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic
-BASECPPFLAGS=	
-CONFIGURE_CFLAGS=	
+OPT=		-DNDEBUG -fwrapv -O2 -Wall
+BASECFLAGS=	 -fno-strict-aliasing -Wsign-compare -Wunreachable-code
+BASECPPFLAGS=	-IObjects -IInclude -IPython
+CONFIGURE_CFLAGS=	-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -march=core2 -mtune=haswell -mssse3 -ftree-vectorize -fPIC -fPIE -fstack-protector-strong -O2 -pipe  -fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} -fdebug-prefix-map=${PREFIX}=/usr/local/src/conda-prefix   -Wl,-export_dynamic -g
 # CFLAGS_NODIST is used for building the interpreter and stdlib C extensions.
 # Use it when a compiler flag should _not_ be part of the distutils CFLAGS
 # once Python is installed (Issue #21121).
-CONFIGURE_CFLAGS_NODIST= -std=c99 -Wextra -Wno-unused-result -Wno-unused-parameter -Wno-missing-field-initializers -Wstrict-prototypes -Werror=implicit-function-declaration
-CONFIGURE_CPPFLAGS=	
-CONFIGURE_LDFLAGS=	
+CONFIGURE_CFLAGS_NODIST= -std=c99 -Werror=implicit-function-declaration
+CONFIGURE_CPPFLAGS=	-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -D_FORTIFY_SOURCE=2 -mmacosx-version-min=10.9 -I/Users/jacksonbe3/miniconda3/include
+CONFIGURE_LDFLAGS=	-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -Wl,-pie -Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs -Wl,-rpath,/Users/jacksonbe3/miniconda3/lib -L/Users/jacksonbe3/miniconda3/lib  -Wl,-export_dynamic -g
 # Avoid assigning CFLAGS, LDFLAGS, etc. so users can use them on the
 # command line to append to these values without stomping the pre-set
 # values.
@@ -102,10 +102,10 @@ NO_AS_NEEDED=
 LDLAST=		
 SGI_ABI=	@SGI_ABI@
 CCSHARED=	
-LINKFORSHARED=	-Wl,-stack_size,1000000  -framework CoreFoundation $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)
+LINKFORSHARED=	-Wl,-stack_size,1000000  -framework CoreFoundation
 ARFLAGS=	rcs
 # Extra C flags added for building the interpreter object files.
-CFLAGSFORSHARED=$(CCSHARED)
+CFLAGSFORSHARED=
 # C flags used for building the interpreter object files
 PY_STDMODULE_CFLAGS= $(PY_CFLAGS) $(PY_CFLAGS_NODIST) $(PY_CPPFLAGS) $(CFLAGSFORSHARED)
 PY_CORE_CFLAGS=	$(PY_STDMODULE_CFLAGS) -DPy_BUILD_CORE
@@ -121,13 +121,13 @@ MULTIARCH=	darwin
 MULTIARCH_CPPFLAGS = -DMULTIARCH=\"darwin\"
 
 # Install prefix for architecture-independent files
-prefix=		/usr/local/opt/python/Frameworks/Python.framework/Versions/3.7
+prefix=		/Users/jacksonbe3/miniconda3
 
 # Install prefix for architecture-dependent files
 exec_prefix=	${prefix}
 
 # Install prefix for data files
-datarootdir=    /usr/local/opt/python/share
+datarootdir=    ${prefix}/share
 
 # Expanded directories
 BINDIR=		${exec_prefix}/bin
@@ -158,14 +158,14 @@ BUILDEXE=	.exe
 
 # Short name and location for Mac OS X Python framework
 UNIVERSALSDK=
-PYTHONFRAMEWORK=	Python
-PYTHONFRAMEWORKDIR=	Python.framework
-PYTHONFRAMEWORKPREFIX=	/usr/local/opt/python/Frameworks
-PYTHONFRAMEWORKINSTALLDIR= /usr/local/opt/python/Frameworks/Python.framework
+PYTHONFRAMEWORK=	
+PYTHONFRAMEWORKDIR=	no-framework
+PYTHONFRAMEWORKPREFIX=	
+PYTHONFRAMEWORKINSTALLDIR= 
 # Deployment target selected during configure, to be checked
 # by distutils. The export statement is needed to ensure that the
 # deployment target is active during build.
-MACOSX_DEPLOYMENT_TARGET=10.12
+MACOSX_DEPLOYMENT_TARGET=10.9
 export MACOSX_DEPLOYMENT_TARGET
 
 # Option to install to strip binaries
@@ -178,15 +178,15 @@ LIPO_32BIT_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python-20181106-38551-1gm2uxc/Python-3.7.1
+RUNSHARED=       
 
 # ensurepip options
 ENSUREPIP=      no
 
 # OpenSSL options for setup.py so sysconfig can pick up AC_SUBST() vars.
-OPENSSL_INCLUDES=-I/usr/local/opt/openssl/include
+OPENSSL_INCLUDES=-I/Users/jacksonbe3/miniconda3/include
 OPENSSL_LIBS=-lssl -lcrypto
-OPENSSL_LDFLAGS=-L/usr/local/opt/openssl/lib
+OPENSSL_LDFLAGS=-L/Users/jacksonbe3/miniconda3/lib
 
 # Modes for directories, executables and data files created by the
 # install process.  Default to user-only-writable for all file types.
@@ -195,7 +195,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--prefix=/usr/local/opt/python' '--enable-ipv6' '--datarootdir=/usr/local/opt/python/share' '--datadir=/usr/local/opt/python/share' '--enable-framework=/usr/local/opt/python/Frameworks' '--enable-loadable-sqlite-extensions' '--without-ensurepip' '--with-dtrace' '--with-openssl=/usr/local/opt/openssl' '--without-gcc' 'MACOSX_DEPLOYMENT_TARGET=10.12' 'CC=clang' 'PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/10.12'
+CONFIG_ARGS=	 '--prefix=/Users/jacksonbe3/miniconda3' '--build=x86_64-apple-darwin13.4.0' '--host=x86_64-apple-darwin13.4.0' '--enable-ipv6' '--with-ensurepip=no' '--with-computed-gotos' '--with-system-ffi' '--enable-loadable-sqlite-extensions' '--with-tcltk-includes=-I/Users/jacksonbe3/miniconda3/include' '--with-tcltk-libs=-L/Users/jacksonbe3/miniconda3/lib -ltcl8.6 -ltk8.6' '--enable-optimizations' '--with-lto' '-oldincludedir=/Users/distiller/miniconda3/conda-bld/python_1542132358095/_build_env/x86_64-apple-darwin13.4.0/sysroot/usr/include' '--disable-shared' 'build_alias=x86_64-apple-darwin13.4.0' 'host_alias=x86_64-apple-darwin13.4.0' 'CC=x86_64-apple-darwin13.4.0-clang' 'CFLAGS=-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -march=core2 -mtune=haswell -mssse3 -ftree-vectorize -fPIC -fPIE -fstack-protector-strong -O2 -pipe  -fdebug-prefix-map=${SRC_DIR}=/usr/local/src/conda/${PKG_NAME}-${PKG_VERSION} -fdebug-prefix-map=${PREFIX}=/usr/local/src/conda-prefix ' 'LDFLAGS=-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -Wl,-pie -Wl,-headerpad_max_install_names -Wl,-dead_strip_dylibs -Wl,-rpath,/Users/jacksonbe3/miniconda3/lib -L/Users/jacksonbe3/miniconda3/lib' 'CPPFLAGS=-isysroot /Applications/Xcode-9.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk -D_FORTIFY_SOURCE=2 -mmacosx-version-min=10.9 -I/Users/jacksonbe3/miniconda3/include' 'PKG_CONFIG_PATH=/Users/jacksonbe3/miniconda3/lib/pkgconfig'
 
 
 # Subdirectories with code
@@ -212,8 +212,8 @@ DIST=		$(DISTFILES) $(DISTDIRS)
 
 
 LIBRARY=	libpython$(VERSION)$(ABIFLAGS).a
-LDLIBRARY=      $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)
-BLDLIBRARY=     
+LDLIBRARY=      libpython$(VERSION)$(ABIFLAGS).a
+BLDLIBRARY=     $(LDLIBRARY)
 PY3LIBRARY=     
 DLLLIBRARY=	
 LDLIBRARYDIR=   
@@ -235,16 +235,17 @@ LIBOBJS=
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
 
-PYTHON_FOR_REGEN=python
-UPDATE_FILE=python $(srcdir)/Tools/scripts/update_file.py
+PYTHON_FOR_REGEN=python3
+UPDATE_FILE=python3 $(srcdir)/Tools/scripts/update_file.py
+PY_BUILD_ENVIRON=
 PYTHON_FOR_BUILD=./$(BUILDPYTHON) -E
-_PYTHON_HOST_PLATFORM=
-BUILD_GNU_TYPE=	x86_64-apple-darwin16.7.0
-HOST_GNU_TYPE=	x86_64-apple-darwin16.7.0
+_PYTHON_HOST_PLATFORM=darwin
+BUILD_GNU_TYPE=	x86_64-apple-darwin13.4.0
+HOST_GNU_TYPE=	x86_64-apple-darwin13.4.0
 
 # Tcl and Tk config info from --with-tcltk-includes and -libs options
-TCLTK_INCLUDES=	
-TCLTK_LIBS=	
+TCLTK_INCLUDES=	-I/Users/jacksonbe3/miniconda3/include
+TCLTK_LIBS=	-L/Users/jacksonbe3/miniconda3/lib -ltcl8.6 -ltk8.6
 
 # The task to run while instrumented when building the profile-opt target.
 # We exclude unittests with -x that take a rediculious amount of time to
@@ -291,7 +292,7 @@ IO_OBJS=	\
 
 ##########################################################################
 
-LIBFFI_INCLUDEDIR=	
+LIBFFI_INCLUDEDIR=	/Users/jacksonbe3/miniconda3/include
 
 ##########################################################################
 # Parser
@@ -461,7 +462,7 @@ DTRACE_DEPS = \
 # Rules
 
 # Default target
-all:		build_all
+all:		profile-opt
 build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks \
 		Programs/_testembed python-config
 
@@ -507,7 +508,7 @@ profile-run-stamp:
 	touch $@
 
 build_all_generate_profile:
-	$(MAKE) all CFLAGS_NODIST="$(CFLAGS) $(PGO_PROF_GEN_FLAG)" LDFLAGS="$(LDFLAGS) $(PGO_PROF_GEN_FLAG)" LIBS="$(LIBS)"
+	$(MAKE) build_all CFLAGS_NODIST="$(CFLAGS) $(PGO_PROF_GEN_FLAG)" LDFLAGS="$(LDFLAGS) $(PGO_PROF_GEN_FLAG)" LIBS="$(LIBS)"
 
 run_profile_task:
 	@ # FIXME: can't run for a cross build
@@ -521,14 +522,14 @@ build_all_merge_profile:
 profile-opt: profile-run-stamp
 	@echo "Rebuilding with profile guided optimizations:"
 	-rm -f profile-clean-stamp
-	$(MAKE) all CFLAGS_NODIST="$(CFLAGS) $(PGO_PROF_USE_FLAG)" LDFLAGS="$(LDFLAGS)"
+	$(MAKE) build_all CFLAGS_NODIST="$(CFLAGS) $(PGO_PROF_USE_FLAG)" LDFLAGS="$(LDFLAGS)"
 
 # Compile and run with gcov
 .PHONY=coverage coverage-lcov coverage-report
 coverage:
 	@echo "Building with support for coverage checking:"
 	$(MAKE) clean profile-removal
-	$(MAKE) all CFLAGS="$(CFLAGS) -O0 -pg -fprofile-arcs -ftest-coverage" LIBS="$(LIBS) -lgcov"
+	$(MAKE) build_all CFLAGS="$(CFLAGS) -O0 -pg -fprofile-arcs -ftest-coverage" LIBS="$(LIBS) -lgcov"
 
 coverage-lcov:
 	@echo "Creating Coverage HTML report with LCOV:"
@@ -581,7 +582,7 @@ $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
 	$(LINKCC) $(PY_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
 
 platform: $(BUILDPYTHON) pybuilddir.txt
-	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform
+	$(RUNSHARED) $(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform
 
 # Create build directory and generate the sysconfig build-time data there.
 # pybuilddir.txt contains the name of the build dir and is used for
@@ -592,7 +593,7 @@ platform: $(BUILDPYTHON) pybuilddir.txt
 # or removed in case of failure.
 pybuilddir.txt: $(BUILDPYTHON)
 	@echo "none" > ./pybuilddir.txt
-	$(RUNSHARED) $(PYTHON_FOR_BUILD) -S -m sysconfig --generate-posix-vars ;\
+	$(RUNSHARED) $(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) -S -m sysconfig --generate-posix-vars ;\
 	if test $$? -ne 0 ; then \
 		echo "generate-posix-vars failed" ; \
 		rm -f ./pybuilddir.txt ; \
@@ -623,7 +624,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
 		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build"; \
 	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
 		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
-		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
+		$(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
 
 
 # Build static library
@@ -1061,7 +1062,7 @@ TESTTIMEOUT=	1200
 
 # Run a basic set of regression tests.
 # This excludes some tests that are particularly resource-intensive.
-test:		all platform
+test:		build_all platform
 		$(TESTRUNNER) $(TESTOPTS)
 
 # Run the full test suite twice - once without .pyc files, and once with.
@@ -1071,7 +1072,7 @@ test:		all platform
 # the bytecode read from a .pyc file had the bug, sometimes the directly
 # generated bytecode.  This is sometimes a very shy bug needing a lot of
 # sample data.
-testall:	all platform
+testall:	build_all platform
 		-find $(srcdir)/Lib -name '*.py[co]' -print | xargs rm -f
 		$(TESTPYTHON) -E $(srcdir)/Lib/compileall.py
 		-find $(srcdir)/Lib -name '*.py[co]' -print | xargs rm -f
@@ -1080,7 +1081,7 @@ testall:	all platform
 
 # Run the test suite for both architectures in a Universal build on OSX.
 # Must be run on an Intel box.
-testuniversal:	all platform
+testuniversal:	build_all platform
 		@if [ `arch` != 'i386' ]; then \
 			echo "This can only be used on OSX/i386" ;\
 			exit 1 ;\
@@ -1106,7 +1107,7 @@ QUICKTESTOPTS=	$(TESTOPTS) -x test_subprocess test_io test_lib2to3 \
 		test_multiprocessing_forkserver \
 		test_mailbox test_socket test_poll \
 		test_select test_zipfile test_concurrent_futures
-quicktest:	all platform
+quicktest:	build_all platform
 		$(TESTRUNNER) $(QUICKTESTOPTS)
 
 # SSL tests
@@ -1117,13 +1118,13 @@ multisslcompile: build_all
 multissltest: build_all
 	$(RUNSHARED) ./$(BUILDPYTHON) Tools/ssl/multissltests.py
 
-install: frameworkinstallstructure commoninstall bininstall maninstall frameworkinstallmaclib frameworkinstallapps frameworkinstallunixtools
+install:  commoninstall bininstall maninstall 
 	if test "x$(ENSUREPIP)" != "xno"  ; then \
 		case $(ENSUREPIP) in \
 			upgrade) ensurepip="--upgrade" ;; \
 			install|*) ensurepip="" ;; \
 		esac; \
-		$(RUNSHARED) $(PYTHON_FOR_BUILD) -m ensurepip \
+		$(RUNSHARED) $(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) -m ensurepip \
 			$$ensurepip --root=$(DESTDIR)/ ; \
 	fi
 
@@ -1133,14 +1134,14 @@ altinstall: commoninstall
 			upgrade) ensurepip="--altinstall --upgrade" ;; \
 			install|*) ensurepip="--altinstall" ;; \
 		esac; \
-		$(RUNSHARED) $(PYTHON_FOR_BUILD) -m ensurepip \
+		$(RUNSHARED) $(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) -m ensurepip \
 			$$ensurepip --root=$(DESTDIR)/ ; \
 	fi
 
-commoninstall:  check-clean-src frameworkinstallstructure  \
+commoninstall:  check-clean-src  \
 		altbininstall libinstall inclinstall libainstall \
 		sharedinstall oldsharedinstall altmaninstall \
-		frameworkinstallmaclib frameworkinstallapps frameworkaltinstallunixtools
+		
 
 # Install shared libraries enabled by Setup
 DESTDIRS=	$(exec_prefix) $(LIBDIR) $(BINLIBDEST) $(DESTSHARED)
@@ -1165,7 +1166,7 @@ $(DESTSHARED):
 
 # Install the interpreter with $(VERSION) affixed
 # This goes into $(exec_prefix)
-altbininstall: $(BUILDPYTHON) frameworkpythonw
+altbininstall: $(BUILDPYTHON) 
 	@for i in $(BINDIR) $(LIBDIR); \
 	do \
 		if test ! -d $(DESTDIR)$$i; then \
@@ -1467,7 +1468,7 @@ LIBPL=		$(prefix)/lib/python3.7/config-$(VERSION)$(ABIFLAGS)-darwin
 # pkgconfig directory
 LIBPC=		$(LIBDIR)/pkgconfig
 
-libainstall:	all python-config
+libainstall:	build_all python-config
 	@for i in $(LIBDIR) $(LIBPL) $(LIBPC); \
 	do \
 		if test ! -d $(DESTDIR)$$i; then \
@@ -1517,7 +1518,7 @@ libainstall:	all python-config
 # Install the dynamically loadable modules
 # This goes into $(exec_prefix)
 sharedinstall: sharedmods
-	$(RUNSHARED) $(PYTHON_FOR_BUILD) $(srcdir)/setup.py install \
+	$(RUNSHARED) $(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) $(srcdir)/setup.py install \
 	   	--prefix=$(prefix) \
 		--install-scripts=$(BINDIR) \
 		--install-platlib=$(DESTSHARED) \
@@ -1601,7 +1602,7 @@ frameworkinstallextras:
 # This installs a few of the useful scripts in Tools/scripts
 scriptsinstall:
 	SRCDIR=$(srcdir) $(RUNSHARED) \
-	$(PYTHON_FOR_BUILD) $(srcdir)/Tools/scripts/setup.py install \
+	$(PY_BUILD_ENVIRON) $(PYTHON_FOR_BUILD) $(srcdir)/Tools/scripts/setup.py install \
 	--prefix=$(prefix) \
 	--install-scripts=$(BINDIR) \
 	--root=$(DESTDIR)/
@@ -1730,7 +1731,7 @@ distclean: clobber
 				     -exec rm -f {} ';'
 
 # Check that all symbols exported by libpython start with "Py" or "_Py"
-smelly: all
+smelly: build_all
 	$(RUNSHARED) ./$(BUILDPYTHON) Tools/scripts/smelly.py
 
 # Find files with funny names
@@ -1765,7 +1766,7 @@ funny:
 		-o -print
 
 # Perform some verification checks on any modified files.
-patchcheck: all
+patchcheck: build_all
 	$(RUNSHARED) ./$(BUILDPYTHON) $(srcdir)/Tools/scripts/patchcheck.py
 
 # Dependencies
