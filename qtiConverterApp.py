@@ -24,7 +24,7 @@ Any associated images must be saved as separate files (jpg or png) in the same f
 Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
 
 Tested on macOS 10.12.6 and 10.13.6
-Last edited 2018.10.23
+Last edited 2019.02.20
 
 Written by Brandon E. Jackson, Ph.D.
 brandon.e.jackson@gmail.com
@@ -57,17 +57,29 @@ def indent(elem, level=0):
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
 
+def errorNoImage(q):
+    applescript = """
+    display dialog "No image was found for the {}th question in the list. Check the name in the document and make sure the file is in the correct folder."
+    """.format(str(q))
+    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
 
 def errorDisplay(q):
     applescript = """
     display dialog "There seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
-    """.format(str(q+1))
+    """.format(str(q))
+    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    
+def logDisplay():
+    applescript = """
+    display dialog "
+    "
+    """.format()
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
 
 
 class makeQti():
         def __init__(self, ifile, sep):
-            ifile = ifile.replace('\ ', ' ')
+            ifile = ifile.replace(r'\ ', ' ')
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
@@ -121,6 +133,8 @@ class makeQti():
             self.loadBank()
             # parse the questions in a loop
             for q in range(len(self.data)):
+                # parse the question based on type
+                self.qNumber= q+1
                 self.imagePath = ''
                 # parse the questions and answers based on new lines  
                 # self.fullText is a list, each item is a line from the question in the text file
@@ -132,7 +146,7 @@ class makeQti():
                 # replace characters with html appropriate characters
                 self.fullText = [html.escape(x) for x in self.fullText]
                 self.questionType = self.fullText[0]
-                # if not question type is indicated, assume multiple choice
+                # if no question type is indicated, assume multiple choice
                 if self.questionType not in self.typeList:
                     self.questionType = 'MC'
                 # if question type was indicated, delete that line for now
@@ -148,14 +162,16 @@ class makeQti():
                     self.fullText = self.fullText[1:]
                     # copy the image
                     imgPath = self.fpath / self.imagePath
+                    # add error call if imagePath doesn't exist
+                    if not imgPath.exists():
+                        errorNoImage(self.qNumber)
                     shutil.copy(str(imgPath), str(self.newDirPath))
                     # add the info to the manifest file
                     self.addResMan(self.imagePath)
                 # self.fullText is a list, now the first item is the question, rest are the answers
                 else:
                     self.imagePath = ''
-                # parse the question based on type
-                self.qNumber= q
+              
                 # get the question type and parse it
                 try:
                     self.typeChooser()
@@ -194,6 +210,15 @@ class makeQti():
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
             #remove the now compressed folder
             shutil.rmtree(str(self.newDirPath))
+            
+            """
+            generate a report that shows:
+                the number of questions of each type
+                the number of images (and a list of those images?)
+                the number (and numbers of) of questions with no correct answer indicated
+                if any MC questions had more than one correct answer and should be changed to MA
+                
+            """
 
 
             
@@ -205,15 +230,15 @@ class makeQti():
                 self.parseMC()
             if self.questionType == 'MA': # multiple choice with more than one answer
                 self.parseMC()
-            if self.questionType == 'SA':
+            if self.questionType == 'SA': # single fill in the blank
                 self.parseSA()
-            if self.questionType == 'ES':
+            if self.questionType == 'ES': # essay
                 self.parseES()
-            if self.questionType == 'MB':
+            if self.questionType == 'MB': # multiple fill in the blank
                 self.parseMB()
-            if self.questionType == 'MD':
+            if self.questionType == 'MD': # multiple drop downs
                 self.parseMD()
-            if self.questionType == 'MT':
+            if self.questionType == 'MT': # matching
                 self.parseMT()
             # add other question types here
         
@@ -318,6 +343,16 @@ class makeQti():
                                           
             
         def parseMD(self):
+            '''
+            answer format is 
+            MD  
+            1. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2]. Notice the square brackets around the indicators (no spaces!).  
+            *drop1: correct answer for 1  
+            drop1: incorrect answer for 1  
+            drop1: incorrect answer for 1  
+            drop2: incorrect answer for 2  
+            *drop2: correct answer for 2 
+            '''
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
             # make an identifier for the question
@@ -641,14 +676,14 @@ class makeQti():
             with self.ifile.open(mode = 'r', encoding = "utf-8") as f:
                 data=f.read()
             # get rid of hidden spaces on new lines
-            data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'\ +\n', r'\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden tabs before new lines
-            data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'\t+\n', r'\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden spaces and tabsbefore lines
-            data = re.sub('^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
             # combine multiple new lines into just the needed two
-            data = re.sub('\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
-            self.data=data.split('\n\n')
+            data = re.sub(r'\n{3,100}', r'\n\n', data.strip(), flags=re.MULTILINE)
+            self.data=data.split(r'\n\n')
         
         def addResMan(self, img):    
             out1 = '''<resource identifier="{}" type="webcontent" href="{}">
