@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["/Users/jacksonbe3/Box/courses/activeCourses/BIOL120_S19/exams/exam2/exam2_MC.txt"]
+            "args": ["/Users/jacksonbe3/Desktop/ludwar/exam_3_questions.txt"]
         },
         {
             "name": "Python: Remote Attach",
