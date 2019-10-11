@@ -22,7 +22,7 @@
 	<key>CFBundleExecutable</key>
 	<string>qtiConverterApp</string>
 	<key>CFBundleIconFile</key>
-	<string>PythonApplet.icns</string>
+	<string>LargeIconQTI.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.pythonmac.unspecified.qtiConverterApp</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -94,7 +94,7 @@
 			<key>template</key>
 			<string>app</string>
 			<key>version</key>
-			<string>0.18</string>
+			<string>0.19</string>
 		</dict>
 	</dict>
 </dict>
