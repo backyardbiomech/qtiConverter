@@ -1,0 +1,12 @@
+4.  The leaf color of a certain plant is controlled by one gene. For that gene, the allele G = green and
+g = orange. You have a plant with green leaves but do not know whether that plant’s genotype is GG or Gg. Which of the following would help you determine the plant’s genotype?
+a. answer A
+*b. answer B
+c. answer C
+d. answer D
+
+5) Another question with **multiple** types of **bold** text 
+and multiple ^superscript^ bits of ^text^
+*A) answer A
+B) answer B
+C) answer C

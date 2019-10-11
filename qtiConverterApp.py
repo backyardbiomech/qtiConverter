@@ -141,8 +141,6 @@ class makeQti():
                 self.fullText = self.data[q].split('\n')
                 # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
-                # convert Markdown formatting to html formatting before escaping html
-                # bold
                 # replace characters with html appropriate characters
                 self.fullText = [html.escape(x) for x in self.fullText]
                 self.questionType = self.fullText[0]
@@ -245,13 +243,13 @@ class makeQti():
         def processFormatting(self, text):
             # process markdown characters
             # process bold
-            text = re.sub('(\*{2}([\+\-a-zA-Z0-9\s]+)\*{2})', '<strong>\\2</strong>', text)
+            text = re.sub(r'(\*{2}([\+\-a-zA-Z0-9\s]+)\*{2})', '<strong>\\2</strong>', text)
             # process italics
-            text = re.sub('(\*{1}([\+\-a-zA-Z0-9\s]+)\*{1})', '<em>\\2</em>', text)
+            text = re.sub(r'(\*{1}([\+\-a-zA-Z0-9\s]+)\*{1})', '<em>\\2</em>', text)
             # process superscript
-            text = re.sub('(\^{1}([\+\-a-zA-Z0-9\s]+)\^{1})', '<sup>\\2</sup>', text)
+            text = re.sub(r'(\^{1}([\+\-a-zA-Z0-9\s]+)\^{1})', '<sup>\\2</sup>', text)
             # process subscript
-            text = re.sub('(\~{1}([\+\-a-zA-Z0-9\s]+)\~{1})', '<sub>\\2</sub>', text)
+            text = re.sub(r'(\~{1}([\+\-a-zA-Z0-9\s]+)\~{1})', '<sub>\\2</sub>', text)
             # escape html characters
             text = html.escape(text)
             # return
@@ -555,18 +553,33 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse
                       
         def parseMC(self):
-            quest = self.fullText[0].split(self.sep, 1)[1].strip()
-            quest = self.processFormatting(quest)
+            #quest = self.fullText[0].split(self.sep, 1)[1].strip()
+            # make the regex formula
+            qreg = re.compile(r'\d(\.|\))\s{0,4}([\S\s]+?)(^\**[A-Za-z]{1}(\.|\)))', re.M)
+            # match in the full question
+            fulltext = '\n'.join(self.fullText)
+            qmatch = qreg.search(fulltext)
+            # get the text of the question
+            quest = qmatch.group(2)
+            #get the end of the question
+            qend = qmatch.span(2)[1]
+            atext = fulltext[qend:]
+            # make a list of answers
+            # match regex based on newline to newline, with . or ) separator after letter or number
+            areg = re.compile(r'(^(\*)*[A-Za-z]{1}(\.|\)))\s{0,4}([\S\s]+?)(^|$)', re.M)
+            amatch = re.finditer(areg, atext)
             answers = []
             corr = []
-            # make a list of answers
-            for a in range(1,len(self.fullText)):
-                ans = self.fullText[a].strip()
-                # get the correct answer
-                if ans[0] == '*':
+            a = 1
+            for mat in amatch:
+                if mat.group(2) is not None:
                     corr.append(str(a))
-                answer = self.processFormatting(ans.split(self.sep, 1)[1][1:])
+                print(mat.group(4))
+                answer = self.processFormatting(mat.group(4))
+                print(answer)
                 answers.append(answer)
+                a+=1
+            quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
