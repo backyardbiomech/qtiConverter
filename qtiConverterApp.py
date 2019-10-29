@@ -83,13 +83,15 @@ class makeQti():
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
-            self.fpath = self.ifile.parent # self.ifile.rsplit('/',1)[0] + '/'
+            self.fpath = self.ifile.parent
             self.sep = sep
             # make the outputfile and question bank name based on the input file
             self.bankName = str(self.ifile.name)[0:-4]
             # make a new directory within the current to contain the new files
             self.newDirPath = self.fpath / (self.bankName + '_export')
             self.newDirPath.mkdir(exist_ok = True)
+            # make a new html file for a preview, inside the parent folder, but outside the export folder
+            self.preview = self.fpath / (self.bankName + '_preview.html')
             # self.newDirPath will contain images, imsmanifest.xml, and a folder that contains the main xml file
             # make that folder
             self.newXmlPath = self.newDirPath / self.bankName
@@ -128,11 +130,12 @@ class makeQti():
                 f.write(self.header + '\n')
             with self.manFile.open('w') as f:
                 f.write(self.manHeader + '\n')
-            
+
             # open the input file and read in the data to self.data
             self.loadBank()
             # parse the questions in a loop
             for q in range(len(self.data)):
+                self.htmlText=''
                 # parse the question based on type
                 self.qNumber= q+1
                 self.imagePath = ''
@@ -178,6 +181,8 @@ class makeQti():
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
+                with self.preview.open(mode = 'a', encoding = "utf-8") as f:
+                	f.write(self.htmlText + '\n')
             with self.outFile.open('a') as f:
                 f.write(self.footer)
             with self.manFile.open('a') as f:
@@ -426,6 +431,20 @@ class makeQti():
                                       </item>'''
             # write it
             self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            answers = []
+            for dropName, resp in dropAns.items():
+                ans = '{}: '.format(dropName)
+                corrid = resp['corr']
+                for respID, respText in resp.items():
+                    if respID == corrid:
+                        ans += 'CORRECT: {}, '.format(respText)
+                    else:
+                        ans += '{}, '.format(respText)
+                answers.append(ans)
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
+            
                 
         def parseMB(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
@@ -487,6 +506,12 @@ class makeQti():
             questionTextResponse += '''</resprocessing>
                         </item>
                         '''
+            #reformat answers to make html preview
+            answers = []
+            for blank, ans in blankCorr.items():
+                answers.append('{}: {}'.format(blank, ans))
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             self.writeText = questionTextStart + questionTextResponse 
             
         def parseES(self):
@@ -515,6 +540,10 @@ class makeQti():
                         </item>
                         '''
             self.writeText = questionTextStart + questionTextResponse
+            #format for html preview
+            corr = []
+            answers = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
@@ -550,6 +579,10 @@ class makeQti():
                             </resprocessing>
                         </item>
                         '''
+            #reformat answers to make html preview
+            answers = corr
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             self.writeText = questionTextStart + questionTextResponse
                       
         def parseMC(self):
@@ -586,6 +619,29 @@ class makeQti():
             questionTextStart = self.questionText(quest, itid)
             questionTextResponse = self.questionTextResponses(answers, corr)
             self.writeText = questionTextStart + questionTextResponse
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
+            
+        def questionTextHtml(self, itid, quest, answers, corr):
+            if len(self.imagePath) > 0:
+                quest = '<img src="{}" width="314" /><p>{}</>'.format(self.imagePath, quest)
+            out = '''
+                <ol type="1">
+                <li>{}: {}
+                <ol type="1">
+                '''.format(itid, quest)
+            for i in range(len(answers)):
+                ans = answers[i]
+                if str(i+1) in corr:
+                    ans = 'CORRECT: ' + ans
+                out += '''
+                <li>{}</li>
+                '''.format(ans)
+            out += '''
+                </ol></li>
+                </ol>
+                '''
+            return out
+            
             
         def questionTextResponses(self, answers, corr):
             # set some strings based on question type
