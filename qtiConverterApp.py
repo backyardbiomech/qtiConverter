@@ -130,7 +130,8 @@ class makeQti():
                 f.write(self.header + '\n')
             with self.manFile.open('w') as f:
                 f.write(self.manHeader + '\n')
-
+            with self.preview.open('w') as f:
+                f.write('<p>This is just a preview!</n>\n')
             # open the input file and read in the data to self.data
             self.loadBank()
             # parse the questions in a loop
@@ -587,7 +588,7 @@ class makeQti():
                       
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
-            # make the regex formula
+            # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
             qreg = re.compile(r'\d(\.|\))\s{0,4}([\S\s]+?)(^\**[A-Za-z]{1}(\.|\)))', re.M)
             # match in the full question
             fulltext = '\n'.join(self.fullText)
@@ -623,11 +624,11 @@ class makeQti():
             
         def questionTextHtml(self, itid, quest, answers, corr):
             if len(self.imagePath) > 0:
-                quest = '<img src="{}" width="314" /><p>{}</>'.format(self.imagePath, quest)
+                quest = '<img src="{}" width="314" /><p>{}</>'.format(self.imagePath, html.unescape(quest))
             out = '''
-                <ol type="1">
+                <ul style="list-style-type:none;">
                 <li>{}: {}
-                <ol type="1">
+                <ol type="A">
                 '''.format(itid, quest)
             for i in range(len(answers)):
                 ans = answers[i]
@@ -635,10 +636,10 @@ class makeQti():
                     ans = 'CORRECT: ' + ans
                 out += '''
                 <li>{}</li>
-                '''.format(ans)
+                '''.format(html.unescape(ans))
             out += '''
                 </ol></li>
-                </ol>
+                </ul>
                 '''
             return out
             
@@ -750,6 +751,8 @@ class makeQti():
             data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden spaces and tabsbefore lines
             data = re.sub('^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
+            # get rid of lines that begin with # as a comment indicator
+            data = re.sub('^#.*$', '', data.strip(), flags=re.MULTILINE)
             # combine multiple new lines into just the needed two
             data = re.sub('\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
             self.data=data.split('\n\n')

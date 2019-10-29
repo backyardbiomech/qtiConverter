@@ -19,9 +19,9 @@ This program will convert a simply formatted text document containing most quest
 
 ## Likely errors
 
-If the application crashes after you drop your file on it, you probably have a formatting issue (it is very picky at this point). If that's the problem, you should get an error dialog that reports which question has the problem. Check for the following:
+If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that's the problem, you should get an error dialog that reports which question has the problem. Check for the following:
 
-+ make sure you have a separator (a period) after every question number and answer letter
++ make sure you have a separator (a period ideally) after every question number and answer letter
 + make sure you don't have new lines within a question text (see below on how to insert them if you need them)
 + If you view this README as a text file (not the html on bitbucket), you will see slashes (\) after question numbers in the sample questions. You SHOULD NOT include those slashes.
 
@@ -42,6 +42,7 @@ If you don't get the format error dialog, and you just get a dialog with a crash
 1. Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, **not** .rtf) encoded in UTF-8.
     + MS Word can "Save As" a .txt file, but make sure when given the option that you select encoding as `Unicode (UTF-8)`, and `End lines with: CR only`. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.
     + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
+    - you may used a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded.
     - one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks.
     - If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
         - `<br>`
@@ -138,6 +139,11 @@ cd ~/Desktop
 ### Samples
 
 This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
+
+\# This is a comment line because it begins with '\#'. 
+\# You can make any notes and they will not become part of the exam in Canvas.
+\# Every new line must begin with a '#\' if you don't want them processed
+
 
 1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, `<br>` This will now be on a new line once you've imported to Canvas. Paste two in a row `<br><br>` to get a blank line inserted.  
 A. incorrect answer text.  
