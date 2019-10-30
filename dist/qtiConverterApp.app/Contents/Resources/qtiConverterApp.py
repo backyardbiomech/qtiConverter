@@ -608,9 +608,9 @@ class makeQti():
             for mat in amatch:
                 if mat.group(2) is not None:
                     corr.append(str(a))
-                print(mat.group(4))
+#                 print(mat.group(4))
                 answer = self.processFormatting(mat.group(4))
-                print(answer)
+                # print(answer)
                 answers.append(answer)
                 a+=1
             quest = self.processFormatting(quest)
@@ -713,7 +713,7 @@ class makeQti():
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0:
-                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" width="314" /&gt;
+                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" style="max-width: 100%; height: 500px" /&gt;
                 &lt;p&gt;{}&lt;/p&gt;
                 '''.format(self.imagePath, quest)
             
@@ -806,13 +806,14 @@ class makeQti():
         
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="import text file to export QTI for Canvas Quiz import",epilog=__doc__)
-    parser.add_argument("ifile",default=None,
+    parser.add_argument("ifile", nargs='+', default=None,
                         help="txt file path and name to process")
     parser.add_argument("--separator", default='.',
                         help="string indicating separator between question/answer number/letter and text, usually '.' or ')'")
     
     args = parser.parse_args()
-    inputFile=args.ifile
-    sep = args.separator
-    doIt = makeQti(inputFile, sep)
-    doIt.run()
+    for iFile in args.ifile:
+#     inputFile=args.ifile
+        sep = args.separator
+        doIt = makeQti(iFile, sep)
+        doIt.run()

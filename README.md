@@ -74,7 +74,7 @@ If you don't get the format error dialog, and you just get a dialog with a crash
     
 ## Running the application
 
-1. The easiest method is to drag your text file containing the questions onto the app.
+1. The easiest method is to drag your text file containing the questions onto the app. You can actually drop multiple text files at once, and it will process each separately.
 
 2. The harder method is to download the actual python script from Bitbucket, and run it from the command line:
 The basic call is
