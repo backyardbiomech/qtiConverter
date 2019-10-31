@@ -140,9 +140,9 @@ cd ~/Desktop
 
 This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
 
-\# This is a comment line because it begins with '\#'. 
-\# You can make any notes and they will not become part of the exam in Canvas.
-\# Every new line must begin with a '#\' if you don't want them processed
+\# This is a comment line because it begins with '\#'.  
+\# You can make any notes and they will not become part of the exam in Canvas.  
+\# Every new line must begin with a '#\' if you don't want them processed  
 
 
 1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, `<br>` This will now be on a new line once you've imported to Canvas. Paste two in a row `<br><br>` to get a blank line inserted.  
