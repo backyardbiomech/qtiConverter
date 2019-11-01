@@ -249,7 +249,7 @@ class makeQti():
                 im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
                 if len(im)==1:
                     self.imagePath = im[0]
-                    self.processImage()
+                    self.processImage(self.imagePath)
                     self.fullText.pop(i)
                     break
                 else:
@@ -264,17 +264,17 @@ class makeQti():
                     self.fullText.pop(i)
                     break
 
-        def processImage(self):
+        def processImage(self, imgpath):
             self.imNum += 1
             # get the full path to the image
-            imgPath = self.fpath / self.imagePath
+            imgPath = self.fpath / imgpath
             # add error call if imagePath doesn't exist
             if not imgPath.exists():
                 errorNoImage(self.qNumber)
             # copy the image file
             shutil.copy(str(imgPath), str(self.newDirPath))
             # add the info to the manifest file
-            self.addResMan(self.imagePath)
+            self.addResMan(imgpath)
 
         def typeChooser(self):
             '''
@@ -709,6 +709,14 @@ class makeQti():
             #loop through answers and add
             respList=[]
             for a in range(len(answers)):
+                # check to see if it's an image
+                im = re.findall(r'^\s*image:\s*(.*)$', answers[a])
+                if len(im)==1:
+                    self.respImagePath = im[0]
+                    self.processImage(self.respImagePath)
+                    answers[a] = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" style="max-width: 100%; height: 500px" /&gt;
+                    '''.format(self.respImagePath)
+
                 #make a string to track which answer is which
                 resp = str(a+1)
                 out1 += ''' <response_label ident="{}">

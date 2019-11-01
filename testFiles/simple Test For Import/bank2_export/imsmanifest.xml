@@ -11,5 +11,8 @@
     <resource href="testimage.png" identifier="pic1" type="webcontent">
       <file href="testimage.png" />
     </resource>
+    <resource href="testimage.png" identifier="pic2" type="webcontent">
+      <file href="testimage.png" />
+    </resource>
   </resources>
 </manifest>

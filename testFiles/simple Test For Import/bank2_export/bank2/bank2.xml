@@ -37,7 +37,8 @@ g = orange. You have a plant with green leaves but do not know whether that plan
               <render_choice>
              <response_label ident="1">
                         <material>
-                          <mattext texttype="text/html">answer A</mattext>
+                          <mattext texttype="text/html">&lt;img src="%24IMS-CC-FILEBASE%24/testimage.png" style="max-width: 100%; height: 500px" /&gt;
+                    </mattext>
                         </material>
                         </response_label>
                          <response_label ident="2">
