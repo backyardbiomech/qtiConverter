@@ -141,13 +141,13 @@ class makeQti():
                 self.imagePath = ''
                 self.htmlText=''
                 # parse the questions and answers based on new lines  
-                # self.fullText is a list, each item is a line from the question in the text file
+                # make self.fullText as a list, each item is a line from the question in the text file
                 self.fullText = self.data[q].split('\n')
                 # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
                 # replace characters with html appropriate characters
                 self.fullText = [html.escape(x) for x in self.fullText]
-                # process the question header, which may contain question type (must be first if present), image link, and number of points
+                # process the question header
                 # sets self.imagePath, self.qPts, self.questionType, and calls self.processImage if needed to copy image to resources dir
                 self.qHeader()
                 # self.questionType = self.fullText[0]

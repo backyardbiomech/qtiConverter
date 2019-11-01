@@ -41,61 +41,62 @@ If you don't get the format error dialog, and you just get a dialog with a crash
 
 1. Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, **not** .rtf) encoded in UTF-8.
     + MS Word can "Save As" a .txt file, but make sure when given the option that you select encoding as `Unicode (UTF-8)`, and `End lines with: CR only`. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.
-    + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for examples:
-    - you may used a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded.
-    - one blank line between questions (hereafter question blocks), no blank lines or new paragraphs within question blocks.
-    - If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
-        - `<br>`
-    - the first line in the block is a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching (not yet functional), SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional) 
-    - the second line in the block refers to any image associated with the question. The line should read `image: imageFileName.jpg`. If no image is connected to the question, do not include this line. The image file of that name should be saved in the same folder as the text document.
-    - the third line (or first if no image or question type indicators are required) is a number followed by separator (period or ")"), followed by a space, followed by the text of the question. **a period is the default separator and is preferred**.
-    - the question text is followed on the next line (no blank line, just the next line) by answers
-        - MC answers begin with a letter followed by the same separator as the question
-        - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
-    - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas). See below for the import process.
-    - **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, ^superscript^, and ~subscript~. This will work in questions **and** in answers.
-        1.  The easiest way is to use MarkDown formatting marks.
-            + Surrounding some word or characters with two asterix, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
-            + One asterix on either side, like `*this*` indicates *italics*
-            + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc^2^
-            + tildes like `H~2~O` will make it subscript (H~2~O). 
-            + The key is to **surround** what you want to format with the marks.
-        2. You may also use standard html tags, where you surround the word or characters you want to format as appropriate:
-            + *italics*: `this <em>word</em>` yields: this *word*
-            + **bold**: `this <strong>word</strong>` yields: this **word**
-            + superscript: `E = mc<sup>2</sup>` yields: E = mc^2^
-            + subscript: `H<sub>2</sub>O` yields: H~2~O
-        3. You may use both styles in the same document
-    
-2. Save the text file containing questions in it's own folder. 
-    + the name of the file will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default containing all of the questions
-    + save any images you want to include as their own files in that same folder. **NOTE FOR IMAGES:** all images will be sized to a "safe" size for display in Canvas (314px wide). You can drag to resize the image once it's inserted in Canvas.
-    + For now, avoid spaces in the name of any of the files (.txt and images). Whatever you name your image files should be what you include on the "image: " line in the text document.
-    
-## Running the application
-
-1. The easiest method is to drag your text file containing the questions onto the app. You can actually drop multiple text files at once, and it will process each separately.
-
-2. The harder method is to download the actual python script from Bitbucket, and run it from the command line:
+    + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for info and examples
+2. Save the text file of questions in its own folder, with all linked image files copied into that same folder.
+    + the name of the **file** will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default, containing all of the questions
+    + save any images you want to include as their own files in that same folder. **NOTE FOR IMAGES:** all images will be sized to the width of the viewing window in Canvas (with a max height of 600 px). You can drag to resize the image once it's inserted in Canvas.
+3. The easiest method (Mac only) to process the file is to drag your text file containing the questions onto the app's icon. You can actually drop multiple text files at once, and it will process each separately.
+4. The harder method is to extract the actual python script from the app, and run it from the command line:
 The basic call is
+
 ```
 qtiConverterApp.py /path/to/text/file.txt
 ```
-changing the path to your text file as needed. You can add `--sep ')'` if you use parentheses after your question numbers and answer letters.
 
-2. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the zip you will import in Canvas, and it *should* include all of your images and questions.
-    
+5. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the zip you will import in Canvas, and it *should* include all of your images and questions.
+
+### Formatting requirements
++ Each question and related information (hereafter *question blocks*) should be separated by at least one blank line. There should be no blank lines within any question.
+    + If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
+        - `<br>`
++ Each question block may begin with up to three lines of header information. The order of the information not matter. 
+    + One header line may be a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching , SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional) 
+    + Another header line may refer to any image to be included before the question text. The line should read `image: imageFileName.jpg`. If no image is connected to the question, simply do not include this line. The image file of that name should be saved in the same folder as the text document.
+        + you may have a subfolder of images, in which case the line should read `image: imageFolder/imageFileName.jpg` (i.e. the path is relative to the text file). 
+        + Only one image may be included with the question text.
+    + The last header line option allows you to assign a default point value to that question. The number of points must be included in parentheses, and you may or may not have any other words in there. E.g., `(2)`, `(2 pts)`, `(2 points)` all work.
+        + This point value will only be applied in the automatically created quiz in Canvas at import, and will be overridden if you simply "link" a question group to a bank.
++ After all of the header information (or no header information) the next line should be a digit follwed by a "." or a ")", followed by the text of the question. 
++ - the question text is followed on the next line (no blank line, just the next line) by answers
+    - MC answers begin with a letter followed by a "." or a ")"
+    - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
+    - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas).
+
+### Other Formatting
++ You may use a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded. 
+- **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, ^superscript^, and ~subscript~. This will work in questions **and** in answers.
+    1.  The easiest way is to use MarkDown formatting marks.
+        + Surrounding some word or characters with two asterix, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
+        + One asterix on either side, like `*this*` indicates *italics*
+        + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc^2^
+        + tildes like `H~2~O` will make it subscript (H~2~O). 
+        + The key is to **surround** what you want to format with the marks, without spaces between the modifiers and modifiees.
+    2. You may also use standard html tags, where you surround the word or characters you want to format as appropriate:
+        + *italics*: `this <em>word</em>` yields: this *word*
+        + **bold**: `this <strong>word</strong>` yields: this **word**
+        + superscript: `E = mc<sup>2</sup>` yields: E = mc^2^
+        + subscript: `H<sub>2</sub>O` yields: H~2~O
+    3. You may use both styles in the same document
+
 ## Canvas Importing and Quiz Making Process
 
-1. In Canvas, go to `Course settings > Import course content`. Select `QTI .zip file`. Choose the zip file from your computer.
+1. After you have processed your text file with this app, and created the export zip folder:
+2. In Canvas, go to `Course settings > Import course content`. Select `QTI .zip file`. Choose the zip file from your computer.
     + You don’t need to select a question bank in Canvas. It will automatically create a new question bank and a quiz with the name you input in the python script.
-    + Note that the default options also mean that it will not overwrite any questions or banks you already have. So you if import multiple times (or different folders with the same name), you will end up with multiple question banks and quizzes with the **same name** in Canvas! This can get very confusing. 
-
-2. Click import and wait for it to finish!  All of the questions will show up in your course test banks (go to quizzes, click the three dots that mean “more options”, and manage question banks).
-
-3. If the quiz made by Canvas during import is all you want, that's it. Edit the quiz to adjust your settings.
-
-4. If you need to "pull" from the question bank, in Canvas, make a new quiz.          
+    + Note that the default options also mean that it will not overwrite any questions or banks you already have. So you if import multiple times (or different folders with the same name), you will end up with multiple question banks and quizzes with the **same name** in Canvas! This can get very confusing. Blame Canvas.
+3. Click import and wait for it to finish!  All of the questions will show up in your course test banks (go to Quizzes, click the three dots that mean “more options”, and manage question banks).
+4. If the quiz made by Canvas during import is all you want, that's it. Edit the quiz to adjust your settings. If you included any point values in the question blocks, they should be applied there. Otherwise, each question is 1 point.
+5. If you need to "pull" from the question bank, in Canvas, make a new quiz.          
     + Adjust its general settings. 
     + Click on the Questions tab. Make a new **question group**. 
     + You can link that group to a question bank, and enter how many questions the quiz should pull from that bank
@@ -106,7 +107,7 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 + If the question types are confusing, try making different sample exam questions in Canvas.
 + Right now, this does not work for numerical, or text box question types.
-+ All questions will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
++ All questions (unless noted in a header) will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
 + If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
@@ -114,9 +115,9 @@ changing the path to your text file as needed. You can add `--sep ')'` if you us
 
 + If there is a formatting error in one of your questions, you should get a dialog box on screen telling you which question has the problem. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question counted from the top has the problem. The most likely problems are:
     + a question type indicator that isn't one of the options
-    + new lines in the question
+    + "new" lines in the question
     + improperly formatted answers
-    + missing separators (usually periods or colons) after question numbers or answer indicators
+    + missing separators (usually periods or colons or right-parenthesis) after question numbers or answer indicators
 + You can drag the app (once you've unzipped the download and moved the app to where ever you want it, like the Desktop) to the Mac Dock so that it is always available to drag and drop a file.
 + One of the most powerful plain text editors on Mac is BBEdit, by BareBones software. You can download and use for free (when the free demo is over, you only lose some very advanced functions. I do all of my coding and writing in the free version). If you make a lot of quizzes, I suggest using BBEdit to edit the text since it is faster and more stable than Word.
     + If you use BBEdit, after installing it, click on the script icon in the menu (looks like a scroll)
@@ -132,8 +133,6 @@ PATH=$PATH:/usr/local/bin
 cd ~/Desktop
 ./qtiConverterApp.py "$BB_DOC_PATH"
 ```
-
-
 
 
 ### Samples
@@ -153,7 +152,7 @@ D. incorrect answer text.
 E. incorrect answer text.  
 
 MA  
-1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggest adding "select all that apply" or similar to the question. All of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers.  
+1\. This is a multiple answer (select all that apply) question. It will show up as checkboxes to the student, which can be hard to see, so I suggest adding "select all that apply" or similar to the question. **All** of the correct answers are marked by a \*. Canvas awards partial credit based on the number of correct answers, and penalizes for incorrectly selected answers.  
 \*A. correct answer text.  
 \*B. another correct answer text.  
 \*C. another correct answer text.  
@@ -162,23 +161,25 @@ E. incorrect answer text.
 
 MC  
 image: imageFileName.jpg  
-1\. Some question text here. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type (but not yet to answers)!  
+1\. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type (but not yet to answers)!  
 \*A. correct answer text.  
 B. incorrect answer text.  
 C. correct answer text.  
 D. incorrect answer text.  
 E. incorrect answer text.
 
+(2pts)  
 SA  
-1\. Fill in a blank \_\_\____ like that one. notice letter followed by period below.  
+1\. This question is assigned 2 points. NOTE that I could have made it (2), or (2 points), or (2 pts), or (2 chickens). The key is to have a number inside parentheses in one of the first three lines in the question block. The SA stands for short answer: Fill in a blank \_\_\____ like that one. notice letter followed by period below.  
 A. correct answer 1  
 B. correct anser too allowing for mispellings
+C. Yet another correct answer
 
 ES  
 1\. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!
 
 MB  
-1\. This is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas. Canvas awards partial credit based on the number of blanks.  
+1\. This is a fill in multiple blanks question. I like using MB questions even if I just have one blank instead of SA questions. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas. Canvas awards partial credit based on the number of blanks.  
 blank1: correct answer for 1, another correct answer for 1  
 blank2: correct answer for 2, another correct answer for 2
 
