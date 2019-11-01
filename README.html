@@ -85,40 +85,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.</p>
 <h2 id="installation-and-basic-usage-mac">Installation and basic usage (Mac)</h2>
 <ol type="1">
-<li><a href="https://bitbucket.org/haliaetus13/qticonverter_dist/get/HEAD.zip"><strong>Click here to download</strong></a> the <code>qtiConverterApp.app</code> folder:
-<ul>
-<li>That will download a zipped folder called something like <code>haliaetus13-qticonverter_dist-1ba8171684b7</code>.</li>
-<li>Inside you will find the app, and a pdf version of this README.</li>
-<li>You may rename the folder, or just move the readme and app out of the folder.</li>
-</ul></li>
-<li>Save the application on the Desktop or somewhere else easily accessible</li>
-<li>Once you’ve created your text file and organized images, just drag your text file onto the icon for the app to run it.</li>
+<li>From the shared Box folder (qtiConverterAppDistribution), download the app.zip file (Mac) and the html README file (which is this). Unzip.</li>
+<li>Move the .app to the Desktop or somewhere else easily accessible. I put it on my desktop, then also drag it to my dock.</li>
+<li>Once you’ve created your text file and organized images, just drag your text file onto the icon for the app to run it. You can actually drop multiple text files at once, and it will process each separately.</li>
+<li>The output will be a zip folder that is named for the text file + “_export”. E.g., if your text file is <code>exam1.txt</code>, the folder will be <code>exam1_export.zip</code>. This is the zip you will import in Canvas, and it <em>should</em> include all of your images and questions.</li>
 </ol>
 <h2 id="installation-and-basic-usage-windows">Installation and basic usage (Windows)</h2>
 <ol type="1">
-<li>Download the <code>WindowsQtiConverterExe</code> folder.</li>
+<li>Download the <code>WindowsQtiConverterExe</code>.</li>
 <li>Save the whole folder somewhere easy to remember.</li>
 <li>Create your quiz txt file and save it. Find the file and right-click on it. Select Open with &gt; Choose another app &gt; More apps &gt; Look for another app on this PC &gt; and then navigate to that downloaded folder and drill in until you can select <code>qtiConverterApp.exe</code></li>
 <li>Note on Windows, the error display dialogue will not work, so you will have to track down any formatting errors.</li>
-</ol>
-<h2 id="likely-errors">Likely errors</h2>
-<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that’s the problem, you should get an error dialog that reports which question has the problem. Check for the following:</p>
-<ul>
-<li>make sure you have a separator (a period ideally) after every question number and answer letter</li>
-<li>make sure you don’t have new lines within a question text (see below on how to insert them if you need them)</li>
-<li>If you view this README as a text file (not the html on bitbucket), you will see slashes () after question numbers in the sample questions. You SHOULD NOT include those slashes.</li>
-</ul>
-<p>If you don’t get the format error dialog, and you just get a dialog with a crash warning, and buttons for “Terminate” and “Console”, then do the following:</p>
-<ol type="1">
-<li>Open a terminal window (cmd-space, type terminal, enter)</li>
-<li>In Finder, right-click on qtiConverterApp.app (the thing you drop your file on to) and select <code>Show package contents</code></li>
-<li>Navigate to <code>Contents &gt; MacOS</code> and open</li>
-<li>Right-click on qtiConverterApp, hold down the <code>alt-option</code> key, and select `Copy qtiConverterApp as Pathname’</li>
-<li>Go to Terminal, enter a single quote, paste, enter another single quote, then add a space</li>
-<li>In Finder, find your text file, right-click, hold down alt, copy as Pathname</li>
-<li>In Terminal, enter a single quote, paste, enter a single quote.</li>
-<li>hit Enter.</li>
-<li>That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.</li>
+<li>The output will be a zip folder that is named for the text file + “_export”. E.g., if your text file is <code>exam1.txt</code>, the folder will be <code>exam1_export.zip</code>. This is the zip you will import in Canvas, and it <em>should</em> include all of your images and questions.</li>
 </ol>
 <h2 id="preparing-the-files">Preparing the files</h2>
 <ol type="1">
@@ -132,12 +110,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>the name of the <strong>file</strong> will become the name of the test bank in Canvas, which will also produce a Canvas “quiz” by default, containing all of the questions</li>
 <li>save any images you want to include as their own files in that same folder. <strong>NOTE FOR IMAGES:</strong> all images will be sized to the width of the viewing window in Canvas (with a max height of 600 px). You can drag to resize the image once it’s inserted in Canvas.</li>
 </ul></li>
-<li>The easiest method (Mac only) to process the file is to drag your text file containing the questions onto the app’s icon. You can actually drop multiple text files at once, and it will process each separately.</li>
-<li>The harder method is to extract the actual python script from the app, and run it from the command line: The basic call is</li>
-</ol>
-<pre><code>qtiConverterApp.py /path/to/text/file.txt</code></pre>
-<ol start="5" type="1">
-<li>The output will be a zip folder that is named for the text file + “_export”. E.g., if your text file is <code>exam1.txt</code>, the folder will be <code>exam1_export.zip</code>. This is the zip you will import in Canvas, and it <em>should</em> include all of your images and questions.</li>
 </ol>
 <h3 id="formatting-requirements">Formatting requirements</h3>
 <ul>
@@ -241,10 +213,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Save and close the script file</li>
 <li>Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="va">PATH=$PATH</span>:/usr/local/bin</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="bu">cd</span> ~/Desktop</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="va">PATH=$PATH</span>:/usr/local/bin</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="bu">cd</span> ~/Desktop</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></span></code></pre></div></li>
 </ul>
 <h3 id="samples">Samples</h3>
 <p>This should give you some idea of how to format the text document. Note that each sample “question” below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles &gt; simpleTestForImport &gt; bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.</p>
@@ -266,12 +238,11 @@ D. incorrect answer text.<br />
 E. incorrect answer text.</p>
 <p>MC<br />
 image: imageFileName.jpg<br />
-1. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document. You can add an image to any question type (but not yet to answers)!<br />
-*A. correct answer text.<br />
-B. incorrect answer text.<br />
-C. correct answer text.<br />
-D. incorrect answer text.<br />
-E. incorrect answer text.</p>
+1. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document. You can add an image to any question type! And you can add images as answers to MC and MA questions! *A. image: image1.jpg<br />
+B. image: image2.jpg<br />
+C. image: image3.jpg<br />
+D. image: image4.jpg<br />
+E. image: image5.jpg</p>
 <p>(2pts)<br />
 SA<br />
 1. This question is assigned 2 points. NOTE that I could have made it (2), or (2 points), or (2 pts), or (2 chickens). The key is to have a number inside parentheses in one of the first three lines in the question block. The SA stands for short answer: Fill in a blank ______ like that one. notice letter followed by period below.<br />
@@ -300,5 +271,24 @@ right2: second right option correct for first and second left<br />
 right3: third right option distractor<br />
 right4: fourth right option distractor<br />
 right5: fifth right option distractor</p>
+<h2 id="likely-errors">Likely errors</h2>
+<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that’s the problem, you should get an error dialog that reports which question has the problem. Check for the following:</p>
+<ul>
+<li>make sure you have a separator (a period ideally) after every question number and answer letter</li>
+<li>make sure you don’t have new lines within a question text (see below on how to insert them if you need them)</li>
+<li>If you view this README as a text file (not the html on bitbucket), you will see slashes () after question numbers in the sample questions. You SHOULD NOT include those slashes.</li>
+</ul>
+<p>If you don’t get the format error dialog, and you just get a dialog with a crash warning, and buttons for “Terminate” and “Console”, then do the following:</p>
+<ol type="1">
+<li>Open a terminal window (cmd-space, type terminal, enter)</li>
+<li>In Finder, right-click on qtiConverterApp.app (the thing you drop your file on to) and select <code>Show package contents</code></li>
+<li>Navigate to <code>Contents &gt; MacOS</code> and open</li>
+<li>Right-click on qtiConverterApp, hold down the <code>alt-option</code> key, and select `Copy qtiConverterApp as Pathname’</li>
+<li>Go to Terminal, enter a single quote, paste, enter another single quote, then add a space</li>
+<li>In Finder, find your text file, right-click, hold down alt, copy as Pathname</li>
+<li>In Terminal, enter a single quote, paste, enter a single quote.</li>
+<li>hit Enter.</li>
+<li>That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.</li>
+</ol>
 </body>
 </html>
