@@ -138,7 +138,6 @@ class makeQti():
             for q in range(len(self.data)):
                 # advance the count and initialize things
                 self.qNumber= q+1
-                self.imagePath = ''
                 self.htmlText=''
                 # parse the questions and answers based on new lines  
                 # make self.fullText as a list, each item is a line from the question in the text file
@@ -231,6 +230,9 @@ class makeQti():
             # search through question using regex to find anything before the question number self.fullText is a list with each item a new line of the text file
 
             # if it is a two letter capital abbreviation, that is question type, set self.questionType in self.typeList
+            self.questionType = ''
+            self.imagePath = ''
+            self.qPts = '1'
             rws = 3
             for i in range(rws):
                 qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
@@ -775,7 +777,7 @@ class makeQti():
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>points_possible</fieldlabel>
-                      <fieldentry>1.0</fieldentry>
+                      <fieldentry>{}</fieldentry>
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>assessment_question_identifierref</fieldlabel>
@@ -787,7 +789,7 @@ class makeQti():
                   <material>
                       <mattext texttype="text/html">{}</mattext>
                   </material>
-                  '''.format(itid, self.typeDict[self.questionType],quest)
+                  '''.format(itid, self.typeDict[self.questionType], self.qPts, quest)
             return out1    
                 
         def loadBank(self):

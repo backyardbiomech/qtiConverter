@@ -5,6 +5,9 @@ a. answer A
 c. answer C
 d. answer D
 
+image: testimage.png
+(2pts)
+MC
 5) Another question with **multiple** types of **bold** text 
 and multiple ^superscript^ bits of ^text^
 *A) answer A
