@@ -136,43 +136,45 @@ class makeQti():
             self.loadBank()
             # parse the questions in a loop
             for q in range(len(self.data)):
-                self.htmlText=''
-                # parse the question based on type
+                # advance the count and initialize things
                 self.qNumber= q+1
-                self.imagePath = ''
+                self.htmlText=''
                 # parse the questions and answers based on new lines  
-                # self.fullText is a list, each item is a line from the question in the text file
+                # make self.fullText as a list, each item is a line from the question in the text file
                 self.fullText = self.data[q].split('\n')
                 # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
                 # replace characters with html appropriate characters
                 self.fullText = [html.escape(x) for x in self.fullText]
-                self.questionType = self.fullText[0]
-                # if no question type is indicated, assume multiple choice
-                if self.questionType not in self.typeList:
-                    self.questionType = 'MC'
-                # if question type was indicated, delete that line for now
-                else:
-                    self.fullText = self.fullText[1:]
-                # check to see if an image is included
-                if self.fullText[0][0:5] == 'image':
-                    # add to the image count
-                    self.imNum += 1
-                    # set imagePath and remove all spaces from either end of the file name
-                    self.imagePath = self.fullText[0].split(':')[1].strip()
-                    # remove that line so that only questions and answers remain
-                    self.fullText = self.fullText[1:]
-                    # copy the image
-                    imgPath = self.fpath / self.imagePath
-                    # add error call if imagePath doesn't exist
-                    if not imgPath.exists():
-                        errorNoImage(self.qNumber)
-                    shutil.copy(str(imgPath), str(self.newDirPath))
-                    # add the info to the manifest file
-                    self.addResMan(self.imagePath)
-                # self.fullText is a list, now the first item is the question, rest are the answers
-                else:
-                    self.imagePath = ''
+                # process the question header
+                # sets self.imagePath, self.qPts, self.questionType, and calls self.processImage if needed to copy image to resources dir
+                self.qHeader()
+                # self.questionType = self.fullText[0]
+                # # if no question type is indicated, assume multiple choice
+                # if self.questionType not in self.typeList:
+                #     self.questionType = 'MC'
+                # # if question type was indicated, delete that line for now
+                # else:
+                #     self.fullText = self.fullText[1:]
+                # # check to see if an image is included
+                # if self.fullText[0][0:5] == 'image':
+                #     # add to the image count
+                #     self.imNum += 1
+                #     # set imagePath and remove all spaces from either end of the file name
+                #     self.imagePath = self.fullText[0].split(':')[1].strip()
+                #     # remove that line so that only questions and answers remain
+                #     self.fullText = self.fullText[1:]
+                #     # copy the image
+                #     imgPath = self.fpath / self.imagePath
+                #     # add error call if imagePath doesn't exist
+                #     if not imgPath.exists():
+                #         errorNoImage(self.qNumber)
+                #     shutil.copy(str(imgPath), str(self.newDirPath))
+                #     # add the info to the manifest file
+                #     self.addResMan(self.imagePath)
+                # # self.fullText is a list, now the first item is the question, rest are the answers
+                # else:
+                #     self.imagePath = ''
               
                 # get the question type and parse it
                 try:
@@ -223,9 +225,57 @@ class makeQti():
                 if any MC questions had more than one correct answer and should be changed to MA
                 
             """
+        
+        def qHeader(self):
+            # search through question using regex to find anything before the question number self.fullText is a list with each item a new line of the text file
 
-
+            # if it is a two letter capital abbreviation, that is question type, set self.questionType in self.typeList
+            self.questionType = ''
+            self.imagePath = ''
+            self.qPts = '1'
+            rws = 3
+            for i in range(rws):
+                qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
+                if len(qType)==1 and qType[0] in self.typeList:
+                    self.questionType = qType[0]
+                    self.fullText.pop(i)
+                    break
+            if self.questionType not in self.typeList:
+                self.questionType = 'MC'
+            rws -= 1
             
+            # if it starts with image: that gives a link to the image, self.imagePath, advance self.imNum
+            for i in range(3-rws):
+                im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
+                if len(im)==1:
+                    self.imagePath = im[0]
+                    self.processImage(self.imagePath)
+                    self.fullText.pop(i)
+                    break
+                else:
+                    self.imagePath = ''
+            rws -= 1
+
+            # if it is a number inside of parentheses, with or without letters, consider that pts per question
+            for i in range(rws):
+                pts = re.findall(r'^\((\d)[\s\w]*\)$', self.fullText[i])
+                if len(pts)==1:
+                    self.qPts = pts[i]
+                    self.fullText.pop(i)
+                    break
+
+        def processImage(self, imgpath):
+            self.imNum += 1
+            # get the full path to the image
+            imgPath = self.fpath / imgpath
+            # add error call if imagePath doesn't exist
+            if not imgPath.exists():
+                errorNoImage(self.qNumber)
+            # copy the image file
+            shutil.copy(str(imgPath), str(self.newDirPath))
+            # add the info to the manifest file
+            self.addResMan(imgpath)
+
         def typeChooser(self):
             '''
             Choose the question parser based on the question type
@@ -624,7 +674,7 @@ class makeQti():
             
         def questionTextHtml(self, itid, quest, answers, corr):
             if len(self.imagePath) > 0:
-                quest = '<img src="{}" width="314" /><p>{}</>'.format(self.imagePath, html.unescape(quest))
+                quest = '<img src="{}" style="max-width: 100%; height: 500px" /><p>{}</>'.format(self.imagePath, html.unescape(quest))
             out = '''
                 <ul style="list-style-type:none;">
                 <li>{}: {}
@@ -659,6 +709,14 @@ class makeQti():
             #loop through answers and add
             respList=[]
             for a in range(len(answers)):
+                # check to see if it's an image
+                im = re.findall(r'^\s*image:\s*(.*)$', answers[a])
+                if len(im)==1:
+                    self.respImagePath = im[0]
+                    self.processImage(self.respImagePath)
+                    answers[a] = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" style="max-width: 100%; height: 500px" /&gt;
+                    '''.format(self.respImagePath)
+
                 #make a string to track which answer is which
                 resp = str(a+1)
                 out1 += ''' <response_label ident="{}">
@@ -727,7 +785,7 @@ class makeQti():
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>points_possible</fieldlabel>
-                      <fieldentry>1.0</fieldentry>
+                      <fieldentry>{}</fieldentry>
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>assessment_question_identifierref</fieldlabel>
@@ -739,7 +797,7 @@ class makeQti():
                   <material>
                       <mattext texttype="text/html">{}</mattext>
                   </material>
-                  '''.format(itid, self.typeDict[self.questionType],quest)
+                  '''.format(itid, self.typeDict[self.questionType], self.qPts, quest)
             return out1    
                 
         def loadBank(self):
