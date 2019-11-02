@@ -1,0 +1,9 @@
+MC
+1. Some text and then an equation $$\frac{5}{2}=\sqrt{4}$$. And with some symbols like quotes: "a quote", and an ampersand &.
+*A. answer A
+B. answer B
+C. answer C
+
+1. Another question with equations in the answers. And a simple equation g = GC + 5. 
+A. $$\frac{5}{2}>\sqrt{4}$$
+*B. $$\frac{5}{2}\le\sqrt{4}$$
