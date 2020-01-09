@@ -142,7 +142,7 @@ class makeQti():
                 self.htmlText=''
                 # parse the questions and answers based on new lines  
                 # make self.fullText as a list, each item is a line from the question in the text file
-                self.fullText = self.data[q].split('\n')
+                self.fullText = self.data[q].split('\n')                
                 # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
                 # before escaping html characters, need to process any formulas
@@ -154,6 +154,8 @@ class makeQti():
                 self.qHeader()
 
                 # get the question type and parse it
+                print(q)
+                print(self.questionType)
                 try:
                     self.typeChooser()
                 except:
@@ -162,7 +164,7 @@ class makeQti():
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
                 with self.preview.open(mode = 'a', encoding = "utf-8") as f:
-                	f.write(self.htmlText + '\n')
+                    f.write(self.htmlText + '\n')
             with self.outFile.open('a') as f:
                 f.write(self.footer)
             with self.manFile.open('a') as f:
@@ -220,7 +222,6 @@ class makeQti():
             if self.questionType not in self.typeList:
                 self.questionType = 'MC'
             rws -= 1
-            
             # if it starts with image: that gives a link to the image, self.imagePath, advance self.imNum
             for i in range(3-rws):
                 im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
@@ -257,10 +258,11 @@ class makeQti():
             '''
             Choose the question parser based on the question type
             '''
-            if self.questionType == 'MC': # multiple choice with one answer
+            if self.questionType == 'MC' or self.questionType == 'MA': # multiple choice with one answer
                 self.parseMC()
-            if self.questionType == 'MA': # multiple choice with more than one answer
-                self.parseMC()
+#             if self.questionType == 'MA': # multiple choice with more than one answer
+#                 print('or here')
+#                 self.parseMC()
             if self.questionType == 'SA': # single fill in the blank
                 self.parseSA()
             if self.questionType == 'ES': # essay
@@ -278,13 +280,13 @@ class makeQti():
         def processFormatting(self, text):
             # process markdown characters
             # process bold
-            text = re.sub(r'(\*{2}([\+\-a-zA-Z0-9\s]+)\*{2})', '<strong>\\2</strong>', text)
+            text = re.sub(r'(\*{2}([\W\w\s]+?)\*{2})', '<strong>\\2</strong>', text)
             # process italics
-            text = re.sub(r'(\*{1}([\+\-a-zA-Z0-9\s]+)\*{1})', '<em>\\2</em>', text)
+            text = re.sub(r'(\*{1}([\W\w\s]+?)\*{1})', '<em>\\2</em>', text)
             # process superscript
-            text = re.sub(r'(\^{1}([\+\-a-zA-Z0-9\s]+)\^{1})', '<sup>\\2</sup>', text)
+            text = re.sub(r'(\^{1}([\W\w\s]+?)\^{1})', '<sup>\\2</sup>', text)
             # process subscript
-            text = re.sub(r'(\~{1}([\+\-a-zA-Z0-9\s]+)\~{1})', '<sub>\\2</sub>', text)
+            text = re.sub(r'(\~{1}([\W\w\s]+?)\~{1})', '<sub>\\2</sub>', text)
             # escape html characters
             text = html.escape(text)
             # return
@@ -639,12 +641,13 @@ class makeQti():
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
             # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
-            qreg = re.compile(r'\d(\.|\))\s{0,4}([\S\s]+?)(^\**[A-Za-z]{1}(\.|\)))', re.M)
+            qreg = re.compile(r'^\d+(\.|\))\s{0,4}([\S\s]+?)(^\**[A-Za-z]{1}(\.|\)))', re.M)
             # match in the full question
             fulltext = '\n'.join(self.fullText)
             qmatch = qreg.search(fulltext)
             # get the text of the question
             quest = qmatch.group(2)
+            print(quest)
             #get the end of the question
             qend = qmatch.span(2)[1]
             atext = fulltext[qend:]
@@ -655,15 +658,21 @@ class makeQti():
             answers = []
             corr = []
             a = 1
+            print(self.questionType)
             for mat in amatch:
                 if mat.group(2) is not None:
                     corr.append(str(a))
 #                 print(mat.group(4))
                 answer = self.processFormatting(mat.group(4))
-                # print(answer)
                 answers.append(answer)
                 a+=1
+            if len(corr) > 1:
+                 self.questionType = 'MA'
             quest = self.processFormatting(quest)
+            print(self.questionType)
+            print(quest)
+#             print(answers)
+#             print(corr)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
