@@ -114,8 +114,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX', 'NU']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -152,33 +152,7 @@ class makeQti():
                 # process the question header
                 # sets self.imagePath, self.qPts, self.questionType, and calls self.processImage if needed to copy image to resources dir
                 self.qHeader()
-                # self.questionType = self.fullText[0]
-                # # if no question type is indicated, assume multiple choice
-                # if self.questionType not in self.typeList:
-                #     self.questionType = 'MC'
-                # # if question type was indicated, delete that line for now
-                # else:
-                #     self.fullText = self.fullText[1:]
-                # # check to see if an image is included
-                # if self.fullText[0][0:5] == 'image':
-                #     # add to the image count
-                #     self.imNum += 1
-                #     # set imagePath and remove all spaces from either end of the file name
-                #     self.imagePath = self.fullText[0].split(':')[1].strip()
-                #     # remove that line so that only questions and answers remain
-                #     self.fullText = self.fullText[1:]
-                #     # copy the image
-                #     imgPath = self.fpath / self.imagePath
-                #     # add error call if imagePath doesn't exist
-                #     if not imgPath.exists():
-                #         errorNoImage(self.qNumber)
-                #     shutil.copy(str(imgPath), str(self.newDirPath))
-                #     # add the info to the manifest file
-                #     self.addResMan(self.imagePath)
-                # # self.fullText is a list, now the first item is the question, rest are the answers
-                # else:
-                #     self.imagePath = ''
-              
+
                 # get the question type and parse it
                 try:
                     self.typeChooser()
@@ -297,6 +271,8 @@ class makeQti():
                 self.parseMD()
             if self.questionType == 'MT': # matching
                 self.parseMT()
+            if self.questionType == 'NU': # numerical question
+                self.parseNU()
             # add other question types here
         
         def processFormatting(self, text):
@@ -639,6 +615,27 @@ class makeQti():
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             self.writeText = questionTextStart + questionTextResponse
                       
+        def parseNU(self):
+            # 1. question
+            # ans: 5 (4.99, 5.01), or ans: 5.012 (3) 
+            # that is the answer, with min and max, or if one letter, the number of significant digits required (Canvas allows students to not include trailing zeros)
+            # can have multiple ans: lines per question
+            # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines. group 1 is the question text
+            qreg = re.compile(r'\d[\.|\)]\s{0,4}([\S\s]+?)$', re.M)
+
+            # match in the full question
+            fulltext = '\n'.join(self.fullText)
+            qmatch = qreg.search(fulltext)
+            # get the text of the question
+            quest = qmatch.group(1)
+            # regex to find lines beginning with ans: then a digit, then maybe something in parentheses. Will use findall
+            # for each match, group 1 is the answer, group 3 is the info in parentheses (if it exists) not inclusive of the parentheses. Can split on ","
+            areg = re.compile(r'^ans:\s{0,4}([\d|\,|\.]+)(\s{0,4}\((.+)\))?', re.M)
+            ansmatch = re.finditer(areg, fulltext)
+            answers = []
+            
+
+
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
             # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
