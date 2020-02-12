@@ -115,7 +115,7 @@ class makeQti():
             self.assessID = 'assessID'
             # Initialize a list of question types
             self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX', 'NU']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question'}
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'TX': 'text_only_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -137,6 +137,7 @@ class makeQti():
             self.loadBank()
             # parse the questions in a loop
             for q in range(len(self.data)):
+                self.qPts = '1'
                 # advance the count and initialize things
                 self.qNumber= q+1
                 self.htmlText=''
@@ -236,7 +237,7 @@ class makeQti():
 
             # if it is a number inside of parentheses, with or without letters, consider that pts per question
             for i in range(rws):
-                pts = re.findall(r'^\((\d)[\s\w]*\)$', self.fullText[i])
+                pts = re.findall(r'^\(([\d\.]*)[\s\w]*\)$', self.fullText[i])
                 if len(pts)==1:
                     self.qPts = pts[i]
                     self.fullText.pop(i)
@@ -275,6 +276,8 @@ class makeQti():
                 self.parseMT()
             if self.questionType == 'NU': # numerical question
                 self.parseNU()
+            if self.questionType == 'TX': # text only
+                self.parseTX()
             # add other question types here
         
         def processFormatting(self, text):
@@ -577,6 +580,17 @@ class makeQti():
             answers = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
+        def parseTX(self):
+            quest = self.fullText[0]
+            quest = self.processFormatting(quest)
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            self.qPts = '0'
+            questionTextStart = self.questionText(quest, itid)
+            finish = '''        </presentation>
+                            </item>'''
+            self.writeText = questionTextStart + finish
+        
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)

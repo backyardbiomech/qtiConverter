@@ -30,8 +30,8 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.7
 srcdir=		.
 
-abs_srcdir=	/private/tmp/python-20191101-87898-1o8mxm5/Python-3.7.5
-abs_builddir=	/private/tmp/python-20191101-87898-1o8mxm5/Python-3.7.5
+abs_srcdir=	/private/tmp/python-20191230-25009-138b0ai/Python-3.7.6
+abs_builddir=	/private/tmp/python-20191230-25009-138b0ai/Python-3.7.6
 
 
 CC=		clang
@@ -175,7 +175,7 @@ PYTHONFRAMEWORKINSTALLDIR= /usr/local/opt/python/Frameworks/Python.framework
 # Deployment target selected during configure, to be checked
 # by distutils. The export statement is needed to ensure that the
 # deployment target is active during build.
-MACOSX_DEPLOYMENT_TARGET=10.14
+MACOSX_DEPLOYMENT_TARGET=10.15
 export MACOSX_DEPLOYMENT_TARGET
 
 # Option to install to strip binaries
@@ -188,7 +188,7 @@ LIPO_32BIT_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python-20191101-87898-1o8mxm5/Python-3.7.5
+RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python-20191230-25009-138b0ai/Python-3.7.6
 
 # ensurepip options
 ENSUREPIP=      no
@@ -205,7 +205,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--prefix=/usr/local/opt/python' '--enable-ipv6' '--datarootdir=/usr/local/opt/python/share' '--datadir=/usr/local/opt/python/share' '--enable-framework=/usr/local/opt/python/Frameworks' '--enable-loadable-sqlite-extensions' '--without-ensurepip' '--with-dtrace' '--with-openssl=/usr/local/opt/openssl@1.1' '--without-gcc' 'MACOSX_DEPLOYMENT_TARGET=10.14' 'CFLAGS=-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers' 'LDFLAGS=-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk' 'CC=clang' 'PKG_CONFIG_PATH=/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/10.14'
+CONFIG_ARGS=	 '--prefix=/usr/local/opt/python' '--enable-ipv6' '--datarootdir=/usr/local/opt/python/share' '--datadir=/usr/local/opt/python/share' '--enable-framework=/usr/local/opt/python/Frameworks' '--enable-loadable-sqlite-extensions' '--without-ensurepip' '--with-dtrace' '--with-openssl=/usr/local/opt/openssl@1.1' '--without-gcc' 'MACOSX_DEPLOYMENT_TARGET=10.15' 'CFLAGS=-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers' 'LDFLAGS=-isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk' 'CC=clang' 'PKG_CONFIG_PATH=/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/10.15'
 
 
 # Subdirectories with code
@@ -245,12 +245,12 @@ LIBOBJS=
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
 
-PYTHON_FOR_REGEN=python
-UPDATE_FILE=python $(srcdir)/Tools/scripts/update_file.py
+PYTHON_FOR_REGEN=python3
+UPDATE_FILE=python3 $(srcdir)/Tools/scripts/update_file.py
 PYTHON_FOR_BUILD=./$(BUILDPYTHON) -E
 _PYTHON_HOST_PLATFORM=
-BUILD_GNU_TYPE=	x86_64-apple-darwin18.7.0
-HOST_GNU_TYPE=	x86_64-apple-darwin18.7.0
+BUILD_GNU_TYPE=	x86_64-apple-darwin19.2.0
+HOST_GNU_TYPE=	x86_64-apple-darwin19.2.0
 
 # Tcl and Tk config info from --with-tcltk-includes and -libs options
 TCLTK_INCLUDES=	

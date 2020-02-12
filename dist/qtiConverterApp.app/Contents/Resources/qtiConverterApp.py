@@ -40,6 +40,7 @@ import html
 import re
 import xml.etree.ElementTree as ET
 import subprocess
+import urllib.parse
 
 
 def indent(elem, level=0):
@@ -113,8 +114,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX', 'NU']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'TX': 'text_only_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -136,6 +137,7 @@ class makeQti():
             self.loadBank()
             # parse the questions in a loop
             for q in range(len(self.data)):
+                self.qPts = '1'
                 # advance the count and initialize things
                 self.qNumber= q+1
                 self.htmlText=''
@@ -144,38 +146,14 @@ class makeQti():
                 self.fullText = self.data[q].split('\n')                
                 # delete any blank lines in fullText (should only happen on the last question)
                 self.fullText = [x for x in self.fullText if len(x) > 0]
+                # before escaping html characters, need to process any formulas
+                self.fullText = self.processEquations(self.fullText)
                 # replace characters with html appropriate characters
-                self.fullText = [html.escape(x) for x in self.fullText]
+                #self.fullText = [html.escape(x) for x in self.fullText]
                 # process the question header
                 # sets self.imagePath, self.qPts, self.questionType, and calls self.processImage if needed to copy image to resources dir
                 self.qHeader()
-                # self.questionType = self.fullText[0]
-                # # if no question type is indicated, assume multiple choice
-                # if self.questionType not in self.typeList:
-                #     self.questionType = 'MC'
-                # # if question type was indicated, delete that line for now
-                # else:
-                #     self.fullText = self.fullText[1:]
-                # # check to see if an image is included
-                # if self.fullText[0][0:5] == 'image':
-                #     # add to the image count
-                #     self.imNum += 1
-                #     # set imagePath and remove all spaces from either end of the file name
-                #     self.imagePath = self.fullText[0].split(':')[1].strip()
-                #     # remove that line so that only questions and answers remain
-                #     self.fullText = self.fullText[1:]
-                #     # copy the image
-                #     imgPath = self.fpath / self.imagePath
-                #     # add error call if imagePath doesn't exist
-                #     if not imgPath.exists():
-                #         errorNoImage(self.qNumber)
-                #     shutil.copy(str(imgPath), str(self.newDirPath))
-                #     # add the info to the manifest file
-                #     self.addResMan(self.imagePath)
-                # # self.fullText is a list, now the first item is the question, rest are the answers
-                # else:
-                #     self.imagePath = ''
-              
+
                 # get the question type and parse it
                 print(q)
                 print(self.questionType)
@@ -259,7 +237,7 @@ class makeQti():
 
             # if it is a number inside of parentheses, with or without letters, consider that pts per question
             for i in range(rws):
-                pts = re.findall(r'^\((\d)[\s\w]*\)$', self.fullText[i])
+                pts = re.findall(r'^\(([\d\.]*)[\s\w]*\)$', self.fullText[i])
                 if len(pts)==1:
                     self.qPts = pts[i]
                     self.fullText.pop(i)
@@ -296,6 +274,10 @@ class makeQti():
                 self.parseMD()
             if self.questionType == 'MT': # matching
                 self.parseMT()
+            if self.questionType == 'NU': # numerical question
+                self.parseNU()
+            if self.questionType == 'TX': # text only
+                self.parseTX()
             # add other question types here
         
         def processFormatting(self, text):
@@ -598,6 +580,17 @@ class makeQti():
             answers = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
+        def parseTX(self):
+            quest = self.fullText[0]
+            quest = self.processFormatting(quest)
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            self.qPts = '0'
+            questionTextStart = self.questionText(quest, itid)
+            finish = '''        </presentation>
+                            </item>'''
+            self.writeText = questionTextStart + finish
+        
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
@@ -638,6 +631,27 @@ class makeQti():
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             self.writeText = questionTextStart + questionTextResponse
                       
+        def parseNU(self):
+            # 1. question
+            # ans: 5 (4.99, 5.01), or ans: 5.012 (3) 
+            # that is the answer, with min and max, or if one letter, the number of significant digits required (Canvas allows students to not include trailing zeros)
+            # can have multiple ans: lines per question
+            # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines. group 1 is the question text
+            qreg = re.compile(r'\d[\.|\)]\s{0,4}([\S\s]+?)$', re.M)
+
+            # match in the full question
+            fulltext = '\n'.join(self.fullText)
+            qmatch = qreg.search(fulltext)
+            # get the text of the question
+            quest = qmatch.group(1)
+            # regex to find lines beginning with ans: then a digit, then maybe something in parentheses. Will use findall
+            # for each match, group 1 is the answer, group 3 is the info in parentheses (if it exists) not inclusive of the parentheses. Can split on ","
+            areg = re.compile(r'^ans:\s{0,4}([\d|\,|\.]+)(\s{0,4}\((.+)\))?', re.M)
+            ansmatch = re.finditer(areg, fulltext)
+            answers = []
+            
+
+
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
             # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
@@ -776,6 +790,31 @@ class makeQti():
               '''
             return out1
             
+        def processEquations(self, fullData):
+            # recieves a question block (a list of lines)
+            # go through each line looking for $$...$$
+            for i in range(len(fullData)):
+                if re.search(r'\$\$.*\$\$', fullData[i], re.M) is not None:
+                    # replace > and < with mathjax codes
+                    fullData[i] = fullData[i].replace('<', r'\lt')
+                    fullData[i] = fullData[i].replace('>', r'\gt')
+                    fullData[i] = re.sub(r'\$\$(.*)\$\$', self.processEquation, fullData[i], re.M)
+            return fullData
+        
+        def processEquation(self, eq):
+            # receives mathjax/Latex style formula text with surrounding $$
+            # returns only the html conversion of the equation
+            # converts the equation into a <p><img... of the following format
+            #&lt;p&gt;&lt;img class="equation_image" title="\frac{5}{2}" src="https://longwood.instructure.com/equation_images/%255Cfrac%257B5%257D%257B2%257D" alt="LaTeX: \frac{5}{2}" data-equation-content="\frac{5}{2}"&gt;&lt;/p&gt;
+            # use regex to extract info between $$
+            eqtext = eq.group(1)
+            # need to convert symbols in equation to url symbols
+            neweq = urllib.parse.quote(eqtext)
+            # need to add the odd %25 to each encoded character
+            neweq = neweq.replace('%', '%25')
+            eqret=f'</p><p><img class="equation_image" title="{eqtext}" src="https://longwood.instructure.com/equation_images/{neweq}" alt="LaTeX: {eqtext}" data-equation-content="{eqtext}"></p><p>'
+            return eqret
+
         def questionText(self, quest, itid):
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
@@ -804,7 +843,7 @@ class makeQti():
                 </itemmetadata>
                 <presentation>
                   <material>
-                      <mattext texttype="text/html">{}</mattext>
+                      <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{}&lt;/p&gt;&lt;/div&gt;</mattext>
                   </material>
                   '''.format(itid, self.typeDict[self.questionType], self.qPts, quest)
             return out1    
