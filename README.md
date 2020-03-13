@@ -141,7 +141,7 @@ E. incorrect answer text.
 
 MC  
 image: imageFileName.jpg  
-1\. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type!  And you can add images as answers to MC and MA questions!
+1\. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document.  You can add an image to any question type!  And you can add images as answers to MC and MA questions!  
 \*A. image: image1.jpg  
 B. image: image2.jpg  
 C. image: image3.jpg  
@@ -183,7 +183,7 @@ right4: fourth right option distractor
 right5: fifth right option distractor  
 
 TX
-1\. <h2>New Section of exam</h2> This is a "text" question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the "New section of exam" here by entering `<h2>New Section of exam</h2>`. The "h2" means "header 2" in html formatting.
+1\. `<h2>New Section of exam</h2>` This is a "text" question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the "New section of exam" here by entering `<h2>New Section of exam</h2>`. The "h2" means "header 2" in html formatting.
 
 ## Likely errors
 
