@@ -1,6 +1,12 @@
 # QTI converter
 
-This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.
+This program will convert a simply formatted text document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. If you just want the question bank to pull from, I suggest deleting that quiz after import.
+
+More details and updates available at [https://github.com/haliaetus13/qtiConverter](https://github.com/haliaetus13/qtiConverter)
+
++ Written by Brandon E. Jackson, Ph.D.  
++ jacksonbe3@longwood.edu  
++ last updated: March 13, 2020  
 
 ## Installation and basic usage (Mac)
 
@@ -10,7 +16,8 @@ This program will convert a simply formatted text document containing most quest
 5. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the zip you will import in Canvas, and it *should* include all of your images and questions.
 
 
-## Installation and basic usage (Windows)
+## Installation and basic usage (Windows - not always tested and updated!)
+
 1. Download the `WindowsQtiConverterExe`.
 2. Save the whole folder somewhere easy to remember.
 3. Create your quiz txt file and save it. Find the file and right-click on it. Select Open with > Choose another app > More apps > Look for another app on this PC > and then navigate to that downloaded folder and drill in until you can select `qtiConverterApp.exe`
@@ -19,11 +26,11 @@ This program will convert a simply formatted text document containing most quest
 
 ## Preparing the files
 
-1. Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, **not** .rtf) encoded in UTF-8.
-    + MS Word can "Save As" a .txt file, but make sure when given the option that you select encoding as `Unicode (UTF-8)`, and `End lines with: CR only`. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.
-    + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for info and examples
+1. Make a simple text file. The best option is to make this file in a simple free text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, **not** .rtf) encoded in UTF-8.
+    + MS Word can "Save As" a .txt file, but make sure when given the option that you select encoding as `Unicode (UTF-8)`, and `End lines with: CR only`. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your version of Word.
+    + Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is **extremely** important. See the bottom of this document for formatting info, how to include images, and examples
 2. Save the text file of questions in its own folder, with all linked image files copied into that same folder.
-    + the name of the **file** will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default, containing all of the questions
+    + the name of the **file** will become the name of the test bank in Canvas, which will also produce a Canvas "quiz" by default, containing all of the questions, by that same name
     + save any images you want to include as their own files in that same folder. **NOTE FOR IMAGES:** all images will be sized to the width of the viewing window in Canvas (with a max height of 600 px). You can drag to resize the image once it's inserted in Canvas.
 
 ### Formatting requirements
@@ -32,14 +39,15 @@ This program will convert a simply formatted text document containing most quest
     + If you **must** have a paragraph break within a question, use an html line break code (below). You may copy and paste the characters below into your text block wherever you want a new line. See the first example question below. Copy and paste this:
         - `<br>`
 + Each question block may begin with up to three lines of header information. The order of the information not matter. 
-    + One header line may be a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching , SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional) 
-    + Another header line may refer to any image to be included before the question text. The line should read `image: imageFileName.jpg`. If no image is connected to the question, simply do not include this line. The image file of that name should be saved in the same folder as the text document.
+    + One header line may be a 2 letter (all caps) indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching , SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text, NU: numerical
+    + Another header line may refer to any image to be included before the question text. The line should read `image: imageFileName.jpg`. If no image is connected to the question, simply do not include this line (`image: ` with no name will cause an error). The image file of that name should be saved in the same folder as the text document.
         + you may have a subfolder of images, in which case the line should read `image: imageFolder/imageFileName.jpg` (i.e. the path is relative to the text file). 
         + Only one image may be included with the question text.
-    + The last header line option allows you to assign a default point value to that question. The number of points must be included in parentheses, and you may or may not have any other words in there. E.g., `(2)`, `(2 pts)`, `(2 points)` all work.
+        + In multiple choice questions, you can include images as the answers by using `A) image: imageFileName.jpg` as the option.
+    + The last header line option allows you to assign a default point value to that question. The number of points must be included in parentheses, and you may or may not have any other words in there. E.g., `(2)`, `(2 pts)`, `(2.5 points)` all work.
         + This point value will only be applied in the automatically created quiz in Canvas at import, and will be overridden if you simply "link" a question group to a bank.
-+ After all of the header information (or no header information) the next line should be a digit follwed by a "." or a ")", followed by the text of the question. 
-+ - the question text is followed on the next line (no blank line, just the next line) by answers
++ After all of the header information (or no header information) the next line should be a digit followed by a "." or a ")", followed by the text of the question. 
+    - the question text is followed on the next line (no blank line, just the next line) by answers
     - MC answers begin with a letter followed by a "." or a ")"
     - correct answer(s) are marked with a \* before the letter (at the start of the line) for multiple choice and multiple answer questions
     - NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the *shuffle answers* option in Canvas).
@@ -48,7 +56,7 @@ This program will convert a simply formatted text document containing most quest
 + You may use a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded. 
 - **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, ^superscript^, and ~subscript~. This will work in questions **and** in answers.
     1.  The easiest way is to use MarkDown formatting marks.
-        + Surrounding some word or characters with two asterix, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
+        + Surrounding some word or characters with two asterices, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
         + One asterix on either side, like `*this*` indicates *italics*
         + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc^2^
         + tildes like `H~2~O` will make it subscript (H~2~O). 
@@ -58,7 +66,8 @@ This program will convert a simply formatted text document containing most quest
         + **bold**: `this <strong>word</strong>` yields: this **word**
         + superscript: `E = mc<sup>2</sup>` yields: E = mc^2^
         + subscript: `H<sub>2</sub>O` yields: H~2~O
-    3. You may use both styles in the same document
+        + `<h2> Header text</h2>` makes an html level 2 header (useful to include in a TX text block to break up the exam into sections). Also works with level 3 and 4 headers.
+    3. You may use both the MarkDown and html styles in the same document
 
 ## Canvas Importing and Quiz Making Process
 
@@ -78,14 +87,13 @@ This program will convert a simply formatted text document containing most quest
 ### Things to consider:
 
 + If the question types are confusing, try making different sample exam questions in Canvas.
-+ Right now, this does not work for numerical, or text box question types.
 + All questions (unless noted in a header) will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank
-+ If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to each question in a bank.
++ If you want different point values based on question types (say, 3 points for short answer but 2 points for multiple choice), and want to pull random questions from a bank, save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it's easy to apply point values to questions based on groups.
 + To print backup copies of quizzes, you can change the quiz to NOT show "one question at a time". Preview the quiz. Print.
 
 ### Tips
 
-+ If there is a formatting error in one of your questions, you should get a dialog box on screen telling you which question has the problem. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question counted from the top has the problem. The most likely problems are:
++ If there is a formatting error in one of your questions, you should get a dialog box on screen (Mac only) telling you which question has the problem, and the text from that question. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question, counted from the top, has the problem. The most likely problems are:
     + a question type indicator that isn't one of the options
     + "new" lines in the question
     + improperly formatted answers
@@ -98,7 +106,7 @@ This program will convert a simply formatted text document containing most quest
     + In BBEdit, copy and paste the code below into the file:
     + If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.
     + Save and close the script file
-    + Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
+    + Now, when you are done making a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!
 ```bash
 #!/bin/bash
 PATH=$PATH:/usr/local/bin
@@ -109,7 +117,7 @@ cd ~/Desktop
 
 ### Samples
 
-This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
+This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from the [github repository](https://github.com/haliaetus13/qtiConverter) (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
 
 \# This is a comment line because it begins with '\#'.  
 \# You can make any notes and they will not become part of the exam in Canvas.  
@@ -144,7 +152,7 @@ E. image: image5.jpg
 SA  
 1\. This question is assigned 2 points. NOTE that I could have made it (2), or (2 points), or (2 pts), or (2 chickens). The key is to have a number inside parentheses in one of the first three lines in the question block. The SA stands for short answer: Fill in a blank \_\_\____ like that one. notice letter followed by period below.  
 A. correct answer 1  
-B. correct anser too allowing for mispellings
+B. correct anser too alowing for mispellings  
 C. Yet another correct answer
 
 ES  
@@ -174,14 +182,16 @@ right3: third right option distractor
 right4: fourth right option distractor  
 right5: fifth right option distractor  
 
+TX
+1\. <h2>New Section of exam</h2> This is a "text" question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the "New section of exam" here by entering `<h2>New Section of exam</h2>`. The "h2" means "header 2" in html formatting.
 
 ## Likely errors
 
-If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that's the problem, you should get an error dialog that reports which question has the problem. Check for the following:
+If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that's the problem, you should get an error dialog that reports which question has the problem (Mac only). Check for the following:
 
 + make sure you have a separator (a period ideally) after every question number and answer letter
-+ make sure you don't have new lines within a question text (see below on how to insert them if you need them)
-+ If you view this README as a text file (not the html on bitbucket), you will see slashes (\) after question numbers in the sample questions. You SHOULD NOT include those slashes.
++ make sure you don't have new lines within a question text
++ make sure you have properly formatted your answers for the selected question type, and have marked correct answer(s)
 
 If you don't get the format error dialog, and you just get a dialog with a crash warning, and buttons for "Terminate" and "Console", then do the following:
 
@@ -194,3 +204,7 @@ If you don't get the format error dialog, and you just get a dialog with a crash
 7. In Terminal, enter a single quote, paste, enter a single quote.
 8. hit Enter.
 9. That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.
+
+## License
+
+This project is licensed under the GNU Lesser General Public License v3.0; see the LICENSE.md file for details. Note that the software is provided "as is", without warranty of any kind, express or implied.

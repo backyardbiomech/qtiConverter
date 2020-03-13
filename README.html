@@ -4,17 +4,17 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README.md</title>
-  <style>
+  <title>README</title>
+  <style type="text/css">
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
-  <style>
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -24,16 +24,14 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -42,9 +40,9 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  {  }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -82,7 +80,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </head>
 <body>
 <h1 id="qti-converter">QTI converter</h1>
-<p>This program will convert a simply formatted text document containing most question types into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. I suggested deleting that quiz after import.</p>
+<p>This program will convert a simply formatted text document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. If you just want the question bank to pull from, I suggest deleting that quiz after import.</p>
+<p>Written by Brandon E. Jackson,<br />
+Ph.D. jacksonbe3@longwood.edu<br />
+last updated: March 13, 2020</p>
 <h2 id="installation-and-basic-usage-mac">Installation and basic usage (Mac)</h2>
 <ol type="1">
 <li>From the shared Box folder (qtiConverterAppDistribution), download the app.zip file (Mac) and the html README file (which is this). Unzip.</li>
@@ -90,7 +91,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Once you’ve created your text file and organized images, just drag your text file onto the icon for the app to run it. You can actually drop multiple text files at once, and it will process each separately.</li>
 <li>The output will be a zip folder that is named for the text file + “_export”. E.g., if your text file is <code>exam1.txt</code>, the folder will be <code>exam1_export.zip</code>. This is the zip you will import in Canvas, and it <em>should</em> include all of your images and questions.</li>
 </ol>
-<h2 id="installation-and-basic-usage-windows">Installation and basic usage (Windows)</h2>
+<h2 id="installation-and-basic-usage-windows---not-always-tested-and-updated">Installation and basic usage (Windows - not always tested and updated!)</h2>
 <ol type="1">
 <li>Download the <code>WindowsQtiConverterExe</code>.</li>
 <li>Save the whole folder somewhere easy to remember.</li>
@@ -100,14 +101,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <h2 id="preparing-the-files">Preparing the files</h2>
 <ol type="1">
-<li>Make a simple text file. The best option is to make this file in a simple text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, <strong>not</strong> .rtf) encoded in UTF-8.
+<li>Make a simple text file. The best option is to make this file in a simple free text editor like Geany, BBedit, Notepad++ etc. The key is that it saves plain text (.txt, <strong>not</strong> .rtf) encoded in UTF-8.
 <ul>
-<li>MS Word can “Save As” a .txt file, but make sure when given the option that you select encoding as <code>Unicode (UTF-8)</code>, and <code>End lines with: CR only</code>. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your verion of Word.</li>
-<li>Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is <strong>extremely</strong> important. See the bottom of this document for info and examples</li>
+<li>MS Word can “Save As” a .txt file, but make sure when given the option that you select encoding as <code>Unicode (UTF-8)</code>, and <code>End lines with: CR only</code>. Those options may come up in the save window or in a conversion window that comes up after you hit save in the save window, depending on your version of Word.</li>
+<li>Note that formatting or embedded images will not be saved in the text file. The exact formatting of this document is <strong>extremely</strong> important. See the bottom of this document for formatting info, how to include images, and examples</li>
 </ul></li>
 <li>Save the text file of questions in its own folder, with all linked image files copied into that same folder.
 <ul>
-<li>the name of the <strong>file</strong> will become the name of the test bank in Canvas, which will also produce a Canvas “quiz” by default, containing all of the questions</li>
+<li>the name of the <strong>file</strong> will become the name of the test bank in Canvas, which will also produce a Canvas “quiz” by default, containing all of the questions, by that same name</li>
 <li>save any images you want to include as their own files in that same folder. <strong>NOTE FOR IMAGES:</strong> all images will be sized to the width of the viewing window in Canvas (with a max height of 600 px). You can drag to resize the image once it’s inserted in Canvas.</li>
 </ul></li>
 </ol>
@@ -122,25 +123,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li>Each question block may begin with up to three lines of header information. The order of the information not matter.
 <ul>
-<li>One header line may be a 2 letter indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching , SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text (not yet functional)</li>
-<li>Another header line may refer to any image to be included before the question text. The line should read <code>image: imageFileName.jpg</code>. If no image is connected to the question, simply do not include this line. The image file of that name should be saved in the same folder as the text document.
+<li>One header line may be a 2 letter (all caps) indicator of question type based on Canvas question types. If no indicator is given, MC is assumed. (MC: multiple choice, MA: multiple answers (select all that apply), MT: matching , SA: short answer (fill in the blank), MD: multiple dropdowns, MB: multiple blanks, ES: essay, TX: just text, NU: numerical</li>
+<li>Another header line may refer to any image to be included before the question text. The line should read <code>image: imageFileName.jpg</code>. If no image is connected to the question, simply do not include this line (<code>image:</code> with no name will cause an error). The image file of that name should be saved in the same folder as the text document.
 <ul>
 <li>you may have a subfolder of images, in which case the line should read <code>image: imageFolder/imageFileName.jpg</code> (i.e. the path is relative to the text file).</li>
 <li>Only one image may be included with the question text.</li>
+<li>In multiple choice questions, you can include images as the answers by using <code>A) image: imageFileName.jpg</code> as the option.</li>
 </ul></li>
-<li>The last header line option allows you to assign a default point value to that question. The number of points must be included in parentheses, and you may or may not have any other words in there. E.g., <code>(2)</code>, <code>(2 pts)</code>, <code>(2 points)</code> all work.
+<li>The last header line option allows you to assign a default point value to that question. The number of points must be included in parentheses, and you may or may not have any other words in there. E.g., <code>(2)</code>, <code>(2 pts)</code>, <code>(2.5 points)</code> all work.
 <ul>
 <li>This point value will only be applied in the automatically created quiz in Canvas at import, and will be overridden if you simply “link” a question group to a bank.</li>
 </ul></li>
 </ul></li>
-<li>After all of the header information (or no header information) the next line should be a digit follwed by a “.” or a “)”, followed by the text of the question.</li>
-<li><ul>
-<li>the question text is followed on the next line (no blank line, just the next line) by answers
+<li>After all of the header information (or no header information) the next line should be a digit followed by a “.” or a “)”, followed by the text of the question.
 <ul>
+<li>the question text is followed on the next line (no blank line, just the next line) by answers</li>
 <li>MC answers begin with a letter followed by a “.” or a “)”</li>
 <li>correct answer(s) are marked with a * before the letter (at the start of the line) for multiple choice and multiple answer questions</li>
 <li>NOTE that question numbers and answer letters will not necessarily transfer to Canvas (due to the <em>shuffle answers</em> option in Canvas).</li>
-</ul></li>
 </ul></li>
 </ul>
 <h3 id="other-formatting">Other Formatting</h3>
@@ -150,7 +150,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol type="1">
 <li>The easiest way is to use MarkDown formatting marks.
 <ul>
-<li>Surrounding some word or characters with two asterix, like <code>**this**</code> will make what’s between them <strong>bold</strong>. “<code>this **word**</code>” yields: “this <strong>word</strong>”.</li>
+<li>Surrounding some word or characters with two asterices, like <code>**this**</code> will make what’s between them <strong>bold</strong>. “<code>this **word**</code>” yields: “this <strong>word</strong>”.</li>
 <li>One asterix on either side, like <code>*this*</code> indicates <em>italics</em></li>
 <li>surrounding something with carrots like <code>E = mc^2^</code> will make it superscript yielding E = mc<sup>2</sup></li>
 <li>tildes like <code>H~2~O</code> will make it subscript (H<sub>2</sub>O).</li>
@@ -162,8 +162,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>bold</strong>: <code>this &lt;strong&gt;word&lt;/strong&gt;</code> yields: this <strong>word</strong></li>
 <li>superscript: <code>E = mc&lt;sup&gt;2&lt;/sup&gt;</code> yields: E = mc<sup>2</sup></li>
 <li>subscript: <code>H&lt;sub&gt;2&lt;/sub&gt;O</code> yields: H<sub>2</sub>O</li>
+<li><code>&lt;h2&gt; Header text&lt;/h2&gt;</code> makes an html level 2 header (useful to include in a TX text block to break up the exam into sections). Also works with level 3 and 4 headers.</li>
 </ul></li>
-<li>You may use both styles in the same document</li>
+<li>You may use both the MarkDown and html styles in the same document</li>
 </ol></li>
 </ul>
 <h2 id="canvas-importing-and-quiz-making-process">Canvas Importing and Quiz Making Process</h2>
@@ -188,14 +189,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="things-to-consider">Things to consider:</h3>
 <ul>
 <li>If the question types are confusing, try making different sample exam questions in Canvas.</li>
-<li>Right now, this does not work for numerical, or text box question types.</li>
 <li>All questions (unless noted in a header) will be imported as being worth 1 point. This can be changed when you are creating your quiz in Canvas and pulling from the question bank</li>
-<li>If you want different point values for one question type (say, 3 points for short answer but 2 points for multiple choice), save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it’s easy to apply point values to each question in a bank.</li>
+<li>If you want different point values based on question types (say, 3 points for short answer but 2 points for multiple choice), and want to pull random questions from a bank, save the two question types in separate files, and import as separate question banks. When you make your quiz in Canvas, it’s easy to apply point values to questions based on groups.</li>
 <li>To print backup copies of quizzes, you can change the quiz to NOT show “one question at a time”. Preview the quiz. Print.</li>
 </ul>
 <h3 id="tips">Tips</h3>
 <ul>
-<li>If there is a formatting error in one of your questions, you should get a dialog box on screen telling you which question has the problem. Note that the numbers of your questions in your file don’t matter, so this dialog just tells you which question counted from the top has the problem. The most likely problems are:
+<li>If there is a formatting error in one of your questions, you should get a dialog box on screen (Mac only) telling you which question has the problem, and the text from that question. Note that the numbers of your questions in your file don’t matter, so this dialog just tells you which question, counted from the top, has the problem. The most likely problems are:
 <ul>
 <li>a question type indicator that isn’t one of the options</li>
 <li>“new” lines in the question</li>
@@ -211,12 +211,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>In BBEdit, copy and paste the code below into the file:</li>
 <li>If you saved the file to anywhere other than the Desktop, you have to edit the cd line to the directory where you saved the app.</li>
 <li>Save and close the script file</li>
-<li>Now, when you are done makeing a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!</li>
+<li>Now, when you are done making a quiz in BBEdit, save the quiz, and while it is open, go to the Scripts menu icon, and select your script. It should run the conversion without having to even drag-and-drop the file!</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="va">PATH=$PATH</span>:/usr/local/bin</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="bu">cd</span> ~/Desktop</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#!/bin/bash</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="va">PATH=$PATH</span>:/usr/local/bin</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="bu">cd</span> ~/Desktop</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></a></code></pre></div></li>
 </ul>
 <h3 id="samples">Samples</h3>
 <p>This should give you some idea of how to format the text document. Note that each sample “question” below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles &gt; simpleTestForImport &gt; bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.</p>
@@ -247,7 +247,8 @@ E. image: image5.jpg</p>
 SA<br />
 1. This question is assigned 2 points. NOTE that I could have made it (2), or (2 points), or (2 pts), or (2 chickens). The key is to have a number inside parentheses in one of the first three lines in the question block. The SA stands for short answer: Fill in a blank ______ like that one. notice letter followed by period below.<br />
 A. correct answer 1<br />
-B. correct anser too allowing for mispellings C. Yet another correct answer</p>
+B. correct anser too alowing for mispellings<br />
+C. Yet another correct answer</p>
 <p>ES<br />
 1. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!</p>
 <p>MB<br />
@@ -271,12 +272,17 @@ right2: second right option correct for first and second left<br />
 right3: third right option distractor<br />
 right4: fourth right option distractor<br />
 right5: fifth right option distractor</p>
+TX 1.
+<h2>
+New Section of exam
+</h2>
+<p>This is a “text” question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the “New section of exam” here by entering <code>&lt;h2&gt;New Section of exam&lt;/h2&gt;</code>. The “h2” means “header 2” in html formatting.</p>
 <h2 id="likely-errors">Likely errors</h2>
-<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that’s the problem, you should get an error dialog that reports which question has the problem. Check for the following:</p>
+<p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that’s the problem, you should get an error dialog that reports which question has the problem (Mac only). Check for the following:</p>
 <ul>
 <li>make sure you have a separator (a period ideally) after every question number and answer letter</li>
-<li>make sure you don’t have new lines within a question text (see below on how to insert them if you need them)</li>
-<li>If you view this README as a text file (not the html on bitbucket), you will see slashes () after question numbers in the sample questions. You SHOULD NOT include those slashes.</li>
+<li>make sure you don’t have new lines within a question text</li>
+<li>make sure you have properly formatted your answers for the selected question type, and have marked correct answer(s)</li>
 </ul>
 <p>If you don’t get the format error dialog, and you just get a dialog with a crash warning, and buttons for “Terminate” and “Console”, then do the following:</p>
 <ol type="1">

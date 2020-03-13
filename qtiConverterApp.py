@@ -64,10 +64,10 @@ def errorNoImage(q):
     """.format(str(q))
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
 
-def errorDisplay(q):
+def errorDisplay(q, qtext):
     applescript = """
-    display dialog "There seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
-    """.format(str(q))
+    display dialog "There seems to be a formatting problem with the {}th question in the list: {}. Fix the question and rerun this program."
+    """.format(str(q), qtext)
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
     
 def logDisplay():
@@ -160,7 +160,7 @@ class makeQti():
                 try:
                     self.typeChooser()
                 except:
-                    errorDisplay(self.qNumber)
+                    errorDisplay(self.qNumber, self.fullText)
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
@@ -196,7 +196,7 @@ class makeQti():
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
             #remove the now compressed folder
             shutil.rmtree(str(self.newDirPath))
-            
+            #TODO:
             """
             generate a report that shows:
                 the number of questions of each type
