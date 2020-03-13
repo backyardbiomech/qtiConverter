@@ -124,7 +124,7 @@ This should give you some idea of how to format the text document. Note that eac
 \# Every new line must begin with a '#\' if you don't want them processed  
 
 
-1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, `<br>` This will now be on a new line once you've imported to Canvas. Paste two in a row `<br><br>` to get a blank line inserted.  
+1\. This is a multiple choice question by default since there isn't an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a \*. If you want to start a new line after this, enter a `<br>` <br> This will now be on a new line once you've imported to Canvas. Paste two in a row `<br><br>` <br><br> to get a blank line inserted.  
 A. incorrect answer text.  
 B. incorrect answer text.  
 \*C. correct answer text.  
