@@ -56,14 +56,14 @@ This program will convert a simply formatted text document containing most quest
     1.  The easiest way is to use MarkDown formatting marks.
         + Surrounding some word or characters with two asterices, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
         + One asterix on either side, like `*this*` indicates *italics*
-        + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc^2^
-        + tildes like `H~2~O` will make it subscript (H~2~O). 
+        + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc<sup>2</sup>
+        + tildes like `H~2~O` will make it subscript (H<sub>2</sub>O). 
         + The key is to **surround** what you want to format with the marks, without spaces between the modifiers and modifiees.
     2. You may also use standard html tags, where you surround the word or characters you want to format as appropriate:
         + *italics*: `this <em>word</em>` yields: this *word*
         + **bold**: `this <strong>word</strong>` yields: this **word**
-        + superscript: `E = mc<sup>2</sup>` yields: E = mc^2^
-        + subscript: `H<sub>2</sub>O` yields: H~2~O
+        + superscript: `E = mc<sup>2</sup>` yields: E = mc<sup>2</sup>
+        + subscript: `H<sub>2</sub>O` yields: H<sub>2</sub>O
         + `<h2> Header text</h2>` makes an html level 2 header (useful to include in a TX text block to break up the exam into sections). Also works with level 3 and 4 headers.
     3. You may use both the MarkDown and html styles in the same document
 
