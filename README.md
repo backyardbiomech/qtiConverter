@@ -2,8 +2,6 @@
 
 This program will convert a simply formatted text document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. If you just want the question bank to pull from, I suggest deleting that quiz after import.
 
-More details and updates available at [https://github.com/haliaetus13/qtiConverter](https://github.com/haliaetus13/qtiConverter)
-
 + Written by Brandon E. Jackson, Ph.D.  
 + jacksonbe3@longwood.edu  
 + last updated: March 13, 2020  
