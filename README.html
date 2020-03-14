@@ -81,9 +81,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body>
 <h1 id="qti-converter">QTI converter</h1>
 <p>This program will convert a simply formatted text document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank. NOTE: the Canvas import process will also make an actual quiz containing all of the questions in the bank. If you just want the question bank to pull from, I suggest deleting that quiz after import.</p>
-<p>Written by Brandon E. Jackson,<br />
-Ph.D. jacksonbe3@longwood.edu<br />
-last updated: March 13, 2020</p>
+<p>More details and updates available at <a href="https://github.com/haliaetus13/qtiConverter" class="uri">https://github.com/haliaetus13/qtiConverter</a></p>
+<ul>
+<li>Written by Brandon E. Jackson, Ph.D.<br />
+</li>
+<li>jacksonbe3@longwood.edu<br />
+</li>
+<li>last updated: March 13, 2020</li>
+</ul>
 <h2 id="installation-and-basic-usage-mac">Installation and basic usage (Mac)</h2>
 <ol type="1">
 <li>From the shared Box folder (qtiConverterAppDistribution), download the app.zip file (Mac) and the html README file (which is this). Unzip.</li>
@@ -219,11 +224,11 @@ last updated: March 13, 2020</p>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="ex">./qtiConverterApp.py</span> <span class="st">&quot;</span><span class="va">$BB_DOC_PATH</span><span class="st">&quot;</span></a></code></pre></div></li>
 </ul>
 <h3 id="samples">Samples</h3>
-<p>This should give you some idea of how to format the text document. Note that each sample “question” below contains some instructions for how to format that question type. You can also download a sample file from BitBucket (testFiles &gt; simpleTestForImport &gt; bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.</p>
+<p>This should give you some idea of how to format the text document. Note that each sample “question” below contains some instructions for how to format that question type. You can also download a sample file from the <a href="https://github.com/haliaetus13/qtiConverter">github repository</a> (testFiles &gt; simpleTestForImport &gt; bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.</p>
 <p># This is a comment line because it begins with ‘#’.<br />
 # You can make any notes and they will not become part of the exam in Canvas.<br />
 # Every new line must begin with a ’#' if you don’t want them processed</p>
-<p>1. This is a multiple choice question by default since there isn’t an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a *. If you want to start a new line after this, <code>&lt;br&gt;</code> This will now be on a new line once you’ve imported to Canvas. Paste two in a row <code>&lt;br&gt;&lt;br&gt;</code> to get a blank line inserted.<br />
+<p>1. This is a multiple choice question by default since there isn’t an indicator code above it. Note number followed by a period to start, and the answers below have letters followed by periods. The correct answer is marked by a *. If you want to start a new line after this, enter a <code>&lt;br&gt;</code> <br> This will now be on a new line once you’ve imported to Canvas. Paste two in a row <code>&lt;br&gt;&lt;br&gt;</code> <br><br> to get a blank line inserted.<br />
 A. incorrect answer text.<br />
 B. incorrect answer text.<br />
 *C. correct answer text.<br />
@@ -238,7 +243,8 @@ D. incorrect answer text.<br />
 E. incorrect answer text.</p>
 <p>MC<br />
 image: imageFileName.jpg<br />
-1. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document. You can add an image to any question type! And you can add images as answers to MC and MA questions! *A. image: image1.jpg<br />
+1. This is a multiple choice question with an image above. Notice no spaces in the image file name, and the file must be in the same folder as this text document. You can add an image to any question type! And you can add images as answers to MC and MA questions!<br />
+*A. image: image1.jpg<br />
 B. image: image2.jpg<br />
 C. image: image3.jpg<br />
 D. image: image4.jpg<br />
@@ -272,11 +278,7 @@ right2: second right option correct for first and second left<br />
 right3: third right option distractor<br />
 right4: fourth right option distractor<br />
 right5: fifth right option distractor</p>
-TX 1.
-<h2>
-New Section of exam
-</h2>
-<p>This is a “text” question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the “New section of exam” here by entering <code>&lt;h2&gt;New Section of exam&lt;/h2&gt;</code>. The “h2” means “header 2” in html formatting.</p>
+<p>TX 1. <code>&lt;h2&gt;New Section of exam&lt;/h2&gt;</code> This is a “text” question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the “New section of exam” here by entering <code>&lt;h2&gt;New Section of exam&lt;/h2&gt;</code>. The “h2” means “header 2” in html formatting.</p>
 <h2 id="likely-errors">Likely errors</h2>
 <p>If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that’s the problem, you should get an error dialog that reports which question has the problem (Mac only). Check for the following:</p>
 <ul>
@@ -296,5 +298,7 @@ New Section of exam
 <li>hit Enter.</li>
 <li>That will run the app, and you should see the same Terminate/Console window, but some more information should have been printed to the terminal window. Copy and paste that into an email and submit it.</li>
 </ol>
+<h2 id="license">License</h2>
+<p>This project is licensed under the GNU Lesser General Public License v3.0; see the LICENSE.md file for details. Note that the software is provided “as is”, without warranty of any kind, express or implied.</p>
 </body>
 </html>
