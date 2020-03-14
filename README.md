@@ -10,11 +10,11 @@ More details and updates available at [https://github.com/haliaetus13/qtiConvert
 
 ## Installation and basic usage (Mac)
 
-1. From the shared Box folder (qtiConverterAppDistribution), download the app.zip file (Mac) and the html README file (which is this). Unzip.
-2. Move the .app to the Desktop or somewhere else easily accessible. I put it on my desktop, then also drag it to my dock.
+1. Download the [zipped app](https://github.com/haliaetus13/qtiConverter/raw/master/dist/qtiConverterApp.app.zip) (Mac only at this point). 
+2. Depending on your settings, the zip may auto unzip into the app in your Downloads folder. If it doesn't, double click on it in your Downloads folder to unzip it.
+2. Move the `qtiConverterApp.app` to the Desktop or somewhere else easily accessible. I put it on my desktop, then also drag it to my dock.
 3. Once you've created your text file and organized images, just drag your text file onto the icon for the app to run it. You can actually drop multiple text files at once, and it will process each separately.
 5. The output will be a zip folder that is named for the text file + "\_export". E.g., if your text file is `exam1.txt`, the folder will be `exam1_export.zip`. This is the zip you will import in Canvas, and it *should* include all of your images and questions.
-
 
 ## Installation and basic usage (Windows - not always tested and updated!)
 
