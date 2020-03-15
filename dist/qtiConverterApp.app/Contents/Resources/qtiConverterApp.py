@@ -64,10 +64,10 @@ def errorNoImage(q):
     """.format(str(q))
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
 
-def errorDisplay(q):
+def errorDisplay(q, qtext):
     applescript = """
-    display dialog "There seems to be a formatting problem with the {}th question in the list. Fix the question and rerun this program."
-    """.format(str(q))
+    display dialog "There seems to be a formatting problem with the {}th question in the list: {}. Fix the question and rerun this program."
+    """.format(str(q), qtext)
     subprocess.call("osascript -e '{}'".format(applescript), shell=True)
     
 def logDisplay():
@@ -155,12 +155,12 @@ class makeQti():
                 self.qHeader()
 
                 # get the question type and parse it
-                print(q)
-                print(self.questionType)
+#                 print(q)
+#                 print(self.questionType)
                 try:
                     self.typeChooser()
                 except:
-                    errorDisplay(self.qNumber)
+                    errorDisplay(self.qNumber, self.fullText)
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
@@ -196,7 +196,7 @@ class makeQti():
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
             #remove the now compressed folder
             shutil.rmtree(str(self.newDirPath))
-            
+            #TODO:
             """
             generate a report that shows:
                 the number of questions of each type
@@ -661,7 +661,7 @@ class makeQti():
             qmatch = qreg.search(fulltext)
             # get the text of the question
             quest = qmatch.group(2)
-            print(quest)
+#             print(quest)
             #get the end of the question
             qend = qmatch.span(2)[1]
             atext = fulltext[qend:]
@@ -672,7 +672,7 @@ class makeQti():
             answers = []
             corr = []
             a = 1
-            print(self.questionType)
+            # print(self.questionType)
             for mat in amatch:
                 if mat.group(2) is not None:
                     corr.append(str(a))
@@ -683,8 +683,8 @@ class makeQti():
             if len(corr) > 1:
                  self.questionType = 'MA'
             quest = self.processFormatting(quest)
-            print(self.questionType)
-            print(quest)
+            # print(self.questionType)
+            # print(quest)
 #             print(answers)
 #             print(corr)
             # make an identifier for the question
@@ -849,7 +849,7 @@ class makeQti():
             return out1    
                 
         def loadBank(self):
-            with self.ifile.open(mode = 'r', encoding = "utf-8") as f:
+            with self.ifile.open(mode = 'r', encoding = "utf-8-sig") as f:
                 data=f.read()
             # get rid of hidden spaces on new lines
             data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)

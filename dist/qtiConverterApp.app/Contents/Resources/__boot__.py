@@ -3,7 +3,7 @@ def _reset_sys_path():
     import sys
     import os
 
-    resources = os.environ['RESOURCEPATH']
+    resources = os.environ["RESOURCEPATH"]
     while sys.path[0] == resources:
         del sys.path[0]
 
@@ -27,81 +27,96 @@ because the latter don't work in 64-bit mode and are also not available
 with python 3.x.
 """
 
+import ctypes
+import struct
 import sys
 import time
 
-import ctypes
-import struct
 
-
-class AEDesc (ctypes.Structure):
+class AEDesc(ctypes.Structure):
     _fields_ = [
-        ('descKey', ctypes.c_int),
-        ('descContent', ctypes.c_void_p),
+        ("descKey", ctypes.c_int),
+        ("descContent", ctypes.c_void_p),
     ]
 
 
-class EventTypeSpec (ctypes.Structure):
+class EventTypeSpec(ctypes.Structure):
     _fields_ = [
-        ('eventClass',      ctypes.c_int),
-        ('eventKind',       ctypes.c_uint),
+        ("eventClass", ctypes.c_int),
+        ("eventKind", ctypes.c_uint),
     ]
 
 
 def _ctypes_setup():
-    carbon = ctypes.CDLL('/System/Library/Carbon.framework/Carbon')
+    carbon = ctypes.CDLL("/System/Library/Carbon.framework/Carbon")
 
     # timer_func = ctypes.CFUNCTYPE(
     #        None, ctypes.c_void_p, ctypes.c_long)
 
     ae_callback = ctypes.CFUNCTYPE(
-        ctypes.c_int, ctypes.c_void_p,
-        ctypes.c_void_p, ctypes.c_void_p)
+        ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p
+    )
     carbon.AEInstallEventHandler.argtypes = [
-            ctypes.c_int, ctypes.c_int, ae_callback,
-            ctypes.c_void_p, ctypes.c_char]
+        ctypes.c_int,
+        ctypes.c_int,
+        ae_callback,
+        ctypes.c_void_p,
+        ctypes.c_char,
+    ]
     carbon.AERemoveEventHandler.argtypes = [
-            ctypes.c_int, ctypes.c_int, ae_callback,
-            ctypes.c_char]
+        ctypes.c_int,
+        ctypes.c_int,
+        ae_callback,
+        ctypes.c_char,
+    ]
 
     carbon.AEProcessEvent.restype = ctypes.c_int
     carbon.AEProcessEvent.argtypes = [ctypes.c_void_p]
 
     carbon.ReceiveNextEvent.restype = ctypes.c_int
     carbon.ReceiveNextEvent.argtypes = [
-        ctypes.c_long,  ctypes.POINTER(EventTypeSpec),
-        ctypes.c_double, ctypes.c_char,
-        ctypes.POINTER(ctypes.c_void_p)
+        ctypes.c_long,
+        ctypes.POINTER(EventTypeSpec),
+        ctypes.c_double,
+        ctypes.c_char,
+        ctypes.POINTER(ctypes.c_void_p),
     ]
 
     carbon.AEGetParamDesc.restype = ctypes.c_int
     carbon.AEGetParamDesc.argtypes = [
-            ctypes.c_void_p, ctypes.c_int, ctypes.c_int,
-            ctypes.POINTER(AEDesc)]
+        ctypes.c_void_p,
+        ctypes.c_int,
+        ctypes.c_int,
+        ctypes.POINTER(AEDesc),
+    ]
 
     carbon.AECountItems.restype = ctypes.c_int
     carbon.AECountItems.argtypes = [
-            ctypes.POINTER(AEDesc),
-            ctypes.POINTER(ctypes.c_long)]
+        ctypes.POINTER(AEDesc),
+        ctypes.POINTER(ctypes.c_long),
+    ]
 
     carbon.AEGetNthDesc.restype = ctypes.c_int
     carbon.AEGetNthDesc.argtypes = [
-            ctypes.c_void_p, ctypes.c_long, ctypes.c_int,
-            ctypes.c_void_p, ctypes.c_void_p]
+        ctypes.c_void_p,
+        ctypes.c_long,
+        ctypes.c_int,
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+    ]
 
     carbon.AEGetDescDataSize.restype = ctypes.c_int
     carbon.AEGetDescDataSize.argtypes = [ctypes.POINTER(AEDesc)]
 
     carbon.AEGetDescData.restype = ctypes.c_int
     carbon.AEGetDescData.argtypes = [
-            ctypes.POINTER(AEDesc),
-            ctypes.c_void_p,
-            ctypes.c_int,
-            ]
+        ctypes.POINTER(AEDesc),
+        ctypes.c_void_p,
+        ctypes.c_int,
+    ]
 
     carbon.FSRefMakePath.restype = ctypes.c_int
-    carbon.FSRefMakePath.argtypes = [
-        ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint]
+    carbon.FSRefMakePath.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint]
 
     return carbon
 
@@ -119,20 +134,20 @@ def _run_argvemulator(timeout=60):
     # Configure AppleEvent handlers
     ae_callback = carbon.AEInstallEventHandler.argtypes[2]
 
-    kAEInternetSuite, = struct.unpack('>i', b'GURL')
-    kAEISGetURL, = struct.unpack('>i', b'GURL')
-    kCoreEventClass, = struct.unpack('>i', b'aevt')
-    kAEOpenApplication, = struct.unpack('>i', b'oapp')
-    kAEOpenDocuments, = struct.unpack('>i', b'odoc')
-    keyDirectObject, = struct.unpack('>i', b'----')
-    typeAEList, = struct.unpack('>i', b'list')
-    typeChar, = struct.unpack('>i', b'TEXT')
-    typeFSRef, = struct.unpack('>i', b'fsrf')
-    FALSE = b'\0'
-    TRUE = b'\1'
+    (kAEInternetSuite,) = struct.unpack(">i", b"GURL")
+    (kAEISGetURL,) = struct.unpack(">i", b"GURL")
+    (kCoreEventClass,) = struct.unpack(">i", b"aevt")
+    (kAEOpenApplication,) = struct.unpack(">i", b"oapp")
+    (kAEOpenDocuments,) = struct.unpack(">i", b"odoc")
+    (keyDirectObject,) = struct.unpack(">i", b"----")
+    (typeAEList,) = struct.unpack(">i", b"list")
+    (typeChar,) = struct.unpack(">i", b"TEXT")
+    (typeFSRef,) = struct.unpack(">i", b"fsrf")
+    FALSE = b"\0"
+    TRUE = b"\1"
     eventLoopTimedOutErr = -9875
 
-    kEventClassAppleEvent, = struct.unpack('>i', b'eppc')
+    (kEventClassAppleEvent,) = struct.unpack(">i", b"eppc")
     kEventAppleEvent = 1
 
     @ae_callback
@@ -148,21 +163,22 @@ def _run_argvemulator(timeout=60):
         return 0
 
     carbon.AEInstallEventHandler(
-        kCoreEventClass, kAEOpenApplication, open_app_handler, 0, FALSE)
+        kCoreEventClass, kAEOpenApplication, open_app_handler, 0, FALSE
+    )
 
     @ae_callback
     def open_file_handler(message, reply, refcon):
         listdesc = AEDesc()
         sts = carbon.AEGetParamDesc(
-            message, keyDirectObject, typeAEList, ctypes.byref(listdesc))
+            message, keyDirectObject, typeAEList, ctypes.byref(listdesc)
+        )
         if sts != 0:
             print("argvemulator warning: cannot unpack open document event")
             running[0] = False
             return
 
         item_count = ctypes.c_long()
-        sts = carbon.AECountItems(
-            ctypes.byref(listdesc), ctypes.byref(item_count))
+        sts = carbon.AECountItems(ctypes.byref(listdesc), ctypes.byref(item_count))
         if sts != 0:
             print("argvemulator warning: cannot unpack open document event")
             running[0] = False
@@ -171,10 +187,10 @@ def _run_argvemulator(timeout=60):
         desc = AEDesc()
         for i in range(item_count.value):
             sts = carbon.AEGetNthDesc(
-                ctypes.byref(listdesc), i+1, typeFSRef, 0, ctypes.byref(desc))
+                ctypes.byref(listdesc), i + 1, typeFSRef, 0, ctypes.byref(desc)
+            )
             if sts != 0:
-                print(
-                    "argvemulator warning: cannot unpack open document event")
+                print("argvemulator warning: cannot unpack open document event")
                 running[0] = False
                 return
 
@@ -182,8 +198,7 @@ def _run_argvemulator(timeout=60):
             buf = ctypes.create_string_buffer(sz)
             sts = carbon.AEGetDescData(ctypes.byref(desc), buf, sz)
             if sts != 0:
-                print(
-                    "argvemulator warning: cannot extract open document event")
+                print("argvemulator warning: cannot extract open document event")
                 continue
 
             fsref = buf
@@ -191,12 +206,11 @@ def _run_argvemulator(timeout=60):
             buf = ctypes.create_string_buffer(1024)
             sts = carbon.FSRefMakePath(ctypes.byref(fsref), buf, 1023)
             if sts != 0:
-                print(
-                    "argvemulator warning: cannot extract open document event")
+                print("argvemulator warning: cannot extract open document event")
                 continue
 
             if sys.version_info[0] > 2:
-                sys.argv.append(buf.value.decode('utf-8'))
+                sys.argv.append(buf.value.decode("utf-8"))
             else:
                 sys.argv.append(buf.value)
 
@@ -204,22 +218,22 @@ def _run_argvemulator(timeout=60):
         return 0
 
     carbon.AEInstallEventHandler(
-        kCoreEventClass, kAEOpenDocuments, open_file_handler, 0, FALSE)
+        kCoreEventClass, kAEOpenDocuments, open_file_handler, 0, FALSE
+    )
 
     @ae_callback
     def open_url_handler(message, reply, refcon):
         listdesc = AEDesc()
         ok = carbon.AEGetParamDesc(
-                message, keyDirectObject, typeAEList,
-                ctypes.byref(listdesc))
+            message, keyDirectObject, typeAEList, ctypes.byref(listdesc)
+        )
         if ok != 0:
             print("argvemulator warning: cannot unpack open document event")
             running[0] = False
             return
 
         item_count = ctypes.c_long()
-        sts = carbon.AECountItems(
-            ctypes.byref(listdesc), ctypes.byref(item_count))
+        sts = carbon.AECountItems(ctypes.byref(listdesc), ctypes.byref(item_count))
         if sts != 0:
             print("argvemulator warning: cannot unpack open url event")
             running[0] = False
@@ -228,7 +242,8 @@ def _run_argvemulator(timeout=60):
         desc = AEDesc()
         for i in range(item_count.value):
             sts = carbon.AEGetNthDesc(
-                ctypes.byref(listdesc), i+1, typeChar, 0, ctypes.byref(desc))
+                ctypes.byref(listdesc), i + 1, typeChar, 0, ctypes.byref(desc)
+            )
             if sts != 0:
                 print("argvemulator warning: cannot unpack open URL event")
                 running[0] = False
@@ -242,7 +257,7 @@ def _run_argvemulator(timeout=60):
 
             else:
                 if sys.version_info[0] > 2:
-                    sys.argv.append(buf.value.decode('utf-8'))
+                    sys.argv.append(buf.value.decode("utf-8"))
                 else:
                     sys.argv.append(buf.value)
 
@@ -250,10 +265,11 @@ def _run_argvemulator(timeout=60):
         return 0
 
     carbon.AEInstallEventHandler(
-        kAEInternetSuite, kAEISGetURL, open_url_handler, 0, FALSE)
+        kAEInternetSuite, kAEISGetURL, open_url_handler, 0, FALSE
+    )
 
     # Remove the funny -psn_xxx_xxx argument
-    if len(sys.argv) > 1 and sys.argv[1].startswith('-psn_'):
+    if len(sys.argv) > 1 and sys.argv[1].startswith("-psn_"):
         del sys.argv[1]
 
     start = time.time()
@@ -266,8 +282,12 @@ def _run_argvemulator(timeout=60):
         event = ctypes.c_void_p()
 
         sts = carbon.ReceiveNextEvent(
-            1, ctypes.byref(eventType),
-            start + timeout[0] - now, TRUE, ctypes.byref(event))
+            1,
+            ctypes.byref(eventType),
+            start + timeout[0] - now,
+            TRUE,
+            ctypes.byref(event),
+        )
 
         if sts == eventLoopTimedOutErr:
             break
@@ -282,17 +302,19 @@ def _run_argvemulator(timeout=60):
             break
 
     carbon.AERemoveEventHandler(
-        kCoreEventClass, kAEOpenApplication, open_app_handler, FALSE)
+        kCoreEventClass, kAEOpenApplication, open_app_handler, FALSE
+    )
     carbon.AERemoveEventHandler(
-        kCoreEventClass, kAEOpenDocuments, open_file_handler, FALSE)
-    carbon.AERemoveEventHandler(
-        kAEInternetSuite, kAEISGetURL, open_url_handler, FALSE)
+        kCoreEventClass, kAEOpenDocuments, open_file_handler, FALSE
+    )
+    carbon.AERemoveEventHandler(kAEInternetSuite, kAEISGetURL, open_url_handler, FALSE)
 
 
 def _argv_emulation():
     import os
+
     # only use if started by LaunchServices
-    if os.environ.get('_PY2APP_LAUNCHED_'):
+    if os.environ.get("_PY2APP_LAUNCHED_"):
         _run_argvemulator()
 
 
@@ -301,7 +323,8 @@ _argv_emulation()
 
 def _chdir_resource():
     import os
-    os.chdir(os.environ['RESOURCEPATH'])
+
+    os.chdir(os.environ["RESOURCEPATH"])
 
 
 _chdir_resource()
@@ -311,7 +334,7 @@ def _disable_linecache():
     import linecache
 
     def fake_getline(*args, **kwargs):
-        return ''
+        return ""
 
     linecache.orig_getline = linecache.getline
     linecache.getline = fake_getline
@@ -323,20 +346,20 @@ _disable_linecache()
 import re
 import sys
 
-cookie_re = re.compile(b"coding[:=]\s*([-\w.]+)")
+cookie_re = re.compile(br"coding[:=]\s*([-\w.]+)")
 if sys.version_info[0] == 2:
-    default_encoding = 'ascii'
+    default_encoding = "ascii"
 else:
-    default_encoding = 'utf-8'
+    default_encoding = "utf-8"
 
 
 def guess_encoding(fp):
-    for i in range(2):
+    for _i in range(2):
         ln = fp.readline()
 
         m = cookie_re.search(ln)
         if m is not None:
-            return m.group(1).decode('ascii')
+            return m.group(1).decode("ascii")
 
     return default_encoding
 
@@ -345,35 +368,37 @@ def _run():
     global __file__
     import os
     import site  # noqa: F401
-    sys.frozen = 'macosx_app'
-    base = os.environ['RESOURCEPATH']
 
-    argv0 = os.path.basename(os.environ['ARGVZERO'])
+    sys.frozen = "macosx_app"
+    base = os.environ["RESOURCEPATH"]
+
+    argv0 = os.path.basename(os.environ["ARGVZERO"])
     script = SCRIPT_MAP.get(argv0, DEFAULT_SCRIPT)  # noqa: F821
 
     path = os.path.join(base, script)
     sys.argv[0] = __file__ = path
     if sys.version_info[0] == 2:
-        with open(path, 'rU') as fp:
+        with open(path, "rU") as fp:
             source = fp.read() + "\n"
     else:
-        with open(path, 'rb') as fp:
+        with open(path, "rb") as fp:
             encoding = guess_encoding(fp)
 
-        with open(path, 'r', encoding=encoding) as fp:
-            source = fp.read() + '\n'
+        with open(path, "r", encoding=encoding) as fp:
+            source = fp.read() + "\n"
 
-        BOM = b'\xef\xbb\xbf'.decode('utf-8')
+        BOM = b"\xef\xbb\xbf".decode("utf-8")
         if source.startswith(BOM):
             source = source[1:]
 
-    exec(compile(source, path, 'exec'), globals(), globals())
+    exec(compile(source, path, "exec"), globals(), globals())
 
 
 def _setup_ctypes():
     from ctypes.macholib import dyld
     import os
-    frameworks = os.path.join(os.environ['RESOURCEPATH'], '..', 'Frameworks')
+
+    frameworks = os.path.join(os.environ["RESOURCEPATH"], "..", "Frameworks")
     dyld.DEFAULT_FRAMEWORK_FALLBACK.insert(0, frameworks)
     dyld.DEFAULT_LIBRARY_FALLBACK.insert(0, frameworks)
 

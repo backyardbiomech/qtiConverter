@@ -43,7 +43,7 @@
 	<false/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright not specified</string>
-	<key>NSMainNibFile</key>
+	<key>NSMainNibFile=</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
@@ -94,7 +94,7 @@
 			<key>template</key>
 			<string>app</string>
 			<key>version</key>
-			<string>0.19</string>
+			<string>0.21</string>
 		</dict>
 	</dict>
 </dict>

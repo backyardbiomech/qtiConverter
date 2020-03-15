@@ -155,8 +155,8 @@ class makeQti():
                 self.qHeader()
 
                 # get the question type and parse it
-                print(q)
-                print(self.questionType)
+#                 print(q)
+#                 print(self.questionType)
                 try:
                     self.typeChooser()
                 except:
@@ -661,7 +661,7 @@ class makeQti():
             qmatch = qreg.search(fulltext)
             # get the text of the question
             quest = qmatch.group(2)
-            print(quest)
+#             print(quest)
             #get the end of the question
             qend = qmatch.span(2)[1]
             atext = fulltext[qend:]
@@ -672,7 +672,7 @@ class makeQti():
             answers = []
             corr = []
             a = 1
-            print(self.questionType)
+            # print(self.questionType)
             for mat in amatch:
                 if mat.group(2) is not None:
                     corr.append(str(a))
@@ -683,8 +683,8 @@ class makeQti():
             if len(corr) > 1:
                  self.questionType = 'MA'
             quest = self.processFormatting(quest)
-            print(self.questionType)
-            print(quest)
+            # print(self.questionType)
+            # print(quest)
 #             print(answers)
 #             print(corr)
             # make an identifier for the question
@@ -849,7 +849,7 @@ class makeQti():
             return out1    
                 
         def loadBank(self):
-            with self.ifile.open(mode = 'r', encoding = "utf-8") as f:
+            with self.ifile.open(mode = 'r', encoding = "utf-8-sig") as f:
                 data=f.read()
             # get rid of hidden spaces on new lines
             data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)
