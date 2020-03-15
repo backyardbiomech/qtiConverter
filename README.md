@@ -6,6 +6,10 @@ This program will convert a simply formatted text document containing most quest
 + `jacksonbe3` at `longwood` dot `edu`  
 + last updated: March 13, 2020  
 
+## Quick tutorial video
+
+[![Tutorial Video](http://img.youtube.com/vi/FNXBe2JQEjY/0.jpg)](https://youtu.be/FNXBe2JQEjY "Tutorial Video")
+
 ## Installation and basic usage (Mac)
 
 1. Download the [zipped app](https://github.com/haliaetus13/qtiConverter/raw/master/dist/qtiConverterApp.app.zip) (Mac only at this point). 
