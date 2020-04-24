@@ -76,15 +76,15 @@
 	<array/>
 	<key>PyRuntimeLocations</key>
 	<array>
-		<string>@executable_path/../Frameworks/Python.framework/Versions/3.7/Python</string>
+		<string>@executable_path/../Frameworks/libpython3.7.dylib</string>
 	</array>
 	<key>PythonInfoDict</key>
 	<dict>
 		<key>PythonExecutable</key>
-		<string>/usr/local/opt/python/bin/python3.7</string>
+		<string>/Users/jacksonbe3/opt/miniconda3/bin/python</string>
 		<key>PythonLongVersion</key>
-		<string>3.7.6 (default, Dec 30 2019, 19:38:26) 
-[Clang 11.0.0 (clang-1100.0.33.16)]</string>
+		<string>3.7.4 (default, Aug 13 2019, 15:17:50) 
+[Clang 4.0.1 (tags/RELEASE_401/final)]</string>
 		<key>PythonShortVersion</key>
 		<string>3.7</string>
 		<key>py2app</key>

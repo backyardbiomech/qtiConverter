@@ -41,6 +41,7 @@ import re
 import xml.etree.ElementTree as ET
 import subprocess
 import urllib.parse
+import sys
 
 
 def indent(elem, level=0):
@@ -62,20 +63,29 @@ def errorNoImage(q):
     applescript = """
     display dialog "No image was found for the {}th question in the list. Check the name in the document and make sure the file is in the correct folder."
     """.format(str(q))
-    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    if sys.platform == 'darwin':
+        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    else:
+        print(applescript)
 
 def errorDisplay(q, qtext):
     applescript = """
     display dialog "There seems to be a formatting problem with the {}th question in the list: {}. Fix the question and rerun this program."
     """.format(str(q), qtext)
-    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    if sys.platform == 'darwin':
+        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    else:
+        print(applescript)
     
 def logDisplay():
     applescript = """
     display dialog "
     "
     """.format()
-    subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    if sys.platform == 'darwin':
+        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
+    else:
+        print(applescript)
 
 
 class makeQti():
