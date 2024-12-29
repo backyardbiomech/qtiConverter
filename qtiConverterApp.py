@@ -224,15 +224,18 @@ class makeQti():
             self.imagePath = ''
             self.qPts = '1'
             rws = 3
-            for i in range(rws):
-                qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
-                if len(qType)==1 and qType[0] in self.typeList:
-                    self.questionType = qType[0]
-                    self.fullText.pop(i)
-                    break
-            if self.questionType not in self.typeList:
-                self.questionType = 'MC'
-            rws -= 1
+            try:
+                for i in range(rws):
+                    qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
+                    if len(qType)==1 and qType[0] in self.typeList:
+                        self.questionType = qType[0]
+                        self.fullText.pop(i)
+                        break
+                if self.questionType not in self.typeList:
+                    self.questionType = 'MC'
+                rws -= 1
+            except IndexError:
+                print(self.fullText)
             # if it starts with image: that gives a link to the image, self.imagePath, advance self.imNum
             for i in range(3-rws):
                 im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
@@ -884,9 +887,9 @@ class makeQti():
             
         def makeHeader(self):
             # make the header for the main xml file
-            self.header = '''<?xml version="1.0" encoding="UTF-8"?>
+            self.header = f'''<?xml version="1.0" encoding="UTF-8"?>
 <questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
-              <assessment ident="{}" title="{}">
+              <assessment ident="{self.assessID}" title="{self.bankName}">
                 <qtimetadata>
                   <qtimetadatafield>
                     <fieldlabel>cc_maxattempts</fieldlabel>
@@ -894,10 +897,10 @@ class makeQti():
                   </qtimetadatafield>
                 </qtimetadata>
                 <section ident="root_section">
-            '''.format(self.assessID, self.bankName)
+            '''
             
             #make the header for the manifest file
-            self.manHeader = '''<?xml version="1.0" encoding="UTF-8"?>
+            self.manHeader = f'''<?xml version="1.0" encoding="UTF-8"?>
 <manifest identifier="i595177d21a726452731ea55437e4c4d4" xmlns="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1" xmlns:lom="http://ltsc.ieee.org/xsd/imsccv1p1/LOM/resource" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd http://ltsc.ieee.org/xsd/imsccv1p1/LOM/resource http://www.imsglobal.org/profile/cc/ccv1p1/LOM/ccv1p1_lomresource_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p2.xsd">
   <metadata>
     <schema>IMS Content</schema>
@@ -905,9 +908,9 @@ class makeQti():
   </metadata>
   <organizations/>
   <resources>
-    <resource identifier="{}" type="imsqti_xmlv1p2">
-      <file href="{}"/>
-    </resource>'''.format(self.bankName, self.outFile.parent.name + '/' + self.outFile.name)
+    <resource identifier="{self.bankName}" type="imsqti_xmlv1p2">
+      <file href="{self.outFile.parent.name + '/' + self.outFile.name}"/>
+    </resource>'''
 
         def makeFooter(self):
             self.footer = '''
