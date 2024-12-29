@@ -124,8 +124,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX', 'NU']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'TX': 'text_only_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'NU', 'OR']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'OR': 'ordering_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
