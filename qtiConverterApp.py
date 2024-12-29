@@ -836,17 +836,17 @@ class makeQti():
                 &lt;p&gt;{quest}&lt;/p&gt;
                 '''
             
-            out1 = '''
-            <item ident="{}" title="Question">
+            out1 = f'''
+            <item ident="{itid}" title="Question">
                 <itemmetadata>
                   <qtimetadata>
                     <qtimetadatafield>
                       <fieldlabel>question_type</fieldlabel>
-                      <fieldentry>{}</fieldentry>
+                      <fieldentry>{self.typeDict[self.questionType]}</fieldentry>
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>points_possible</fieldlabel>
-                      <fieldentry>{}</fieldentry>
+                      <fieldentry>{self.qPts}</fieldentry>
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>assessment_question_identifierref</fieldlabel>
@@ -856,9 +856,9 @@ class makeQti():
                 </itemmetadata>
                 <presentation>
                   <material>
-                      <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{}&lt;/p&gt;&lt;/div&gt;</mattext>
+                      <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{quest}&lt;/p&gt;&lt;/div&gt;</mattext>
                   </material>
-                  '''.format(itid, self.typeDict[self.questionType], self.qPts, quest)
+                  '''
             return out1    
                 
         def loadBank(self):
