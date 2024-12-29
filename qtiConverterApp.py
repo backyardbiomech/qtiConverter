@@ -832,9 +832,9 @@ class makeQti():
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0:
-                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" style="max-width: 100%; height: 500px" /&gt;
-                &lt;p&gt;{}&lt;/p&gt;
-                '''.format(self.imagePath, quest)
+                quest = f'''&lt;img src="%24IMS-CC-FILEBASE%24/{self.imagePath}" style="max-width: 100%; height: 500px" /&gt;
+                &lt;p&gt;{quest}&lt;/p&gt;
+                '''
             
             out1 = '''
             <item ident="{}" title="Question">
