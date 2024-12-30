@@ -42,6 +42,7 @@ import xml.etree.ElementTree as ET
 import subprocess
 import urllib.parse
 import sys
+import uuid
 
 
 def indent(elem, level=0):
@@ -289,8 +290,8 @@ class makeQti():
                 self.parseMT()
             if self.questionType == 'NU': # numerical question
                 self.parseNU()
-            if self.questionType == 'TX': # text only
-                self.parseTX()
+            if self.questionType == 'OR': # ordering question
+                self.parseOR()
             # add other question types here
         
         def processFormatting(self, text):
@@ -593,17 +594,93 @@ class makeQti():
             answers = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
-        def parseTX(self):
-            quest = self.fullText[0]
+        def parseOR(self):
+            '''
+            OR
+            1. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. They are simply put with numbers and order here.
+            toplabel: most superficial
+            1: epidermis
+            2: dermis
+            3: hypodermis
+            bottomlabel: deepest
+            '''
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
+            # make an idendifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
-            self.qPts = '0'
             questionTextStart = self.questionText(quest, itid)
-            finish = '''        </presentation>
-                            </item>'''
-            self.writeText = questionTextStart + finish
-        
+            # need to pull out toplabel and bottomlabel
+            # also need to pull out ordered items and create unique ids for each in the form of 734b8158-6c33-4841-98a5-fe70f6718c40 which are needed in a few placees, and the text of each item
+            anss = {}
+            # make a list of ids just to make sure sorting stays consistent
+            idslist = []
+            for a in range(1, len(self.fullText)):
+                line = self.fullText[a].split(':',1)
+                ansid = 0
+                if 'toplabel' in line[0]:
+                    toplabel = line[1].strip()
+                elif 'bottomlabel' in line[0]:
+                    bottomlabel = line[1].strip()
+                else:
+                    #answers
+                    ansid = str(uuid.uuid4())
+                    anss[ansid] = line[1].strip()
+                    idslist.append(ansid)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid, orig_ans_ids = idslist)
+            # build the responses
+            questionTextResponse = f'''<response_lid ident="response1" rcardinality="Ordered">
+            <render_extension>
+              <material position="top">
+                <mattext>{toplabel}</mattext>
+              </material>
+              <ims_render_object shuffle="No">
+                <flow_label>
+            '''
+            for id in idslist:
+                questionTextResponse += f'''<response_label ident="{id}">
+                    <material>
+                      <mattext texttype="text/html">&lt;p&gt;{anss[id]}&lt;/p&gt;</mattext>
+                    </material>
+                  </response_label>
+                '''
+
+            questionTextResponse += f'''</flow_label>
+                </ims_render_object>
+                <material position="bottom">
+                    <mattext>{bottomlabel}</mattext>
+                </material>
+                </render_extension>
+            </response_lid>
+            </presentation>
+            <resprocessing>
+            <outcomes>
+                <decvar defaultval="1" varname="ORDERSCORE" vartype="Integer"/>
+            </outcomes>
+            <respcondition continue="No">
+                <conditionvar>
+                '''
+            
+            for id in idslist:
+                questionTextResponse += f'''<varequal respident="response1">{id}</varequal>
+                '''
+                
+            questionTextResponse += f'''</conditionvar>
+                <setvar action="Set" varname="SCORE">100</setvar>
+                </respcondition>
+                </resprocessing>
+                </item>
+            '''
+            
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            answers = []
+            for i, id in enumerate(idslist):
+                answers.append(f'{i}: {anss[id]}')
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
+            
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
@@ -828,7 +905,7 @@ class makeQti():
             eqret=f'</p><p><img class="equation_image" title="{eqtext}" src="https://longwood.instructure.com/equation_images/{neweq}" alt="LaTeX: {eqtext}" data-equation-content="{eqtext}"></p><p>'
             return eqret
 
-        def questionText(self, quest, itid):
+        def questionText(self, quest, itid, orig_ans_ids = None):
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0:
@@ -848,6 +925,17 @@ class makeQti():
                       <fieldlabel>points_possible</fieldlabel>
                       <fieldentry>{self.qPts}</fieldentry>
                     </qtimetadatafield>
+                    '''
+                    
+            if orig_ans_ids:
+                out1 += f'''
+                    <qtimetadatafield>
+                        <fieldlabel>original_answer_ids</fieldlabel>
+                        <fieldentry>{','.join(orig_ans_ids)}</fieldentry>
+                    </qtimetadatafield>
+                '''
+                
+            out1 += f'''
                     <qtimetadatafield>
                       <fieldlabel>assessment_question_identifierref</fieldlabel>
                       <fieldentry>i29529708ad95a6ff171e20abdfa2a8d9</fieldentry>
