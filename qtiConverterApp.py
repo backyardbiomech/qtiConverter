@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-qtiConverterApp.py path/to/file -separator
+qtiConverterApp.py path/to/file
 
 Create QTI zip files from text files to import to Canvas as quizzes.
 
@@ -10,8 +10,6 @@ Inputs
 
 ifile : string
         path to a properly formatted file containing questions and answers
-separator : str, optional
-            punctuation that separates question and answer numbers from the text. '.' (default) or ')'
             
 Returns
 -------
@@ -23,8 +21,8 @@ Any associated images must be saved as separate files (jpg or png) in the same f
  
 Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
 
-Tested on macOS 10.12.6 and 10.13.6
-Last edited 2019.02.20
+Tested on macOS 10.12.6 and 10.13.6 and 14.4.1
+Last edited 2024.12.30
 
 Written by Brandon E. Jackson, Ph.D.
 brandon.e.jackson@gmail.com
@@ -1102,7 +1100,7 @@ class makeQti():
         def questionText(self, quest, itid, orig_ans_ids = None):
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
-            if len(self.imagePath) > 0:
+            if len(self.imagePath) > 0 and self.questionType != 'HS':
                 quest = f'''&lt;img src="%24IMS-CC-FILEBASE%24/{self.imagePath}" style="max-width: 100%; height: 500px" /&gt;
                 &lt;p&gt;{quest}&lt;/p&gt;
                 '''
