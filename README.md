@@ -185,8 +185,17 @@ right3: third right option distractor
 right4: fourth right option distractor  
 right5: fifth right option distractor  
 
-TX
-1\. `<h2>New Section of exam</h2>` This is a "text" question which can be used to insert section labels or instructions, and do not ask for answers. I like to enter just exam section labels. Make the text bold and larger, like the "New section of exam" here by entering `<h2>New Section of exam</h2>`. The "h2" means "header 2" in html formatting.
+OR
+1\. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. They are simply put with numbers and order here.
+toplabel: most superficial
+1: epidermis
+2: dermis
+3: hypodermis
+bottomlabel: deepest
+
+TF
+1. This is a true/false question in new quizzes. The answer is after "A" and a colon, and is not case-sensitive.
+A: True
 
 ## Likely errors
 
