@@ -205,6 +205,15 @@ second category name: an answer for another category
 second category name: another answer for the second category
 distractor: this answer doesn't go anywhere
 
+HS
+image: organs.jpg
+1\. This is a hotspot question where students are directed to click on a part of an image (in new quizzes only). The image is defined above like for other questions, this is the prompt. The coordinates that define the polygon vertices are defined as x,y,x,y,x,y all on one row below (how canvas stores it) or as shown below with (x,y) pairs each on their own line. See the polygon creator doc for more. In both cases, x and y are percentages of width and height of the image. This same image file can be used for other questions, too.
+(0.503731343283582, 0.6557674841053588)
+(0.48134328358208955, 0.6748410535876476)
+(0.5074626865671642, 0.6875567665758402)
+(0.5758706467661692, 0.6939146230699365)
+(0.6417910447761194, 0.6612170753860127)
+
 ## Likely errors
 
 If the application crashes after you drop your file on it, you probably have a formatting issue (it is picky). If that's the problem, you should get an error dialog that reports which question has the problem (Mac only). Check for the following:

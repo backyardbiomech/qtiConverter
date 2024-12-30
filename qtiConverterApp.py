@@ -125,8 +125,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'NU', 'OR', 'TF', 'CT']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'OR': 'ordering_question', 'TF': 'true_false_question', 'CT': 'categorization_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'NU', 'OR', 'TF', 'CT', 'HS']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'OR': 'ordering_question', 'TF': 'true_false_question', 'CT': 'categorization_question', 'HS' : 'hot_spot_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -296,6 +296,8 @@ class makeQti():
                 self.parseTF()
             if self.questionType == 'CT': # categorization question
                 self.parseCT()
+            if self.questionType == 'HS': # hotspot question
+                self.parseHS()
             # add other question types here
         
         def processFormatting(self, text):
@@ -395,8 +397,6 @@ class makeQti():
                                       </item>'''
             # write it
             self.writeText = questionTextStart + questionTextResponse
-            
-                                          
             
         def parseMD(self):
             '''
@@ -498,7 +498,6 @@ class makeQti():
             corr = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
-                
         def parseMB(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
@@ -640,6 +639,55 @@ class makeQti():
             #reformat answers to make html preview
             corr = []
             self.htmlText = self.questionTextHtml(itid, quest, [answer], corr)
+            
+        def parseHS(self):
+            '''
+            HS
+            image: organs.jpg
+            1. Click in the stomach.
+            (0.5435323383084577, 0.6512261580381471)
+            (0.503731343283582, 0.6557674841053588)
+            (0.48134328358208955, 0.6748410535876476)
+            (0.5074626865671642, 0.6875567665758402)
+            (0.5758706467661692, 0.6939146230699365)
+            '''
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
+            # make an idendifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            #save rows of coordinates as a string if given as (x,y)
+            if self.fullText[1].startswith('('):
+                coordinates = []
+                for line in self.fullText[1:]:
+                    x, y = line.strip('()').split(',')
+                    coordinates.append(f"{x.strip()},{y.strip()}")
+                coordinates_str = ','.join(coordinates)
+            # or if given as x,y,x,y,x,y...
+            else:
+                coordinates_str = self.fullText[1]
+            
+            # generate the responses
+            questionTextResponse = f'''
+            <render_hotspot>
+                <material>
+                  <matimage uri="$IMS-CC-FILEBASE$/Uploaded Media/{self.imagePath}"/>
+                </material>
+                <response_label ident="response1" rarea="bounded">{coordinates_str}</response_label>
+              </render_hotspot>
+            </response_xy>
+          </flow>
+        </presentation>
+      </item>
+            '''
+            
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            corr = []
+            answer=''
+            self.htmlText = self.questionTextHtml(itid, quest, [answer], corr)
+
             
         def parseCT(self):
             '''
@@ -1080,6 +1128,7 @@ class makeQti():
                 </qtimetadatafield>
                 '''
                 
+            #this might be important for ordering questions
             if orig_ans_ids:
                 out1 += f'''
                     <qtimetadatafield>
@@ -1095,7 +1144,19 @@ class makeQti():
                     </qtimetadatafield>
                   </qtimetadata>
                 </itemmetadata>
+                '''
+                
+            if self.questionType == 'HS':
+                out1 += f'''
                 <presentation>
+                <flow>
+                    <response_xy ident="response1" rcardinality="Single" rtiming="No">
+                    <material>
+                        <mattext texttype="text/html">&lt;p&gt;{quest}&lt;/p&gt;</mattext>
+                    </material>
+                '''
+            else:
+                out1 += f'''<presentation>
                   <material>
                       <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{quest}&lt;/p&gt;&lt;/div&gt;</mattext>
                   </material>
