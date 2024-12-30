@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-qtiConverterApp.py path/to/file -separator
+qtiConverterApp.py path/to/file
 
 Create QTI zip files from text files to import to Canvas as quizzes.
 
@@ -10,8 +10,6 @@ Inputs
 
 ifile : string
         path to a properly formatted file containing questions and answers
-separator : str, optional
-            punctuation that separates question and answer numbers from the text. '.' (default) or ')'
             
 Returns
 -------
@@ -23,8 +21,8 @@ Any associated images must be saved as separate files (jpg or png) in the same f
  
 Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
 
-Tested on macOS 10.12.6 and 10.13.6
-Last edited 2019.02.20
+Tested on macOS 10.12.6 and 10.13.6 and 14.4.1
+Last edited 2024.12.30
 
 Written by Brandon E. Jackson, Ph.D.
 brandon.e.jackson@gmail.com
@@ -42,6 +40,7 @@ import xml.etree.ElementTree as ET
 import subprocess
 import urllib.parse
 import sys
+import uuid
 
 
 def indent(elem, level=0):
@@ -124,8 +123,8 @@ class makeQti():
             # XML identifiers, don't think these actually matter
             self.assessID = 'assessID'
             # Initialize a list of question types
-            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'TX', 'NU']
-            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'TX': 'text_only_question'}
+            self.typeList = ['MC', 'MA', 'MT', 'SA', 'MD', 'MB', 'ES', 'NU', 'OR', 'TF', 'CT', 'HS']
+            self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'OR': 'ordering_question', 'TF': 'true_false_question', 'CT': 'categorization_question', 'HS' : 'hot_spot_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
             
@@ -224,15 +223,18 @@ class makeQti():
             self.imagePath = ''
             self.qPts = '1'
             rws = 3
-            for i in range(rws):
-                qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
-                if len(qType)==1 and qType[0] in self.typeList:
-                    self.questionType = qType[0]
-                    self.fullText.pop(i)
-                    break
-            if self.questionType not in self.typeList:
-                self.questionType = 'MC'
-            rws -= 1
+            try:
+                for i in range(rws):
+                    qType=re.findall(r'^\s*([A-Z]{2})\s*$', self.fullText[i])
+                    if len(qType)==1 and qType[0] in self.typeList:
+                        self.questionType = qType[0]
+                        self.fullText.pop(i)
+                        break
+                if self.questionType not in self.typeList:
+                    self.questionType = 'MC'
+                rws -= 1
+            except IndexError:
+                print(self.fullText)
             # if it starts with image: that gives a link to the image, self.imagePath, advance self.imNum
             for i in range(3-rws):
                 im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
@@ -286,8 +288,14 @@ class makeQti():
                 self.parseMT()
             if self.questionType == 'NU': # numerical question
                 self.parseNU()
-            if self.questionType == 'TX': # text only
-                self.parseTX()
+            if self.questionType == 'OR': # ordering question
+                self.parseOR()
+            if self.questionType == 'TF': # true false question
+                self.parseTF()
+            if self.questionType == 'CT': # categorization question
+                self.parseCT()
+            if self.questionType == 'HS': # hotspot question
+                self.parseHS()
             # add other question types here
         
         def processFormatting(self, text):
@@ -388,8 +396,6 @@ class makeQti():
             # write it
             self.writeText = questionTextStart + questionTextResponse
             
-                                          
-            
         def parseMD(self):
             '''
             answer format is 
@@ -410,7 +416,7 @@ class makeQti():
             # parse through the question looking for drop names surrounded by []
             dropNames = re.findall(r'\[(\w+)\]', quest)
             #format should be *drop1: correct answer for 1 \n
-            # initizaliz a dict to hold all answers dropAns[dropName] = {'respID': 'response text', 'corr': 'respID'}
+            # initizalize a dict to hold all answers dropAns[dropName] = {'respID': 'response text', 'corr': 'respID'}
             dropAns = {}
             #loop through drop names
             for dropName in dropNames:
@@ -430,7 +436,7 @@ class makeQti():
             #loop back through dropAns dict to make the answers
             
             for dropName, resp in dropAns.items():
-                # parse the first part fo the responses
+                # parse the first part of the responses
                 questionTextResponse += '''<response_lid ident="{}">
                                                 <material>
                                                   <mattext>{}</mattext>
@@ -490,7 +496,6 @@ class makeQti():
             corr = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
-                
         def parseMB(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
@@ -590,17 +595,289 @@ class makeQti():
             answers = []
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
-        def parseTX(self):
-            quest = self.fullText[0]
+        def parseTF(self):
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
+            answer = self.fullText[1].split(':',1)[1].strip().lower()
+            # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
-            self.qPts = '0'
+            questionTextStart = self.questionText(quest, itid, )
+            # build the responses
+            questionTextResponse = f'''
+                <response_lid ident="response1" rcardinality="Single">
+                <render_choice>
+                <response_label ident="true_choice">
+                    <material>
+                    <mattext texttype="text/html">True</mattext>
+                    </material>
+                </response_label>
+                <response_label ident="false_choice">
+                    <material>
+                    <mattext texttype="text/html">False</mattext>
+                    </material>
+                </response_label>
+                </render_choice>
+            </response_lid>
+            </presentation>
+            <resprocessing>
+            <outcomes>
+                <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+            </outcomes>
+            <respcondition continue="No">
+                <conditionvar>
+                <varequal respident="response1">{answer}_choice</varequal>
+                </conditionvar>
+                <setvar action="Set" varname="SCORE">100</setvar>
+            </respcondition>
+            </resprocessing>
+        </item>
+            '''
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, [answer], corr)
+            
+        def parseHS(self):
+            '''
+            HS
+            image: organs.jpg
+            1. Click in the stomach.
+            (0.5435323383084577, 0.6512261580381471)
+            (0.503731343283582, 0.6557674841053588)
+            (0.48134328358208955, 0.6748410535876476)
+            (0.5074626865671642, 0.6875567665758402)
+            (0.5758706467661692, 0.6939146230699365)
+            '''
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
+            # make an idendifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
             questionTextStart = self.questionText(quest, itid)
-            finish = '''        </presentation>
-                            </item>'''
-            self.writeText = questionTextStart + finish
-        
+            #save rows of coordinates as a string if given as (x,y)
+            if self.fullText[1].startswith('('):
+                coordinates = []
+                for line in self.fullText[1:]:
+                    x, y = line.strip('()').split(',')
+                    coordinates.append(f"{x.strip()},{y.strip()}")
+                coordinates_str = ','.join(coordinates)
+            # or if given as x,y,x,y,x,y...
+            else:
+                coordinates_str = self.fullText[1]
+            
+            # generate the responses
+            questionTextResponse = f'''
+            <render_hotspot>
+                <material>
+                  <matimage uri="$IMS-CC-FILEBASE$/Uploaded Media/{self.imagePath}"/>
+                </material>
+                <response_label ident="response1" rarea="bounded">{coordinates_str}</response_label>
+              </render_hotspot>
+            </response_xy>
+          </flow>
+        </presentation>
+      </item>
+            '''
+            
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            corr = []
+            answer=''
+            self.htmlText = self.questionTextHtml(itid, quest, [answer], corr)
+
+            
+        def parseCT(self):
+            '''
+            CT
+            1. This is a categorization question in new quizzes. Each category can have multiple answers, and you can include multiple distractors that should be left as uncategorized. Make sure that each line begins with the name for a category (and that spelling is exactly the same for the every entry for the same category) or distractor.
+            first category name: an answer for first category name
+            first category name: another answer for first category name
+            second category name: an answer for another category
+            second category name: another answer for the second category
+            distractor: this answer doesn't go anywhere
+            '''
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
+            # make an idendifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid)
+            # need to pull category names and correct answers for each one, plus distractors
+            #init a dict to hold category names and uuid cats[categoryName] = uuid
+            cats = {}
+            # initialize a dict to hold all answers catAns[categoryName] = {'respID': 'response text'}
+            catAns = {}
+            #loop through answers
+            
+            for a in range(1, len(self.fullText)):
+                line = self.fullText[a].split(':', 1)
+                respID = 'resp' + str(a)
+                if line[0] not in cats:
+                    cats[line[0]] = str(uuid.uuid4())
+                if line[0] not in catAns:
+                    catAns[line[0]] = {}
+                catAns[line[0]][respID] = self.processFormatting(line[1])
+            
+            # generate the responses
+            questionTextResponse = ''
+            #loop through catAns dict to make the answers
+            # each category gets all the reponses in the xml
+            catscore = float(100 / (len(cats) - ('distractor' in cats)))
+            
+            for catName, catid in cats.items():
+                if catName.lower().strip() == 'distractor':
+                    continue
+                
+                questionTextResponse += f'''
+                <response_lid ident="{catid}" rcardinality="Multiple">
+                <material>
+                    <mattext texttype="text/plain">{catName}</mattext>
+                </material>
+                <render_choice>
+                '''
+                #go through the options
+                for cn, resps in catAns.items():
+                    for rid, ans in resps.items():
+                        questionTextResponse += f'''
+                        <response_label ident="{rid}">
+                            <material>
+                            <mattext texttype="text/plain">{ans}</mattext>
+                            </material>
+                        </response_label>
+                        '''
+                
+                questionTextResponse += f'''
+                    </render_choice>
+                </response_lid>
+                '''
+            questionTextResponse += f'''
+            </presentation>
+            <resprocessing>
+            <outcomes>
+                <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+            </outcomes>
+            '''
+            
+            #set correct answers
+            for cat, ans in catAns.items():
+                if cat.lower().strip() == 'distractor':
+                    continue
+                
+                questionTextResponse += f'''
+                    <respcondition>
+                        <conditionvar>
+                        '''
+                catid = cats[cat]
+                for rid in ans.keys():
+                    questionTextResponse += f'''
+                            <varequal respident="{catid}">{rid}</varequal>
+                            '''
+                
+                questionTextResponse += f'''
+                    </conditionvar>
+                        <setvar action="Add" varname="SCORE">{catscore}</setvar>
+                    </respcondition>
+                    '''
+            questionTextResponse += f'''
+            </resprocessing>
+            </item>
+            '''
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            answers = []
+            for catName, resp in catAns.items():
+                for rid, ans in resp.items():
+                    answers.append(f'{catName}: {ans}')
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
+                
+        def parseOR(self):
+            '''
+            OR
+            1. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. They are simply put with numbers and order here.
+            toplabel: most superficial
+            1: epidermis
+            2: dermis
+            3: hypodermis
+            bottomlabel: deepest
+            '''
+            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.processFormatting(quest)
+            # make an idendifier for the question
+            itid = str(self.questionType) + str(self.qNumber)
+            # need to pull out toplabel and bottomlabel
+            # also need to pull out ordered items and create unique ids for each in the form of 734b8158-6c33-4841-98a5-fe70f6718c40 which are needed in a few placees, and the text of each item
+            anss = {}
+            # make a list of ids just to make sure sorting stays consistent
+            idslist = []
+            for a in range(1, len(self.fullText)):
+                line = self.fullText[a].split(':',1)
+                ansid = 0
+                if 'toplabel' in line[0]:
+                    toplabel = line[1].strip()
+                elif 'bottomlabel' in line[0]:
+                    bottomlabel = line[1].strip()
+                else:
+                    #answers
+                    ansid = str(uuid.uuid4())
+                    anss[ansid] = line[1].strip()
+                    idslist.append(ansid)
+            # build the question text
+            questionTextStart = self.questionText(quest, itid, orig_ans_ids = idslist)
+            # build the responses
+            questionTextResponse = f'''<response_lid ident="response1" rcardinality="Ordered">
+            <render_extension>
+              <material position="top">
+                <mattext>{toplabel}</mattext>
+              </material>
+              <ims_render_object shuffle="No">
+                <flow_label>
+            '''
+            for id in idslist:
+                questionTextResponse += f'''<response_label ident="{id}">
+                    <material>
+                      <mattext texttype="text/html">&lt;p&gt;{anss[id]}&lt;/p&gt;</mattext>
+                    </material>
+                  </response_label>
+                '''
+
+            questionTextResponse += f'''</flow_label>
+                </ims_render_object>
+                <material position="bottom">
+                    <mattext>{bottomlabel}</mattext>
+                </material>
+                </render_extension>
+            </response_lid>
+            </presentation>
+            <resprocessing>
+            <outcomes>
+                <decvar defaultval="1" varname="ORDERSCORE" vartype="Integer"/>
+            </outcomes>
+            <respcondition continue="No">
+                <conditionvar>
+                '''
+            
+            for id in idslist:
+                questionTextResponse += f'''<varequal respident="response1">{id}</varequal>
+                '''
+                
+            questionTextResponse += f'''</conditionvar>
+                <setvar action="Set" varname="SCORE">100</setvar>
+                </respcondition>
+                </resprocessing>
+                </item>
+            '''
+            
+            self.writeText = questionTextStart + questionTextResponse
+            #reformat answers to make html preview
+            answers = [toplabel]
+            for i, id in enumerate(idslist):
+                answers.append(f'{i}: {anss[id]}')
+            answers.append(bottomlabel)
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
+            
         def parseSA(self):
             quest = self.fullText[0].split(self.sep, 1) [1].strip()
             quest = self.processFormatting(quest)
@@ -671,7 +948,6 @@ class makeQti():
             qmatch = qreg.search(fulltext)
             # get the text of the question
             quest = qmatch.group(2)
-#             print(quest)
             #get the end of the question
             qend = qmatch.span(2)[1]
             atext = fulltext[qend:]
@@ -693,10 +969,6 @@ class makeQti():
             if len(corr) > 1:
                  self.questionType = 'MA'
             quest = self.processFormatting(quest)
-            # print(self.questionType)
-            # print(quest)
-#             print(answers)
-#             print(corr)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -825,37 +1097,68 @@ class makeQti():
             eqret=f'</p><p><img class="equation_image" title="{eqtext}" src="https://longwood.instructure.com/equation_images/{neweq}" alt="LaTeX: {eqtext}" data-equation-content="{eqtext}"></p><p>'
             return eqret
 
-        def questionText(self, quest, itid):
+        def questionText(self, quest, itid, orig_ans_ids = None):
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
-            if len(self.imagePath) > 0:
-                quest = '''&lt;img src="%24IMS-CC-FILEBASE%24/{}" style="max-width: 100%; height: 500px" /&gt;
-                &lt;p&gt;{}&lt;/p&gt;
-                '''.format(self.imagePath, quest)
+            if len(self.imagePath) > 0 and self.questionType != 'HS':
+                quest = f'''&lt;img src="%24IMS-CC-FILEBASE%24/{self.imagePath}" style="max-width: 100%; height: 500px" /&gt;
+                &lt;p&gt;{quest}&lt;/p&gt;
+                '''
             
-            out1 = '''
-            <item ident="{}" title="Question">
+            out1 = f'''
+            <item ident="{itid}" title="Question">
                 <itemmetadata>
                   <qtimetadata>
                     <qtimetadatafield>
                       <fieldlabel>question_type</fieldlabel>
-                      <fieldentry>{}</fieldentry>
+                      <fieldentry>{self.typeDict[self.questionType]}</fieldentry>
                     </qtimetadatafield>
                     <qtimetadatafield>
                       <fieldlabel>points_possible</fieldlabel>
-                      <fieldentry>{}</fieldentry>
+                      <fieldentry>{self.qPts}</fieldentry>
                     </qtimetadatafield>
+                    '''
+            if self.questionType == 'TF':
+                out1 += f'''
+                <qtimetadatafield>
+                    <fieldlabel>original_answer_ids</fieldlabel>
+                    <fieldentry>true_choice,false_choice</fieldentry>
+                </qtimetadatafield>
+                '''
+                
+            #this might be important for ordering questions
+            if orig_ans_ids:
+                out1 += f'''
+                    <qtimetadatafield>
+                        <fieldlabel>original_answer_ids</fieldlabel>
+                        <fieldentry>{','.join(orig_ans_ids)}</fieldentry>
+                    </qtimetadatafield>
+                '''
+                
+            out1 += f'''
                     <qtimetadatafield>
                       <fieldlabel>assessment_question_identifierref</fieldlabel>
                       <fieldentry>i29529708ad95a6ff171e20abdfa2a8d9</fieldentry>
                     </qtimetadatafield>
                   </qtimetadata>
                 </itemmetadata>
+                '''
+                
+            if self.questionType == 'HS':
+                out1 += f'''
                 <presentation>
+                <flow>
+                    <response_xy ident="response1" rcardinality="Single" rtiming="No">
+                    <material>
+                        <mattext texttype="text/html">&lt;p&gt;{quest}&lt;/p&gt;</mattext>
+                    </material>
+                '''
+            else:
+                out1 += f'''<presentation>
                   <material>
-                      <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{}&lt;/p&gt;&lt;/div&gt;</mattext>
+                      <mattext texttype="text/html">&lt;div&gt;&lt;p&gt;{quest}&lt;/p&gt;&lt;/div&gt;</mattext>
                   </material>
-                  '''.format(itid, self.typeDict[self.questionType], self.qPts, quest)
+                  '''
             return out1    
                 
         def loadBank(self):
@@ -884,9 +1187,9 @@ class makeQti():
             
         def makeHeader(self):
             # make the header for the main xml file
-            self.header = '''<?xml version="1.0" encoding="UTF-8"?>
+            self.header = f'''<?xml version="1.0" encoding="UTF-8"?>
 <questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
-              <assessment ident="{}" title="{}">
+              <assessment ident="{self.assessID}" title="{self.bankName}">
                 <qtimetadata>
                   <qtimetadatafield>
                     <fieldlabel>cc_maxattempts</fieldlabel>
@@ -894,10 +1197,10 @@ class makeQti():
                   </qtimetadatafield>
                 </qtimetadata>
                 <section ident="root_section">
-            '''.format(self.assessID, self.bankName)
+            '''
             
             #make the header for the manifest file
-            self.manHeader = '''<?xml version="1.0" encoding="UTF-8"?>
+            self.manHeader = f'''<?xml version="1.0" encoding="UTF-8"?>
 <manifest identifier="i595177d21a726452731ea55437e4c4d4" xmlns="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1" xmlns:lom="http://ltsc.ieee.org/xsd/imsccv1p1/LOM/resource" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p1/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd http://ltsc.ieee.org/xsd/imsccv1p1/LOM/resource http://www.imsglobal.org/profile/cc/ccv1p1/LOM/ccv1p1_lomresource_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p2.xsd">
   <metadata>
     <schema>IMS Content</schema>
@@ -905,9 +1208,9 @@ class makeQti():
   </metadata>
   <organizations/>
   <resources>
-    <resource identifier="{}" type="imsqti_xmlv1p2">
-      <file href="{}"/>
-    </resource>'''.format(self.bankName, self.outFile.parent.name + '/' + self.outFile.name)
+    <resource identifier="{self.bankName}" type="imsqti_xmlv1p2">
+      <file href="{self.outFile.parent.name + '/' + self.outFile.name}"/>
+    </resource>'''
 
         def makeFooter(self):
             self.footer = '''
