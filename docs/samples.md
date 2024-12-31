@@ -87,7 +87,7 @@ distractor: this answer doesn't go anywhere
 
 HS  
 image: organs.jpg  
-1\. This is a hotspot question where students are directed to click on a part of an image (in new quizzes only). The image is defined above like for other questions, this is the prompt. The coordinates that define the polygon vertices are defined as x,y,x,y,x,y all on one row below (how canvas stores it) or as shown below with (x,y) pairs each on their own line. See the polygon creator doc for more. In both cases, x and y are percentages of width and height of the image. This same image file can be used for other questions, too.  
+1\. This is a hotspot question where students are directed to click on a part of an image (in new quizzes only). The image is defined above like for other questions, this is the prompt. The coordinates that define the polygon vertices are defined as x,y,x,y,x,y all on one row below (how canvas stores it) or as shown below with (x,y) pairs each on their own line. See the [FAQ](./FAQ.md#hotspot-questions)] for more. In both cases, x and y are percentages of width and height of the image. This same image file can be used for other questions, too.  
 (0.503731343283582, 0.6557674841053588)  
 (0.48134328358208955, 0.6748410535876476)  
 (0.5074626865671642, 0.6875567665758402)  
