@@ -66,7 +66,7 @@ right4: fourth right option distractor
 right5: fifth right option distractor  
 
 OR  
-1\. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. They are simply put with numbers and order here.  
+1\. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. Here, just include `toplabel: ` and `bottomlabel: ` and the properly ordered list. The digit with colon is important for the conversion.  
 toplabel: most superficial  
 1: epidermis  
 2: dermis  
