@@ -78,7 +78,7 @@ TF
 A: True
 
 CT
-1\. This is a categorization question in new quizzes. Each category can have multiple answers, and you can include multiple distractors that should be left as uncategorized. Make sure that each line begins with the name for a category (and that spelling is exactly the same for the every entry for the same category) or 'distractor'.  
+1\. This is a categorization question in new quizzes. Each category can have multiple answers, and you can include multiple distractors that should be left as uncategorized. Make sure that each line begins with the name for a category (and that spelling is exactly the same for  every entry for the same category) or 'distractor'.  
 first category name: an answer for first category name  
 first category name: another answer for first category name  
 second category name: an answer for another category  
