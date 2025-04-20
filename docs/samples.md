@@ -1,6 +1,6 @@
 ### Samples
 
-This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also download a sample file from the [github repository](https://github.com/haliaetus13/qtiConverter) (testFiles > simpleTestForImport > bank1.txt) that will show you the types. Drop that on the app, import the zip to Canvas, and preview the quiz to see what it looks like.
+This should give you some idea of how to format the text document. Note that each sample "question" below contains some instructions for how to format that question type. You can also [download a sample file](../testFiles/simple%20Test%20For%20Import/bank1.txt)that will show you the types. You can convert that sample file, import to Canvas, and preview the quiz to see what it looks like.
 
 \# This is a comment line because it begins with '\#'.  
 \# You can make any notes and they will not become part of the exam in Canvas.  
@@ -65,29 +65,29 @@ right3: third right option distractor
 right4: fourth right option distractor  
 right5: fifth right option distractor  
 
-OR
-1\. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. They are simply put with numbers and order here.  
+OR  
+1\. This is an ordering question for new quizzes. It will show as a "top label", like "most superficial", a bottom label like "deepest", and a series of drag and drop options. Here, just include `toplabel: ` and `bottomlabel: ` and the properly ordered list. The digit with colon is important for the conversion.  
 toplabel: most superficial  
 1: epidermis  
 2: dermis  
 3: hypodermis  
-bottomlabel: deepest
+bottomlabel: deepest  
 
-TF
+TF  
 1\. This is a true/false question in new quizzes. The answer is after "A" and a colon, and is not case-sensitive.  
-A: True
+A: True  
 
-CT
-1\. This is a categorization question in new quizzes. Each category can have multiple answers, and you can include multiple distractors that should be left as uncategorized. Make sure that each line begins with the name for a category (and that spelling is exactly the same for  every entry for the same category) or 'distractor'.  
+CT  
+1\. This is a categorization question in new quizzes. Each category can have multiple answers, and you can include multiple distractors that should be left as uncategorized. Make sure that each line begins with the name for a category (and that spelling is exactly the same for the every entry for the same category) or 'distractor'.  
 first category name: an answer for first category name  
 first category name: another answer for first category name  
 second category name: an answer for another category  
 second category name: another answer for the second category  
 distractor: this answer doesn't go anywhere  
 
-HS
-image: organs.jpg
-1\. This is a hotspot question where students are directed to click on a part of an image (in new quizzes only). The image is defined above like for other questions, this is the prompt. The coordinates that define the polygon vertices are defined as x,y,x,y,x,y all on one row below (how canvas stores it) or as shown below with (x,y) pairs each on their own line. See the polygon creator doc for more. In both cases, x and y are percentages of width and height of the image. This same image file can be used for other questions, too.  
+HS  
+image: organs.jpg  
+1\. This is a hotspot question where students are directed to click on a part of an image (in new quizzes only). The image is defined above like for other questions, this is the prompt. The coordinates that define the polygon vertices are defined as x,y,x,y,x,y all on one row below (how canvas stores it) or as shown below with (x,y) pairs each on their own line. See the [FAQ](./FAQ.md#hotspot-questions) for more. In both cases, x and y are percentages of width and height of the image. This same image file can be used for other questions, too.  
 (0.503731343283582, 0.6557674841053588)  
 (0.48134328358208955, 0.6748410535876476)  
 (0.5074626865671642, 0.6875567665758402)  
@@ -95,3 +95,4 @@ image: organs.jpg
 (0.6417910447761194, 0.6612170753860127)  
 
 See [this part of the FAQs](./FAQ.md#hotspot-questions) for help with getting the coordinates for the hot spot question.
+

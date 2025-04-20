@@ -37,7 +37,7 @@ Note: All question types support images as part of the question.
 + Essay
   
 ## Quick tutorial video
-Currently outdated but may be helful
+Currently outdated but may be helpful
 
 [![Tutorial Video](http://img.youtube.com/vi/FNXBe2JQEjY/0.jpg)](https://youtu.be/FNXBe2JQEjY "Tutorial Video")
 

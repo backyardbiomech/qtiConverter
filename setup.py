@@ -10,8 +10,9 @@ from setuptools import setup
 APP = ['qtiConverterApp.py']
 DATA_FILES = []
 OPTIONS = {'argv_emulation': True,
-            'includes': ['pathlib','opencv-python','matplotlib'],
-            'iconfile': 'LargeIconQTI.icns'
+            'includes': ['pathlib','cv2','matplotlib'],
+            'iconfile': 'LargeIconQTI.icns',
+            'excludes': ['zmq']
             }#,
             #'excludes': "PyQt5, scipy, jupyter, jupyterlab,numpy,pandas,jupyter_console,matplotlib,statsmodels,ipython"}
 

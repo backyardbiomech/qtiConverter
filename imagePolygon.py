@@ -1,6 +1,7 @@
 import cv2
-import matplotlib.pyplot as plt
-import numpy as np
+from pathlib import Path
+# import matplotlib.pyplot as plt
+# import numpy as np
 
 # Initialize global variables
 points = []
@@ -29,15 +30,22 @@ def main():
 
     # Ask for the image path
     image_path = input("Enter the path to the image: ")
+    # Strip quotes if present
+    image_path = image_path.strip("'\"")
+    image_path = str(Path(image_path).resolve())
+    print(image_path)
 
     # Load the image
     img = cv2.imread(image_path)
     if img is None:
-        print("Could not open or find the image.")
+        print("Could not open or find the image. No spaces or special characters allowed in path name, no quotes around path.")
         return
 
     # Display the image
     cv2.imshow('image', img)
+    # add "Click to add vertices, Esc to close polygon" to as the title of the window
+    cv2.setWindowTitle('image', "Click to add vertices, Esc to close polygon")
+    # Set the mouse callback function
     cv2.setMouseCallback('image', click_event)
 
     # Wait until the user presses a key
