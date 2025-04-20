@@ -94,5 +94,5 @@ image: organs.jpg
 (0.5758706467661692, 0.6939146230699365)  
 (0.6417910447761194, 0.6612170753860127)  
 
-
 See [this part of the FAQs](./FAQ.md#hotspot-questions) for help with getting the coordinates for the hot spot question.
+
