@@ -21,8 +21,8 @@ Any associated images must be saved as separate files (jpg or png) in the same f
  
 Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
 
-Tested on macOS 10.12.6 and 10.13.6 and 14.4.1
-Last edited 2024.12.30
+Tested on macOS 10.12.6 and 10.13.6 and 14.4.1, 15.3.2
+Last edited 2025.04.20
 
 Written by Brandon E. Jackson, Ph.D.
 brandon.e.jackson@gmail.com
@@ -314,7 +314,7 @@ class makeQti():
             return text
             
         def parseMT(self):
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -407,7 +407,7 @@ class makeQti():
             drop2: incorrect answer for 2  
             *drop2: correct answer for 2 
             '''
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -497,7 +497,7 @@ class makeQti():
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
         def parseMB(self):
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -565,7 +565,7 @@ class makeQti():
             self.writeText = questionTextStart + questionTextResponse 
             
         def parseES(self):
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -583,7 +583,7 @@ class makeQti():
                                 </outcomes>
                                 <respcondition continue="No">
                                     <conditionvar>
-                                        <other/>
+                                    <other/>
                                     </conditionvar>
                                 </respcondition>
                             </resprocessing>
@@ -596,7 +596,7 @@ class makeQti():
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
         def parseTF(self):
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             answer = self.fullText[1].split(':',1)[1].strip().lower()
             # make an identifier for the question
@@ -649,7 +649,7 @@ class makeQti():
             (0.5074626865671642, 0.6875567665758402)
             (0.5758706467661692, 0.6939146230699365)
             '''
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an idendifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -697,7 +697,7 @@ class makeQti():
             second category name: another answer for the second category
             distractor: this answer doesn't go anywhere
             '''
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an idendifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -802,7 +802,7 @@ class makeQti():
             3: hypodermis
             bottomlabel: deepest
             '''
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             # make an idendifier for the question
             itid = str(self.questionType) + str(self.qNumber)
@@ -879,7 +879,7 @@ class makeQti():
             self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
         def parseSA(self):
-            quest = self.fullText[0].split(self.sep, 1) [1].strip()
+            quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             corr = []
             # make a list of correct answers
@@ -942,7 +942,7 @@ class makeQti():
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
             # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
-            qreg = re.compile(r'^\d+(\.|\))\s{0,4}([\S\s]+?)(^\**[A-Za-z]{1}(\.|\)))', re.M)
+            qreg = re.compile(r'^\d+(\.|\))\s{0,4}([\S\s]+?)(^\.*[A-Za-z]{1}(\.|\)))', re.M)
             # match in the full question
             fulltext = '\n'.join(self.fullText)
             qmatch = qreg.search(fulltext)
@@ -1034,8 +1034,8 @@ class makeQti():
             # done with answers, add stuff for end of question
             out1 += '''</render_choice>
                   </response_lid>
-                </presentation>
-                <resprocessing>
+                <presentation>
+                  <resprocessing>
                   <outcomes>
                     <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
                   </outcomes>
@@ -1222,6 +1222,31 @@ class makeQti():
             self.manFooter = '''</resources>
 </manifest>
 '''
+
+        def extractQuestionText(self, text):
+            """
+            Extract question text regardless of whether the separator is a period or closing parenthesis.
+            Works with formats like "1. Question text" or "1) Question text"
+            """
+            # If it's already a single line, use regex to extract the question text
+            if isinstance(text, str):
+                # Match digit followed by period or parenthesis, then capture the rest as question text
+                match = re.match(r'^\s*\d+[\.\)]\s*(.*?)$', text)
+                if match:
+                    return match.group(1)
+                return text
+            
+            # If we have multiple lines (list), extract from the first line
+            elif isinstance(text, list) and len(text) > 0:
+                # Match digit followed by period or parenthesis, then capture the rest as question text
+                match = re.match(r'^\s*\d+[\.\)]\s*(.*?)$', text[0])
+                if match:
+                    return match.group(1)
+                # Fallback to the old method if regex doesn't match
+                return text[0].split(self.sep, 1)[1].strip() if self.sep in text[0] else text[0]
+            
+            return ""
+
         
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="import text file to export QTI for Canvas Quiz import",epilog=__doc__)
