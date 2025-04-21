@@ -1034,7 +1034,7 @@ class makeQti():
             # done with answers, add stuff for end of question
             out1 += '''</render_choice>
                   </response_lid>
-                <presentation>
+                </presentation>
                   <resprocessing>
                   <outcomes>
                     <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
