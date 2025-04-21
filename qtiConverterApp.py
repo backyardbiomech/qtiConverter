@@ -942,7 +942,7 @@ class makeQti():
         def parseMC(self):
             #quest = self.fullText[0].split(self.sep, 1)[1].strip()
             # make the regex formula to get everything after a digit, then . or ), then zero to some spaces, then everything until the first answer, including new lines
-            qreg = re.compile(r'^\d+(\.|\))\s{0,4}([\S\s]+?)(^\.*[A-Za-z]{1}(\.|\)))', re.M)
+            qreg = re.compile(r'^\d+(\.|\))\s{0,4}([\S\s]+?)(^(\*)*[A-Za-z]{1}(\.|\)))', re.M)
             # match in the full question
             fulltext = '\n'.join(self.fullText)
             qmatch = qreg.search(fulltext)
