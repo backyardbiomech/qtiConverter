@@ -378,7 +378,7 @@
 		</data>
 		<key>Resources/base_library.zip</key>
 		<data>
-		Dp4CD/sb51XnST68+sdebPXA040=
+		qXX8Itayk3XDrwZBIO+PhDqr4S8=
 		</data>
 		<key>Resources/cv2/Error/__init__.pyi</key>
 		<data>
@@ -751,34 +751,6 @@
 		<key>Resources/opencv_python-4.11.0.86.dist-info/top_level.txt</key>
 		<data>
 		s/xTeMDJOUVGxWM1dAiuPP4HwM0=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/bank1.txt</key>
-		<data>
-		rwaVAn9+yvIDae/g+kQi5d2oCBQ=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/bank1_export.zip</key>
-		<data>
-		HDneO3uU1cwalfKHGWv9rtBbfBI=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/bank1_preview.html</key>
-		<data>
-		mekZUSqb+xBn30qm3hFw04ior9A=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/bank2.txt</key>
-		<data>
-		JoUUfmRvyLrEn/HpdCRMSjcL4Cg=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/organs.jpg</key>
-		<data>
-		GLnotlMWQmYw0K8hxbAtgC5bIwE=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/testImage.png</key>
-		<data>
-		ZgO11yjuDMvBoLq0GtaSfZdBg90=
-		</data>
-		<key>Resources/testFiles/simple Test For Import/testformula.txt</key>
-		<data>
-		aI9WujCxZ7/M6GOsOk5AozraYeM=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -2498,11 +2470,6 @@
 			<key>requirement</key>
 			<string>cdhash H"c031364bcb72d9487b6acbf5a6121642f80115a4"</string>
 		</dict>
-		<key>Frameworks/testFiles</key>
-		<dict>
-			<key>symlink</key>
-			<string>../Resources/testFiles</string>
-		</dict>
 		<key>Resources/LargeIconQTI.icns</key>
 		<dict>
 			<key>hash2</key>
@@ -3268,7 +3235,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/4NpGnwCJRU9fKzXv7vw3yMRTw/LR7vT1Zmyw0HAgvw=
+			soBBrgWL/Zs2NWTwcy3KPPri6Fag97znwjrSquDKb0A=
 			</data>
 		</dict>
 		<key>Resources/cv2/.dylibs</key>
@@ -4281,55 +4248,6 @@
 		<dict>
 			<key>symlink</key>
 			<string>../Frameworks/shiboken6</string>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/bank1.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			G81NfzKuqgEQiqwKlA6YE6cLqWC1Gv7U0yVJsPT8zXY=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/bank1_export.zip</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			K0MKhYwVDqDGjTBk3YFwpVycXiUqfuCGr8kCN9St6xI=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/bank1_preview.html</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			imIkdPA1o47F3366CG5HDPWJgbFrzQx5XnpSHpO2uH4=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/bank2.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			K39dwIGKArZncePGaThZhnu31ALZBPYWnfbGRC5/eQA=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/organs.jpg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			KJJDO+sYx12uTMcP20wU+Dz4Y8xLQbBnxtWC7EO7IQ8=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/testImage.png</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			LWV++exhfDwjwSLLx0pMQ7uoZq9XEsT68ZNsaVgbP0c=
-			</data>
-		</dict>
-		<key>Resources/testFiles/simple Test For Import/testformula.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			dlH1BjSmr9roJvyuN+ciSA6/69OQBMh0QXVaz6U9JNU=
-			</data>
 		</dict>
 	</dict>
 	<key>rules</key>

@@ -112,6 +112,9 @@ class QtiConverterGUI(QMainWindow):
         self.setWindowTitle("QTI Converter")
         self.setGeometry(100, 100, 600, 400)
         
+        # Initialize the last directory used (for file dialogs)
+        self.last_directory = os.path.expanduser("~")
+        
         # Create central widget and layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -172,7 +175,7 @@ class QtiConverterGUI(QMainWindow):
         file_dialog.setFileMode(QFileDialog.ExistingFiles)
         file_dialog.setNameFilter("Text files (*.txt *.md)")
         file_dialog.setViewMode(QFileDialog.List)
-        file_dialog.setDirectory(os.path.expanduser("~"))  # Start from home directory
+        file_dialog.setDirectory(self.last_directory)  # Use the last directory
         
         if file_dialog.exec():
             # Clear previous selections
@@ -186,6 +189,10 @@ class QtiConverterGUI(QMainWindow):
             # Enable convert button if files are selected
             self.convert_button.setEnabled(len(self.selected_files) > 0)
             self.status_label.setText(f"{len(self.selected_files)} files selected")
+            
+            # Remember the directory for future file dialogs
+            if self.selected_files:
+                self.last_directory = os.path.dirname(self.selected_files[0])
     
     def convert_files(self):
         if not self.selected_files:
@@ -217,12 +224,15 @@ class QtiConverterGUI(QMainWindow):
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Select Image File",
-            os.path.expanduser("~"),
+            self.last_directory,
             "Image Files (*.png *.jpg *.jpeg *.bmp *.tif *.tiff)"
         )
         
         if not file_path:
             return  # User cancelled
+            
+        # Remember the directory for future file dialogs
+        self.last_directory = os.path.dirname(file_path)
         
         try:
             # Show instructions to the user
@@ -230,8 +240,7 @@ class QtiConverterGUI(QMainWindow):
                 self, 
                 "Hotspot Coordinate Tool", 
                 "The image will open in a new window.\n\n"
-                "Click to add points to your polygon.\n"
-                "Double-click to close the polygon.\n"
+                "Click to add points to your polygon.\n\n"
                 "Press any key to finish and calculate coordinates."
             )
             

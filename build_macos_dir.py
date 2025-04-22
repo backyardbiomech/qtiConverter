@@ -79,11 +79,6 @@ datas = collect_data_files('PySide6')
         "--collect-all=cv2",
     ])
     
-    # Add testFiles directory if it exists
-    testfiles_dir = "testFiles"
-    if os.path.exists(testfiles_dir):
-        build_cmd.append(f"--add-data={testfiles_dir}:{testfiles_dir}")
-    
     # Add main script
     build_cmd.append("main.py")
     
