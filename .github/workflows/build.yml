@@ -35,7 +35,7 @@ jobs:
           cd ..
 
       - name: Upload macOS build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: QTIConverter-macOS
           path: dist/QTIConverter-macOS.zip
@@ -166,7 +166,7 @@ jobs:
           cd ..
 
       - name: Upload Windows build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: QTIConverter-Windows
           path: dist/QTIConverter-Windows.zip
