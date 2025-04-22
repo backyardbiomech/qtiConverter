@@ -1,0 +1,173 @@
+name: Build QTI Converter
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          pip install pyinstaller pyside6 opencv-python matplotlib
+
+      - name: Build macOS app
+        run: python build_macos_dir.py
+
+      - name: Create zip archive
+        run: |
+          cd dist
+          zip -r QTIConverter-macOS.zip QTIConverter.app
+          cd ..
+
+      - name: Upload macOS build
+        uses: actions/upload-artifact@v3
+        with:
+          name: QTIConverter-macOS
+          path: dist/QTIConverter-macOS.zip
+          retention-days: 7
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          pip install pyinstaller pyside6 opencv-python matplotlib
+
+      - name: Create Windows build script
+        run: |
+          echo 'import os
+          import sys
+          import subprocess
+          import shutil
+
+          def main():
+              print("==== Building QTI Converter for Windows ====")
+              
+              # Clean existing build artifacts
+              for path in ["build", "dist"]:
+                  if os.path.exists(path):
+                      print(f"Cleaning {path} directory...")
+                      shutil.rmtree(path)
+              
+              # Remove any existing spec files
+              for spec_file in ["QTI Converter.spec", "QTIConverter.spec"]:
+                  if os.path.exists(spec_file):
+                      print(f"Removing existing spec file: {spec_file}")
+                      os.remove(spec_file)
+              
+              # Get the project root directory
+              root_dir = os.path.dirname(os.path.abspath(__file__))
+              
+              # Check for icon file (use .ico for Windows)
+              icon_path = os.path.join(root_dir, "LargeIconQTI.ico") 
+              icon_option = f"--icon={icon_path}" if os.path.exists(icon_path) else ""
+              
+              print("\\n== Creating Windows executable using directory mode ==")
+              
+              # Create a temporary hook script to help PyInstaller find PySide6 modules
+              hook_file = os.path.join(root_dir, "pyside6_hook.py")
+              with open(hook_file, "w") as f:
+                  f.write("""
+          # PyInstaller hook for PySide6
+          from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+
+          # Add all PySide6 modules
+          hiddenimports = collect_submodules("PySide6")
+
+          # Add PySide6 data files
+          datas = collect_data_files("PySide6")
+                  """)
+              
+              # Build using direct PyInstaller command with Windows settings
+              build_cmd = [
+                  sys.executable,
+                  "-m", "PyInstaller",
+                  "--name=QTIConverter",
+                  "--windowed",
+                  "--onedir",  # Use directory format 
+                  "--clean",
+                  "--log-level=INFO",
+                  "--additional-hooks-dir=.",  # Use the hook we created
+              ]
+              
+              # Add icon if it exists
+              if os.path.exists(icon_path):
+                  build_cmd.append(f"--icon={icon_path}")
+                  
+              # Add other options
+              build_cmd.extend([
+                  "--hidden-import=PySide6",
+                  "--hidden-import=PySide6.QtCore",
+                  "--hidden-import=PySide6.QtGui", 
+                  "--hidden-import=PySide6.QtWidgets",
+                  "--hidden-import=PySide6.support",
+                  "--hidden-import=cv2",
+                  "--hidden-import=numpy",
+                  "--hidden-import=pathlib",
+                  "--collect-all=cv2",
+              ])
+              
+              # Add main script
+              build_cmd.append("main.py")
+              
+              print("Running build command:")
+              print(" ".join(build_cmd))
+              
+              # Execute the build command
+              try:
+                  result = subprocess.run(build_cmd, check=True)
+                  print("\\n✅ Build completed successfully!")
+                  
+                  # Get the full path to the created executable
+                  exe_dir = os.path.join(root_dir, "dist", "QTIConverter")
+                  if os.path.exists(exe_dir):
+                      print(f"\\nThe application has been created at:\\n{os.path.abspath(exe_dir)}")
+                  else:
+                      print(f"\\n⚠️ App not found at expected location: {exe_dir}")
+              except subprocess.CalledProcessError as e:
+                  print("\\n❌ Build failed")
+                  print(f"Error: {str(e)}")
+
+          if __name__ == "__main__":
+              main()' > build_windows.py
+
+      - name: Build Windows app
+        run: python build_windows.py
+
+      - name: Create zip archive
+        run: |
+          cd dist
+          Compress-Archive -Path .\QTIConverter -DestinationPath QTIConverter-Windows.zip
+          cd ..
+
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v3
+        with:
+          name: QTIConverter-Windows
+          path: dist/QTIConverter-Windows.zip
+          retention-days: 7
