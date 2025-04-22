@@ -2,7 +2,7 @@ name: Build QTI Converter
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, githubBuild ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:  # Allow manual triggering
