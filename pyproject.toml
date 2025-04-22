@@ -1,0 +1,20 @@
+[project]
+name = "qticonverter"
+version = "0.1.0"
+description = "Converts text and markdown documents to qti zip files for upload to Canvas LMS"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "opencv-python>=4.11.0.86",
+    "pip>=25.0.1",
+    "pyside6>=6.5.0",
+    "pyinstaller>=6.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/qticonverter"
+"Bug Tracker" = "https://github.com/yourusername/qticonverter/issues"
