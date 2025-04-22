@@ -9,11 +9,102 @@ to be converted to QTI format for Canvas LMS.
 
 import sys
 import os
+import cv2
+from pathlib import Path
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, 
                               QVBoxLayout, QLabel, QFileDialog, QWidget,
-                              QListWidget, QHBoxLayout, QFrame)
+                              QListWidget, QHBoxLayout, QFrame, QDialog,
+                              QPlainTextEdit, QMessageBox)
 from PySide6.QtCore import Qt
 from qtiConverterApp import makeQti
+
+
+class HotspotPolygonTool:
+    """Implements the polygon creation tool for hotspot coordinates directly within the GUI app."""
+    
+    def __init__(self, image_path):
+        self.image_path = image_path
+        self.points = []
+        self.polygon_closed = False
+        self.img = None
+    
+    def click_event(self, event, x, y, flags, param):
+        """Mouse callback function for cv2"""
+        if event == cv2.EVENT_LBUTTONDOWN:
+            if self.polygon_closed:
+                return
+            self.points.append((x, y))
+            if len(self.points) > 1:
+                cv2.line(self.img, self.points[-2], self.points[-1], (0, 255, 0), 2)
+            cv2.circle(self.img, (x, y), 5, (0, 0, 255), -1)
+            cv2.imshow('image', self.img)
+            
+        elif event == cv2.EVENT_LBUTTONDBLCLK:
+            if len(self.points) > 2:
+                cv2.line(self.img, self.points[-1], self.points[0], (0, 255, 0), 2)
+                self.polygon_closed = True
+                cv2.imshow('image', self.img)
+    
+    def run(self):
+        """Run the hotspot polygon tool"""
+        # Load the image
+        self.img = cv2.imread(str(Path(self.image_path).resolve()))
+        if self.img is None:
+            raise ValueError("Could not open or find the image")
+        
+        # Display the image
+        cv2.imshow('image', self.img)
+        cv2.setWindowTitle('image', "Click to add points, double-click to close polygon, then press any key")
+        cv2.setMouseCallback('image', self.click_event)
+        
+        # Wait until the user presses a key
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
+        # Calculate the coordinates as percentages
+        height, width, _ = self.img.shape
+        percent_coords = [(x / width, y / height) for x, y in self.points]
+        
+        return percent_coords
+
+
+class CoordinatesDialog(QDialog):
+    def __init__(self, coordinates, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Hotspot Coordinates")
+        self.setMinimumWidth(400)
+        self.setMinimumHeight(300)
+        
+        # Set up the layout
+        layout = QVBoxLayout(self)
+        
+        # Add instructions
+        instructions = QLabel("These coordinates can be copied and pasted into your hotspot question.")
+        instructions.setWordWrap(True)
+        layout.addWidget(instructions)
+        
+        # Add text area with coordinates
+        self.text_area = QPlainTextEdit()
+        self.text_area.setPlainText(coordinates)
+        self.text_area.setReadOnly(True)
+        layout.addWidget(self.text_area)
+        
+        # Add a copy button
+        copy_button = QPushButton("Copy Coordinates to Clipboard")
+        copy_button.clicked.connect(self.copy_to_clipboard)
+        layout.addWidget(copy_button)
+        
+        # Add a close button
+        close_button = QPushButton("Close")
+        close_button.clicked.connect(self.accept)
+        layout.addWidget(close_button)
+    
+    def copy_to_clipboard(self):
+        clipboard = QApplication.clipboard()
+        # Copy the coordinates to the clipboard, excluding the first line which says "Polygon vertices"
+        clipboard.setText('\n'.join(self.text_area.toPlainText().splitlines()[1:]))
+        QMessageBox.information(self, "Copied", "Coordinates copied to clipboard.")
+
 
 class QtiConverterGUI(QMainWindow):
     def __init__(self):
@@ -56,6 +147,12 @@ class QtiConverterGUI(QMainWindow):
         self.convert_button.setEnabled(False)  # Initially disabled
         self.convert_button.clicked.connect(self.convert_files)
         button_layout.addWidget(self.convert_button)
+        
+        # Hotspot coordinates button
+        self.hotspot_button = QPushButton("Hotspot Coordinates")
+        self.hotspot_button.setMinimumHeight(40)
+        self.hotspot_button.clicked.connect(self.generate_hotspot_coordinates)
+        button_layout.addWidget(self.hotspot_button)
         
         main_layout.addLayout(button_layout)
         
@@ -113,6 +210,56 @@ class QtiConverterGUI(QMainWindow):
             self.status_label.setText(f"Successfully converted {successful} files")
         else:
             self.status_label.setText(f"Converted {successful} of {len(self.selected_files)} files")
+    
+    def generate_hotspot_coordinates(self):
+        """Run hotspot coordinates tool directly within the application"""
+        # Ask user to select an image file
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select Image File",
+            os.path.expanduser("~"),
+            "Image Files (*.png *.jpg *.jpeg *.bmp *.tif *.tiff)"
+        )
+        
+        if not file_path:
+            return  # User cancelled
+        
+        try:
+            # Show instructions to the user
+            QMessageBox.information(
+                self, 
+                "Hotspot Coordinate Tool", 
+                "The image will open in a new window.\n\n"
+                "Click to add points to your polygon.\n"
+                "Double-click to close the polygon.\n"
+                "Press any key to finish and calculate coordinates."
+            )
+            
+            # Update status
+            self.status_label.setText("Running image polygon tool...")
+            
+            # Run the hotspot polygon tool directly
+            hotspot_tool = HotspotPolygonTool(file_path)
+            percent_coords = hotspot_tool.run()
+            
+            # Format the coordinates as a string
+            coordinates = "Polygon vertices (as percentages of width and height):\n"
+            for coord in percent_coords:
+                coordinates += f"{coord}\n"
+            
+            if not percent_coords:
+                self.status_label.setText("No coordinates were generated")
+                return
+                
+            # Show the coordinates in a dialog
+            dialog = CoordinatesDialog(coordinates, self)
+            dialog.exec()
+            
+            self.status_label.setText("Hotspot coordinates generated")
+            
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to generate hotspot coordinates: {str(e)}")
+            self.status_label.setText("Error generating coordinates")
 
 def run_gui():
     app = QApplication(sys.argv)

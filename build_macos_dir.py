@@ -73,6 +73,10 @@ datas = collect_data_files('PySide6')
         "--hidden-import=PySide6.QtGui", 
         "--hidden-import=PySide6.QtWidgets",
         "--hidden-import=PySide6.support",
+        "--hidden-import=cv2",
+        "--hidden-import=numpy",
+        "--hidden-import=pathlib",
+        "--collect-all=cv2",
     ])
     
     # Add testFiles directory if it exists
@@ -95,44 +99,6 @@ datas = collect_data_files('PySide6')
         app_path = os.path.join(root_dir, "dist", "QTIConverter.app")
         if os.path.exists(app_path):
             print(f"\nThe application has been created at:\n{os.path.abspath(app_path)}")
-            
-            # Create a DMG for distribution
-            print("\n== Creating DMG for easy distribution ==")
-            
-            # Create a temporary directory for DMG content
-            with tempfile.TemporaryDirectory() as dmg_temp:
-                # Copy the app to the temporary directory
-                dmg_app_path = os.path.join(dmg_temp, "QTI Converter.app")
-                shutil.copytree(app_path, dmg_app_path)
-                
-                # Create a symbolic link to /Applications folder
-                os.symlink("/Applications", os.path.join(dmg_temp, "Applications"))
-                
-                # Create the DMG file
-                dmg_path = os.path.join(root_dir, "dist", "QTI_Converter.dmg")
-                if os.path.exists(dmg_path):
-                    os.remove(dmg_path)
-                
-                dmg_cmd = [
-                    "hdiutil",
-                    "create",
-                    "-volname", "QTI Converter",
-                    "-srcfolder", dmg_temp,
-                    "-ov",
-                    "-format", "UDZO",
-                    dmg_path
-                ]
-                
-                try:
-                    subprocess.run(dmg_cmd, check=True)
-                    print(f"\n✅ DMG created at: {dmg_path}")
-                    print("To install, open the DMG and drag QTI Converter to the Applications folder.")
-                except subprocess.CalledProcessError:
-                    print("⚠️ Failed to create DMG, but the app was successfully built.")
-                    print("You can still copy the app to your Applications folder manually.")
-                    
-            print("\nTo install manually:")
-            print(f"cp -R \"{app_path}\" /Applications/")
         else:
             print(f"\n⚠️ App not found at expected location: {app_path}")
     except subprocess.CalledProcessError as e:
