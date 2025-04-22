@@ -59,32 +59,29 @@ def indent(elem, level=0):
             elem.tail = i
 
 def errorNoImage(q):
-    applescript = """
-    display dialog "No image was found for the {}th question in the list. Check the name in the document and make sure the file is in the correct folder."
-    """.format(str(q))
-    if sys.platform == 'darwin':
-        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
-    else:
-        print(applescript)
+    message = "No image was found for the {}th question in the list. Check the name in the document and make sure the file is in the correct folder.".format(str(q))
+    _handle_error_message(message)
+    return message
 
 def errorDisplay(q, qtext):
-    applescript = """
-    display dialog "There seems to be a formatting problem with the {}th question in the list: {}. Fix the question and rerun this program."
-    """.format(str(q), qtext)
-    if sys.platform == 'darwin':
-        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
-    else:
-        print(applescript)
+    message = "There seems to be a formatting problem with the {}th question in the list: {}. Fix the question and rerun this program.".format(str(q), qtext)
+    _handle_error_message(message)
+    return message
     
-def logDisplay():
-    applescript = """
-    display dialog "
-    "
-    """.format()
-    if sys.platform == 'darwin':
-        subprocess.call("osascript -e '{}'".format(applescript), shell=True)
-    else:
-        print(applescript)
+def logDisplay(message=""):
+    _handle_error_message(message)
+    return message
+
+def _handle_error_message(message):
+    """Internal function to handle error messages based on context.
+    
+    If called from command line, prints to terminal.
+    If called from GUI, the GUI should capture the returned message.
+    """
+    # We'll always print if this module is the direct entry point
+    # The GUI will capture errors via the get_errors() method
+    if __name__ == "__main__":
+        print(message)
 
 
 class makeQti():
@@ -127,8 +124,14 @@ class makeQti():
             self.typeDict = {'MC':'multiple_choice_question', 'MA':'multiple_answers_question', 'SA': 'short_answer_question', 'ES': 'essay_question', 'MB': 'fill_in_multiple_blanks_question', 'MD': 'multiple_dropdowns_question', 'MT': 'matching_question', 'NU': 'numerical_question', 'OR': 'ordering_question', 'TF': 'true_false_question', 'CT': 'categorization_question', 'HS' : 'hot_spot_question'}
             # Initialize a counting variable to count images
             self.imNum = 0
+            # Initialize a list to collect errors
+            self.errors = []
             
                    
+        def get_errors(self):
+            """Return any errors that occurred during processing."""
+            return self.errors
+            
         def run(self):
             #make the header
             self.makeHeader()
@@ -141,7 +144,7 @@ class makeQti():
             with self.manFile.open('w') as f:
                 f.write(self.manHeader + '\n')
             with self.preview.open('w') as f:
-                f.write('<p>This is just a preview!</n>\n')
+                f.write('<p>This is just a preview!</p>\n')
             # open the input file and read in the data to self.data
             self.loadBank()
             # parse the questions in a loop
@@ -168,8 +171,9 @@ class makeQti():
 #                 print(self.questionType)
                 try:
                     self.typeChooser()
-                except:
-                    errorDisplay(self.qNumber, self.fullText)
+                except Exception as e:
+                    error_msg = errorDisplay(self.qNumber, self.fullText)
+                    self.errors.append(error_msg)
                 # write the question and answers to the file
                 with self.outFile.open(mode = 'a', encoding = "utf-8") as f:
                     f.write(self.writeText + '\n')
@@ -261,7 +265,8 @@ class makeQti():
             imgPath = self.fpath / imgpath
             # add error call if imagePath doesn't exist
             if not imgPath.exists():
-                errorNoImage(self.qNumber)
+                error_msg = errorNoImage(self.qNumber)
+                self.errors.append(error_msg)
             # copy the image file
             shutil.copy(str(imgPath), str(self.newDirPath))
             # add the info to the manifest file

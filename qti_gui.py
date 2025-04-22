@@ -201,6 +201,7 @@ class QtiConverterGUI(QMainWindow):
         
         self.status_label.setText("Converting files...")
         successful = 0
+        all_errors = []
         
         # Process each selected file
         for file_path in self.selected_files:
@@ -208,11 +209,23 @@ class QtiConverterGUI(QMainWindow):
                 # Default separator is '.'
                 converter = makeQti(file_path, '.')
                 converter.run()
-                successful += 1
+                
+                # Check for errors collected during conversion
+                if converter.get_errors():
+                    all_errors.append(f"Issues with {os.path.basename(file_path)}:")
+                    for error in converter.get_errors():
+                        all_errors.append(f"  - {error}")
+                else:
+                    successful += 1
             except Exception as e:
-                print(f"Error processing {file_path}: {str(e)}")
+                all_errors.append(f"Error processing {os.path.basename(file_path)}: {str(e)}")
         
-        # Update status
+        # Update status and show errors if any
+        if all_errors:
+            error_message = "\n".join(all_errors)
+            QMessageBox.warning(self, "Conversion Issues", error_message)
+            
+        # Update status label
         if successful == len(self.selected_files):
             self.status_label.setText(f"Successfully converted {successful} files")
         else:
