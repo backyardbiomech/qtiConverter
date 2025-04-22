@@ -141,16 +141,16 @@ jobs:
               # Execute the build command
               try:
                   result = subprocess.run(build_cmd, check=True)
-                  print("\\n✅ Build completed successfully!")
+                  print("\\nBuild completed successfully!")
                   
                   # Get the full path to the created executable
                   exe_dir = os.path.join(root_dir, "dist", "QTIConverter")
                   if os.path.exists(exe_dir):
                       print(f"\\nThe application has been created at:\\n{os.path.abspath(exe_dir)}")
                   else:
-                      print(f"\\n⚠️ App not found at expected location: {exe_dir}")
+                      print(f"\\n App not found at expected location: {exe_dir}")
               except subprocess.CalledProcessError as e:
-                  print("\\n❌ Build failed")
+                  print("\\nBuild failed")
                   print(f"Error: {str(e)}")
 
           if __name__ == "__main__":
