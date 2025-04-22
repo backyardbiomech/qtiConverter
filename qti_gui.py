@@ -113,7 +113,7 @@ class QtiConverterGUI(QMainWindow):
         self.setGeometry(100, 100, 600, 400)
         
         # Initialize the last directory used (for file dialogs)
-        self.last_directory = os.path.expanduser("~")
+        self.last_directory = str(Path.home())
         
         # Create central widget and layout
         central_widget = QWidget()
@@ -241,7 +241,7 @@ class QtiConverterGUI(QMainWindow):
                 "Hotspot Coordinate Tool", 
                 "The image will open in a new window.\n\n"
                 "Click to add points to your polygon.\n\n"
-                "Press any key to finish and calculate coordinates."
+                "Press any key to finish and display coordinates."
             )
             
             # Update status
