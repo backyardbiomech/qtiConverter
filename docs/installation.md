@@ -1,6 +1,14 @@
 # Installation
 
-The converter is a python script that must be run from the command line. Executable apps are in the works.
+## Pre-packaged app
+
+To download the pre-packaged app, go to the [Actions tab](https://github.com/backyardbiomech/qtiConverter/actions) at the top of the repository. Click on the most recent build, and scroll down to the bottom of the page. There you will find a link to download the app for your operating system.
+
+The app is a simple GUI that allows you to select the input file(s), and then run the conversion. It also will allow you to load an image and select an area for hotspot questions. It is a simple wrapper around the command line script, so it does the same thing.
+
+## Command line
+
+The converter is a python script that must be run from the command line.
 
 These instructions assume you have python installed. If you don't, I suggest you use miniconda to create a simply python environment.
 

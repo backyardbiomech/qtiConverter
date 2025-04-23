@@ -2,6 +2,8 @@
 
 Once you've created your text file, the main operation will convert it to a zip file in the QTI format that you can import.
 
+If you downloaded the pre-packaged app, just open the app, select your text file, and click the button to convert. It will create a zip file in the same folder as your text file. You can skip the rest of this section and jump to the [Canvas importing section](#canvas-importing-and-quiz-making-process).
+
 The exact code you need to run depends a bit on your python installation and the location where you downloaded and then saved this code, and whether you're using Windows or Mac.
 
 Basically, on the command line you need to run:
@@ -40,12 +42,14 @@ You have several decisions to make here. First, are you sticking with **Classic 
 This will let you create an *Item Bank* with your questions. You can then create a quiz (or several) in Canvas that pull all or some questions from that bank.
 
 1. In Canvas, go to `Item Banks`
-2. Create a new bank. The name doesn't really matter because it will be renamed upon import to the name of your original text file. I usually create it as `import here` so it's easy to find.
+2. Create a new bank. The name doesn't really matter because it will be renamed upon import to the name of your original text file. I usually create it as `aaa` so it shows up at the top of my item bank list.
 3. Find the new bank you just created and click on its name
-4. On the page for the specific bank, don't add any new questions. If you do, you won't be able to import your file. **Instead** click on the three dots in the upper left and select `Import Content`
-5. Select the zip file created by the app. 
+4. On the page for the specific bank, don't add any new questions. If you do, you won't be able to import your file. **Instead** click on the three dots in the upper right and select `Import Content`
+5. Select the zip file on your computer created by the app. 
 
-That will create all of the questions in that bank. 
+That will create all of the questions in that bank. It may take a few minutes to import, depending on how many questions you have.
+
+If you want to add more questions later, you can do that in Canvas. But I prefer to add them to my text file and reimport. This will not overwrite your item bank (Canvas allows duplicate item bank names unfortunately) and you will have to relink it to any quizzes.
 
 I generally create two banks per chapter or topic (one for easier questions, one for harder questions) with many questions per bank. 
 

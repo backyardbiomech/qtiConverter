@@ -7,7 +7,7 @@
 
 ### Tips
 
-+ If there is a formatting error in one of your questions, you should get a dialog box on screen (Mac only) telling you which question has the problem, and the text from that question. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question, counted from the top, has the problem. The most likely problems are:
++ If there is a formatting error in one of your questions, you should get a dialog box on screen telling you which question has the problem, and the text from that question. Note that the numbers of your questions in your file don't matter, so this dialog just tells you which question, counted from the top, has the problem. The most likely problems are:
     + a question type indicator that isn't one of the options
     + "new" lines in the question
     + improperly formatted answers
@@ -17,9 +17,11 @@
 
 HotSpot Questions prompt students to click on a specific region of an image (e.g. "Click on the stomach in this image"). 
 
-When you create one of these questions in Canvas, it has you draw on the image to highlight the "correct" area of the image. All other areas are *incorrect*. 
+When you create one of these questions in Canvas, it has you draw on the image to highlight the "correct" area of the image. All other areas are *incorrect*. For the import, you need to provide the coordinates of the polygon that you would draw on the image.
 
-I've included a small script to click on the image and get coordinates in a format that you can paste into your text file.
+I've included a small script to recreate that action of drawing on the image and get coordinates in a format that you can paste into your text file as shown in the [sample](./samples.md).
+
+If you use the packaged app, click on the `Load Image` button. If you are using the command line, follow these instructions:
 
 1. Be sure you installed `opencv-python` and `matplotlib` as described on the [installation](./installation.md) page.
 2. run `python path/to/qtiConverter/imagePolygon.py`
