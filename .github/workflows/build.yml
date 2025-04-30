@@ -179,10 +179,10 @@ jobs:
       github.event_name == 'push' &&
       github.ref == 'refs/heads/master' &&
       (
-        contains(join(github.event.commits.*.modified, ','), 'pyproject.toml') ||
-        contains(join(github.event.commits.*.added, ','), 'pyproject.toml') ||
-        contains(join(github.event.commits.*.modified, ','), 'setup.py') ||
-        contains(join(github.event.commits.*.added, ','), 'setup.py')
+        contains(join(github.event.head_commit.modified, ','), 'pyproject.toml') ||
+        contains(join(github.event.head_commit.added, ','), 'pyproject.toml') ||
+        contains(join(github.event.head_commit.modified, ','), 'setup.py') ||
+        contains(join(github.event.head_commit.added, ','), 'setup.py')
       )
     steps:
       - name: Download macOS artifact
