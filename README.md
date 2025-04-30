@@ -9,6 +9,8 @@ NOTE: With the classic quizzes Canvas import process will also make an actual qu
 + `jacksonbe3` at `longwood` dot `edu`  
 + last updated: 2025-04-30  
 
+![main screen](docs/images/mainWindow.png)
+
 ## Installation and Usage
 For more details click on the link for each step.
 

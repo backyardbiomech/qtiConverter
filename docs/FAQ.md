@@ -21,7 +21,19 @@ When you create one of these questions in Canvas, it has you draw on the image t
 
 I've included a small script to recreate that action of drawing on the image and get coordinates in a format that you can paste into your text file as shown in the [sample](./samples.md).
 
-If you use the packaged app, click on the `Load Image` button. If you are using the command line, follow these instructions:
+![hotspot](docs/images/hotspot.png)
+
+If you use the packaged app:
+1. click on the `Load Image` button and select an image
+2. click to draw a polygon around the area you want to be "correct"
+3. hit any key which will bring up a dialog box with the coordinates of the polygon in a format that you can copy and paste into your text file.
+4. Copy the coordinates and paste them into your text file below the question.
+
+![hotspot coorinates](docs/images/hotspot_coordinates.png)
+
+
+#### Command line hotspot coordinates
+If you are using the command line, follow these instructions:
 
 1. Be sure you installed `opencv-python` and `matplotlib` as described on the [installation](./installation.md) page.
 2. run `python path/to/qtiConverter/imagePolygon.py`
@@ -32,6 +44,7 @@ If you use the packaged app, click on the `Load Image` button. If you are using 
    1. close the window
    2. Print a the `(x,y)` coordinates to your command line.
 7. Copy the whole block of those coordinates and paste below your hot spot question (as show in the [sample](./samples.md))
+
 
 
 Previous step: [Importing to Canvas](./importing.md)

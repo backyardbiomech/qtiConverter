@@ -2,7 +2,11 @@
 
 Once you've created your text file, the main operation will convert it to a zip file in the QTI format that you can import.
 
+![main screen](docs/images/mainWindow.png)
+
 If you downloaded the pre-packaged app, just open the app, select your text file, and click the button to convert. It will create a zip file in the same folder as your text file. You can skip the rest of this section and jump to the [Canvas importing section](#canvas-importing-and-quiz-making-process).
+
+## Command line
 
 The exact code you need to run depends a bit on your python installation and the location where you downloaded and then saved this code, and whether you're using Windows or Mac.
 
