@@ -3,6 +3,9 @@ name: Build QTI Converter
 on:
   push:
     branches: [ master, githubBuild ]
+    paths:
+      - 'pyproject.toml'
+      - 'setup.py'
   pull_request:
     branches: [ master ]
   workflow_dispatch:  # Allow manual triggering
