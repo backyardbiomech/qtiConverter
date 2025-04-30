@@ -14,7 +14,7 @@ NOTE: With the classic quizzes Canvas import process will also make an actual qu
 ## Installation and Usage
 For more details click on the link for each step.
 
-1. [Installation:](docs/installation.md) - download a packaged app or run from the command line
+1. [Installation:](./docs/installation.md) - download a packaged app or run from the command line
 2. [Preparing the document](docs/formatting.md) - make a markdown (or text) file that includes the questions, answers, and links to images
 3. [Importing to Canvas](docs/importing.md) - import the output to a specific quiz or to a question bank in Canvas
 4. [Tips and FAQ](docs/FAQ.md) - Help, common causes of errors, etc
