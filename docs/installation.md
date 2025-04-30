@@ -2,7 +2,7 @@
 
 ## Pre-packaged app
 
-To download the pre-packaged app, go to the [Releases tab](https://github.com/backyardbiomech/qtiConverter/releases) at the top of the repository. Click on the most recent release, and download the zip file for your operating system.
+To download the pre-packaged app, go to the [Releases link](https://github.com/backyardbiomech/qtiConverter/releases) at the right of the page. Click on the most recent release, and download the zip file for your operating system.
 
 Uncompress the zip file. Inside, you will find a folder called `qtiConverter`. Inside that folder, you will find a file called `qtiConverter.exe` (or `qtiConverter` on Mac). This is the app. You can move this folder anywhere you like, but it is recommended to keep it in a place where you can easily find it later.
 
