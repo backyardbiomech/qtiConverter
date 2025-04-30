@@ -39,6 +39,8 @@ Note: All question types support images as part of the question.
   
 ## Quick tutorial video
 
+Watch this short tutorial video on Loom.
+
 [![Watch the tutorial video on Loom](https://cdn.loom.com/sessions/thumbnails/c2cfa3972dc845dea699e076b0ab529d-af93f3cec51bedd5-full-play.gif)](https://www.loom.com/share/c2cfa3972dc845dea699e076b0ab529d)
 
 ## License
