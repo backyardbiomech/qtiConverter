@@ -2,7 +2,9 @@
 
 ## Pre-packaged app
 
-To download the pre-packaged app, go to the [Actions tab](https://github.com/backyardbiomech/qtiConverter/actions) at the top of the repository. Click on the most recent build, and scroll down to the bottom of the page. There you will find a link to download the app for your operating system.
+To download the pre-packaged app, go to the [Releases tab](https://github.com/backyardbiomech/qtiConverter/releases) at the top of the repository. Click on the most recent release, and download the zip file for your operating system.
+
+Uncompress the zip file. Inside, you will find a folder called `qtiConverter`. Inside that folder, you will find a file called `qtiConverter.exe` (or `qtiConverter` on Mac). This is the app. You can move this folder anywhere you like, but it is recommended to keep it in a place where you can easily find it later.
 
 The app is a simple GUI that allows you to select the input file(s), and then run the conversion. It also will allow you to load an image and select an area for hotspot questions. It is a simple wrapper around the command line script, so it does the same thing.
 
