@@ -1,6 +1,6 @@
 [project]
 name = "qticonverter"
-version = "0.3.0"
+version = "0.3.1"
 description = "Converts text and markdown documents to qti zip files for upload to Canvas LMS"
 readme = "README.md"
 requires-python = ">=3.10"

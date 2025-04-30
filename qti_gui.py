@@ -156,6 +156,13 @@ class QtiConverterGUI(QMainWindow):
         self.hotspot_button.setMinimumHeight(40)
         self.hotspot_button.clicked.connect(self.generate_hotspot_coordinates)
         button_layout.addWidget(self.hotspot_button)
+
+        # Help button (question mark)
+        self.help_button = QPushButton("?")
+        self.help_button.setFixedSize(40, 40)
+        self.help_button.setToolTip("Open Installation and Usage Guide on GitHub")
+        self.help_button.clicked.connect(self.open_help_url)
+        button_layout.addWidget(self.help_button)
         
         main_layout.addLayout(button_layout)
         
@@ -282,6 +289,10 @@ class QtiConverterGUI(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to generate hotspot coordinates: {str(e)}")
             self.status_label.setText("Error generating coordinates")
+    
+    def open_help_url(self):
+        import webbrowser
+        webbrowser.open("https://github.com/backyardbiomech/qtiConverter#installation-and-usage")
 
 def run_gui():
     app = QApplication(sys.argv)
