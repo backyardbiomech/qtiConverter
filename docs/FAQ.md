@@ -21,7 +21,7 @@ When you create one of these questions in Canvas, it has you draw on the image t
 
 I've included a small script to recreate that action of drawing on the image and get coordinates in a format that you can paste into your text file as shown in the [sample](./samples.md).
 
-![hotspot](docs/images/hotspot.png)
+![hotspot](images/hotspot.png)
 
 If you use the packaged app:
 1. click on the `Load Image` button and select an image
@@ -29,7 +29,7 @@ If you use the packaged app:
 3. hit any key which will bring up a dialog box with the coordinates of the polygon in a format that you can copy and paste into your text file.
 4. Copy the coordinates and paste them into your text file below the question.
 
-![hotspot coorinates](docs/images/hotspot_coordinates.png)
+![hotspot coorinates](images/hotspot_coordinates.png)
 
 
 #### Command line hotspot coordinates

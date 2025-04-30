@@ -38,9 +38,8 @@ Note: All question types support images as part of the question.
 + Essay
   
 ## Quick tutorial video
-Currently outdated but may be helpful
 
-[![Tutorial Video](http://img.youtube.com/vi/FNXBe2JQEjY/0.jpg)](https://youtu.be/FNXBe2JQEjY "Tutorial Video")
+<div style="position: relative; padding-bottom: 77.14285714285715%; height: 0;"><iframe src="https://www.loom.com/embed/c2cfa3972dc845dea699e076b0ab529d?sid=e705131f-cabf-4963-9559-02b2d202eeef" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
 
 
 ## License
