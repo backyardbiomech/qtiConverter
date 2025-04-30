@@ -175,7 +175,15 @@ jobs:
   release:
     needs: [build-macos, build-windows]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/master' &&
+      (
+        contains(join(github.event.commits.*.modified, ','), 'pyproject.toml') ||
+        contains(join(github.event.commits.*.added, ','), 'pyproject.toml') ||
+        contains(join(github.event.commits.*.modified, ','), 'setup.py') ||
+        contains(join(github.event.commits.*.added, ','), 'setup.py')
+      )
     steps:
       - name: Download macOS artifact
         uses: actions/download-artifact@v4
