@@ -41,7 +41,7 @@
 
 ### Other Formatting
 + You may use a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded. This lets you write notes to yourself in the text file.
-- **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, <sub>superscript</sup>, and <sub>subscript</sub>. This will work in questions **and** in answers.
+- **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, <sup>superscript</sup>, and <sub>subscript</sub>. This will work in questions **and** in answers.
     1.  The easiest way is to use MarkDown formatting marks.
         + Surrounding some words or characters with two asterices, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
         + One asterix on either side, like `*this*` indicates *italics*
