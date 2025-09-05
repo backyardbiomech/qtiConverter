@@ -386,7 +386,7 @@ class makeQti():
             #get the score per left side
             perLeft = 100/len(leftAns)
             #add the score calculations for each drop
-            for leftAns, leftData in leftAns.items():
+            for leftID, leftData in leftAns.items():
                 corrRespId = leftData['corr']
                 questionTextResponse += '''<respcondition>
                     <conditionvar>
@@ -394,12 +394,27 @@ class makeQti():
                     </conditionvar>
                     <setvar varname="SCORE" action="Add">{}</setvar>
                   </respcondition>
-                    '''.format(leftAns, corrRespId, perLeft)
+                    '''.format(leftID, corrRespId, perLeft)
             # close it out
             questionTextResponse += '''</resprocessing>
                                       </item>'''
             # write it
             self.writeText = questionTextStart + questionTextResponse
+            
+            # reformat answers to make html preview
+            answers = []
+            for leftID, leftData in leftAns.items():
+                left_text = leftData['text']
+                correct_right_id = leftData['corr']
+                correct_right_text = rightAns.get(correct_right_id, {}).get('text', 'Unknown')
+                answers.append(f'{leftID}: {left_text} -> CORRECT: {correct_right_text}')
+            
+            # Add all right-side options for reference
+            for rightID, rightData in rightAns.items():
+                answers.append(f'Right option {rightID}: {rightData["text"]}')
+            
+            corr = []
+            self.htmlText = self.questionTextHtml(itid, quest, answers, corr)
             
         def parseMD(self):
             '''

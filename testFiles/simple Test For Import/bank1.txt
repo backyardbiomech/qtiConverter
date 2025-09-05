@@ -35,7 +35,7 @@ drop2: incorrect answer for 2
 *drop2: correct answer for 2
 
 MT
-1. This is a matching question. &lt;br&gt;It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. &lt;br&gt;All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. &lt;br&gt;Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.
+1. This is a matching question. It will show in canvas as a list of things on the left, each with its own dropdown menu on the right. All the dropdowns contain the same options. Multiple "left" items can have the same correct answer. Note the formatting below. left1, left2, etc just track the list items that will appear on the left, right1, right2, etc track the options that will show in the dropdowns, and the correct answer for each left item is indicated by putting the right label inside brackets. Notice no spaces in labels or between brackets and labels, and all labels are followed by a colon, then the text to be matched. Canvas awards partial credit based on the number of left side items.
 [right2]left1: first left option
 [right2]left2: second left option
 [right1]left3: third left option
