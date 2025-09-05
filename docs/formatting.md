@@ -41,12 +41,12 @@
 
 ### Other Formatting
 + You may use a hash (#) as a comment symbol. Anything on any line that begins with a # will not be processed and uploaded. This lets you write notes to yourself in the text file.
-- **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, ^superscript^, and ~subscript~. This will work in questions **and** in answers.
+- **Adding formatting**: there are two ways to add formatting like, **bold**, *italics*, <sup>superscript</sup>, and <sub>subscript</sub>. This will work in questions **and** in answers.
     1.  The easiest way is to use MarkDown formatting marks.
-        + Surrounding some word or characters with two asterices, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
+        + Surrounding some words or characters with two asterices, like `**this**` will make what's between them **bold**. "`this **word**`" yields: "this **word**".
         + One asterix on either side, like `*this*` indicates *italics*
         + surrounding something with carrots like `E = mc^2^` will make it superscript yielding E = mc<sup>2</sup>
-        + tildes like `H~2~O` will make it subscript (H<sub>2</sub>O). 
+        + surrounding with tildes like `H~2~O` will make it subscript (H<sub>2</sub>O). 
         + The key is to **surround** what you want to format with the marks, without spaces between the modifiers and modifiees.
     2. You may also use standard html tags, where you surround the word or characters you want to format as appropriate:
         + *italics*: `this <em>word</em>` yields: this *word*
