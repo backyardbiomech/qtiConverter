@@ -224,6 +224,11 @@ class QtiConverterGUI(QMainWindow):
                         all_errors.append(f"  - {error}")
                 else:
                     successful += 1
+                    
+                # Generate a simple success message mentioning the report
+                if successful > 0:
+                    all_errors.append(f"Report generated for {os.path.basename(file_path)}: {os.path.splitext(os.path.basename(file_path))[0]}_report.txt")
+                    
             except Exception as e:
                 all_errors.append(f"Error processing {os.path.basename(file_path)}: {str(e)}")
         

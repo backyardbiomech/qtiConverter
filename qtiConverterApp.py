@@ -126,11 +126,130 @@ class makeQti():
             self.imNum = 0
             # Initialize a list to collect errors
             self.errors = []
+            # Initialize report data structures
+            self.report_data = {
+                'question_types': {},
+                'total_questions': 0,
+                'images_used': [],
+                'questions_with_images': 0,
+                'questions_no_correct_answer': [],
+                'mc_with_multiple_correct': [],
+                'total_images': 0
+            }
             
                    
         def get_errors(self):
             """Return any errors that occurred during processing."""
             return self.errors
+            
+        def update_report_data(self, question_type: str, has_image: bool, image_path: str = "", 
+                             has_correct_answer: bool = True, multiple_correct: bool = False) -> None:
+            """Update report data for the current question."""
+            # Count question types
+            if question_type in self.report_data['question_types']:
+                self.report_data['question_types'][question_type] += 1
+            else:
+                self.report_data['question_types'][question_type] = 1
+            
+            # Track total questions
+            self.report_data['total_questions'] += 1
+            
+            # Track images
+            if has_image and image_path:
+                if image_path not in self.report_data['images_used']:
+                    self.report_data['images_used'].append(image_path)
+                self.report_data['questions_with_images'] += 1
+            
+            # Track questions with no correct answer
+            if not has_correct_answer:
+                self.report_data['questions_no_correct_answer'].append(self.qNumber)
+            
+            # Track MC questions with multiple correct answers
+            if multiple_correct:
+                self.report_data['mc_with_multiple_correct'].append(self.qNumber)
+            
+            # Update total images count
+            self.report_data['total_images'] = len(self.report_data['images_used'])
+            
+        def generate_report(self) -> str:
+            """Generate a comprehensive report of the QTI conversion."""
+            report_lines = []
+            report_lines.append("QTI Conversion Report")
+            report_lines.append("=" * 50)
+            report_lines.append(f"Generated for: {self.bankName}")
+            report_lines.append("")
+            
+            # Question type summary
+            report_lines.append("Question Types Summary:")
+            report_lines.append("-" * 25)
+            total_questions = self.report_data['total_questions']
+            for qtype, count in sorted(self.report_data['question_types'].items()):
+                type_name = self.typeDict.get(qtype, qtype)
+                percentage = (count / total_questions * 100) if total_questions > 0 else 0
+                report_lines.append(f"{qtype} ({type_name}): {count} questions ({percentage:.1f}%)")
+            report_lines.append(f"Total Questions: {total_questions}")
+            report_lines.append("")
+            
+            # Image summary
+            report_lines.append("Images Summary:")
+            report_lines.append("-" * 15)
+            report_lines.append(f"Total images used: {self.report_data['total_images']}")
+            report_lines.append(f"Questions with images: {self.report_data['questions_with_images']}")
+            if self.report_data['images_used']:
+                report_lines.append("Image files used:")
+                for img in sorted(self.report_data['images_used']):
+                    report_lines.append(f"  - {img}")
+            else:
+                report_lines.append("No images used in this question bank.")
+            report_lines.append("")
+            
+            # Questions with no correct answer
+            report_lines.append("Questions Without Correct Answers:")
+            report_lines.append("-" * 35)
+            if self.report_data['questions_no_correct_answer']:
+                report_lines.append(f"Found {len(self.report_data['questions_no_correct_answer'])} questions without correct answers:")
+                for q_num in self.report_data['questions_no_correct_answer']:
+                    report_lines.append(f"  - Question {q_num}")
+                report_lines.append("Note: These questions may need manual review.")
+            else:
+                report_lines.append("All questions have correct answers indicated.")
+            report_lines.append("")
+            
+            # MC questions that should be MA
+            report_lines.append("Multiple Choice Questions with Multiple Correct Answers:")
+            report_lines.append("-" * 55)
+            if self.report_data['mc_with_multiple_correct']:
+                report_lines.append(f"Found {len(self.report_data['mc_with_multiple_correct'])} MC questions with multiple correct answers:")
+                for q_num in self.report_data['mc_with_multiple_correct']:
+                    report_lines.append(f"  - Question {q_num}")
+                report_lines.append("Note: These have been automatically converted to MA (Multiple Answer) type.")
+            else:
+                report_lines.append("No MC questions found with multiple correct answers.")
+            report_lines.append("")
+            
+            # Error summary
+            if self.errors:
+                report_lines.append("Errors and Issues:")
+                report_lines.append("-" * 18)
+                for i, error in enumerate(self.errors, 1):
+                    report_lines.append(f"{i}. {error}")
+                report_lines.append("")
+            
+            return "\n".join(report_lines)
+            
+        def save_report(self) -> None:
+            """Save the report to a text file."""
+            report_content = self.generate_report()
+            report_file = self.fpath / (self.bankName + '_report.txt')
+            
+            try:
+                with report_file.open('w', encoding='utf-8') as f:
+                    f.write(report_content)
+                logDisplay(f"Report saved to: {report_file}")
+            except Exception as e:
+                error_msg = f"Failed to save report: {str(e)}"
+                self.errors.append(error_msg)
+                logDisplay(error_msg)
             
         def run(self):
             #make the header
@@ -209,15 +328,9 @@ class makeQti():
             shutil.make_archive(str(self.newDirPath), 'zip', str(self.newDirPath))
             #remove the now compressed folder
             shutil.rmtree(str(self.newDirPath))
-            #TODO:
-            """
-            generate a report that shows:
-                the number of questions of each type
-                the number of images (and a list of those images?)
-                the number (and numbers of) of questions with no correct answer indicated
-                if any MC questions had more than one correct answer and should be changed to MA
-                
-            """
+            
+            # Generate and save the conversion report
+            self.save_report()
         
         def qHeader(self):
             # search through question using regex to find anything before the question number self.fullText is a list with each item a new line of the text file
@@ -281,26 +394,35 @@ class makeQti():
 #             if self.questionType == 'MA': # multiple choice with more than one answer
 #                 print('or here')
 #                 self.parseMC()
-            if self.questionType == 'SA': # single fill in the blank
+            elif self.questionType == 'SA': # single fill in the blank
                 self.parseSA()
-            if self.questionType == 'ES': # essay
+            elif self.questionType == 'ES': # essay
                 self.parseES()
-            if self.questionType == 'MB': # multiple fill in the blank
+            elif self.questionType == 'MB': # multiple fill in the blank
                 self.parseMB()
-            if self.questionType == 'MD': # multiple drop downs
+            elif self.questionType == 'MD': # multiple drop downs
                 self.parseMD()
-            if self.questionType == 'MT': # matching
+            elif self.questionType == 'MT': # matching
                 self.parseMT()
-            if self.questionType == 'NU': # numerical question
+            elif self.questionType == 'NU': # numerical question
                 self.parseNU()
-            if self.questionType == 'OR': # ordering question
+            elif self.questionType == 'OR': # ordering question
                 self.parseOR()
-            if self.questionType == 'TF': # true false question
+            elif self.questionType == 'TF': # true false question
                 self.parseTF()
-            if self.questionType == 'CT': # categorization question
+            elif self.questionType == 'CT': # categorization question
                 self.parseCT()
-            if self.questionType == 'HS': # hotspot question
+            elif self.questionType == 'HS': # hotspot question
                 self.parseHS()
+            else:
+                # For any other question types, still collect basic report data
+                self.update_report_data(
+                    question_type=self.questionType,
+                    has_image=len(self.imagePath) > 0,
+                    image_path=self.imagePath,
+                    has_correct_answer=True,  # Assume true unless we can determine otherwise
+                    multiple_correct=False
+                )
             # add other question types here
         
         def processFormatting(self, text):
@@ -321,6 +443,16 @@ class makeQti():
         def parseMT(self):
             quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
+            
+            # Update report data first
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=True,  # Matching questions typically have correct answers
+                multiple_correct=False
+            )
+            
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -519,6 +651,16 @@ class makeQti():
         def parseMB(self):
             quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
+            
+            # Update report data first
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=True,  # MB questions have correct answers
+                multiple_correct=False
+            )
+            
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -587,6 +729,16 @@ class makeQti():
         def parseES(self):
             quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
+            
+            # Update report data - Essay questions typically don't have "correct" answers in traditional sense
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=True,  # Essays are manually graded
+                multiple_correct=False
+            )
+            
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -619,6 +771,17 @@ class makeQti():
             quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
             answer = self.fullText[1].split(':',1)[1].strip().lower()
+            
+            # Update report data
+            has_correct = answer in ['true', 'false']
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=has_correct,
+                multiple_correct=False
+            )
+            
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -671,6 +834,16 @@ class makeQti():
             '''
             quest = self.extractQuestionText(self.fullText[0])
             quest = self.processFormatting(quest)
+            
+            # Update report data first
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=True,  # Hotspot questions have coordinate answers
+                multiple_correct=False
+            )
+            
             # make an idendifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -906,6 +1079,17 @@ class makeQti():
             for a in range(1, len(self.fullText)):
                 answer = self.processFormatting(self.fullText[a].split(self.sep,1)[1])
                 corr.append(answer)
+                
+            # Update report data
+            has_correct = len(corr) > 0
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=has_correct,
+                multiple_correct=False
+            )
+            
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)
             # build the question text
@@ -986,8 +1170,25 @@ class makeQti():
                 answer = self.processFormatting(mat.group(4))
                 answers.append(answer)
                 a+=1
+            
+            # Check if this was originally MC but has multiple correct answers
+            original_question_type = self.questionType  # Store the original type
+            multiple_correct_mc = (original_question_type == 'MC' and len(corr) > 1)
+            
+            # Check if MC has multiple correct answers and convert to MA
             if len(corr) > 1:
                  self.questionType = 'MA'
+            
+            # Update report data
+            has_correct = len(corr) > 0
+            self.update_report_data(
+                question_type=self.questionType,
+                has_image=len(self.imagePath) > 0,
+                image_path=self.imagePath,
+                has_correct_answer=has_correct,
+                multiple_correct=multiple_correct_mc  # Only flag if originally MC
+            )
+            
             quest = self.processFormatting(quest)
             # make an identifier for the question
             itid = str(self.questionType) + str(self.qNumber)

@@ -1,0 +1,31 @@
+QTI Conversion Report
+==================================================
+Generated for: bank1
+
+Question Types Summary:
+-------------------------
+ES (essay_question): 1 questions (11.1%)
+HS (hot_spot_question): 2 questions (22.2%)
+MA (multiple_answers_question): 1 questions (11.1%)
+MB (fill_in_multiple_blanks_question): 1 questions (11.1%)
+MC (multiple_choice_question): 1 questions (11.1%)
+MT (matching_question): 1 questions (11.1%)
+SA (short_answer_question): 1 questions (11.1%)
+TF (true_false_question): 1 questions (11.1%)
+Total Questions: 9
+
+Images Summary:
+---------------
+Total images used: 2
+Questions with images: 3
+Image files used:
+  - organs.jpg
+  - testImage.png
+
+Questions Without Correct Answers:
+-----------------------------------
+All questions have correct answers indicated.
+
+Multiple Choice Questions with Multiple Correct Answers:
+-------------------------------------------------------
+No MC questions found with multiple correct answers.
