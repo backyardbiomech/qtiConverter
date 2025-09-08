@@ -154,11 +154,13 @@ class makeQti():
             # Track total questions
             self.report_data['total_questions'] += 1
             
-            # Track images
+            # Track images - only add if image exists
             if has_image and image_path:
-                if image_path not in self.report_data['images_used']:
-                    self.report_data['images_used'].append(image_path)
-                self.report_data['questions_with_images'] += 1
+                image_full_path = self.fpath / image_path
+                if image_full_path.exists():  # Only track images that actually exist
+                    if image_path not in self.report_data['images_used']:
+                        self.report_data['images_used'].append(image_path)
+                    self.report_data['questions_with_images'] += 1
             
             # Track questions with no correct answer
             if not has_correct_answer:
@@ -380,6 +382,7 @@ class makeQti():
             if not imgPath.exists():
                 error_msg = errorNoImage(self.qNumber)
                 self.errors.append(error_msg)
+                return  # Exit early if image doesn't exist
             # copy the image file
             shutil.copy(str(imgPath), str(self.newDirPath))
             # add the info to the manifest file
