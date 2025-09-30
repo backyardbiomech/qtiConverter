@@ -1,0 +1,22 @@
+QTI Conversion Report
+==================================================
+Generated for: mbtes
+
+Question Types Summary:
+-------------------------
+MB (fill_in_multiple_blanks_question): 3 questions (100.0%)
+Total Questions: 3
+
+Images Summary:
+---------------
+Total images used: 0
+Questions with images: 0
+No images used in this question bank.
+
+Questions Without Correct Answers:
+-----------------------------------
+All questions have correct answers indicated.
+
+Multiple Choice Questions with Multiple Correct Answers:
+-------------------------------------------------------
+No MC questions found with multiple correct answers.
