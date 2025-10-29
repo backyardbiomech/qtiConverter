@@ -1310,15 +1310,15 @@ class makeQti():
         def processEquation(self, eq):
             # receives mathjax/Latex style formula text with surrounding $$
             # returns only the html conversion of the equation
-            # converts the equation into a <p><img... of the following format
-            #&lt;p&gt;&lt;img class="equation_image" title="\frac{5}{2}" src="https://longwood.instructure.com/equation_images/%255Cfrac%257B5%257D%257B2%257D" alt="LaTeX: \frac{5}{2}" data-equation-content="\frac{5}{2}"&gt;&lt;/p&gt;
+            # converts the equation into a <img... of the following format
+            # &lt;img class="equation_image" title="\frac{5}{2}" src="https://longwood.instructure.com/equation_images/%255Cfrac%257B5%257D%257B2%257D" alt="LaTeX: \frac{5}{2}" data-equation-content="\frac{5}{2}"&gt;
             # use regex to extract info between $$
             eqtext = eq.group(1)
             # need to convert symbols in equation to url symbols
             neweq = urllib.parse.quote(eqtext)
             # need to add the odd %25 to each encoded character
             neweq = neweq.replace('%', '%25')
-            eqret=f'</p><p><img class="equation_image" title="{eqtext}" src="https://longwood.instructure.com/equation_images/{neweq}" alt="LaTeX: {eqtext}" data-equation-content="{eqtext}"></p><p>'
+            eqret=f'<img class="equation_image" title="{eqtext}" src="https://longwood.instructure.com/equation_images/{neweq}" alt="LaTeX: {eqtext}" data-equation-content="{eqtext}">'
             return eqret
 
         def questionText(self, quest, itid, orig_ans_ids = None):
