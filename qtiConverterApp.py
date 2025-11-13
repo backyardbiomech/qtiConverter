@@ -1389,11 +1389,11 @@ class makeQti():
             with self.ifile.open(mode = 'r', encoding = "utf-8-sig") as f:
                 data=f.read()
             # get rid of hidden spaces on new lines
-            data = re.sub('\ +\n', '\n', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'\ +\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden tabs before new lines
             data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden spaces and tabsbefore lines
-            data = re.sub('^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
             # get rid of lines that begin with # as a comment indicator
             data = re.sub('^#.*$', '', data.strip(), flags=re.MULTILINE)
             # combine multiple new lines into just the needed two
