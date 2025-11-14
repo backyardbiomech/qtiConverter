@@ -687,37 +687,46 @@ class makeQti():
             
             # Generate different XML based on quiz type
             if self.quiz_type == 'classic':
-                # Classic quizzes: use fill-in-the-blank text input format
+                # Classic quizzes: use dropdown/choice format (original implementation for classic quizzes)
                 questionTextResponse = ''
                 for blank, ans in blankCorr.items():
-                    questionTextResponse += '''<response_str ident="{}" rcardinality="Single">
-                                            <render_fib>
-                                                <response_label ident="{}_label"/>
-                                            </render_fib>
-                                        </response_str>
-                                            '''.format(blank, blank)
+                    questionTextResponse += '''<response_lid ident="{}">
+                                        <material>
+                                            <mattext>{}</mattext>
+                                        </material>
+                                        <render_choice>
+                                        '''.format(blank,blank)
+                    for i in range(len(ans)):
+                        resID = 'resp'+str(i)
+                        questionTextResponse += '''<response_label ident="{}">
+                                                <material>
+                                                    <mattext texttype="text/html">{}</mattext>
+                                                </material>
+                                            </response_label>
+                                            '''.format(resID, ans[i])
                 
+                    questionTextResponse +=''' </render_choice>
+                                        </response_lid>
+                                        '''
                 #get the score per blank
                 perBlank = 100/len(blankCorr)
                 questionTextResponse += '''</presentation>
-                <resprocessing>
-                    <outcomes>
-                        <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
-                    </outcomes>
-                '''
-                # For classic quizzes, check all possible answers for each blank
-                for blank, ans in blankCorr.items():
-                    for answer in ans:
-                        questionTextResponse += '''<respcondition>
-                                            <conditionvar>
-                                                <varequal respident="{}">{}</varequal>
-                                            </conditionvar>
-                                            <setvar varname="SCORE" action="Add">{}</setvar>
-                                        </respcondition>
-                    '''.format(blank, html.escape(answer), perBlank)
+            <resprocessing>
+                <outcomes>
+                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                </outcomes>
+            '''
+                for blank,ans in blankCorr.items():
+                    questionTextResponse += '''<respcondition>
+                                        <conditionvar>
+                                            <varequal respident="{}">{}</varequal>
+                                        </conditionvar>
+                                        <setvar varname="SCORE" action="Add">{}</setvar>
+                                    </respcondition>
+                '''.format(blank,'resp0',perBlank)
                 questionTextResponse += '''</resprocessing>
-                            </item>
-                            '''
+                        </item>
+                        '''
             else:
                 # New quizzes: use dropdown/choice format (original implementation)
                 questionTextResponse = ''
