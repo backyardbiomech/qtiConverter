@@ -1297,14 +1297,19 @@ class makeQti():
             return out1
             
         def processEquations(self, fullData):
-            # recieves a question block (a list of lines)
+            # receives a question block (a list of lines)
             # go through each line looking for $$...$$
             for i in range(len(fullData)):
                 if re.search(r'\$\$.*\$\$', fullData[i], re.M) is not None:
-                    # replace > and < with mathjax codes
-                    fullData[i] = fullData[i].replace('<', r'\lt')
-                    fullData[i] = fullData[i].replace('>', r'\gt')
-                    fullData[i] = re.sub(r'\$\$(.*)\$\$', self.processEquation, fullData[i], re.M)
+                    # Process each pair of $$ separately
+                    parts = re.split(r'(\$\$.*?\$\$)', fullData[i])
+                    for j in range(len(parts)):
+                        if parts[j].startswith('$$') and parts[j].endswith('$$'):
+                            # Only replace > and < within $$ blocks
+                            parts[j] = parts[j].replace('<', r'\lt')
+                            parts[j] = parts[j].replace('>', r'\gt')
+                            parts[j] = self.processEquation(re.match(r'\$\$(.*?)\$\$', parts[j]))
+                    fullData[i] = ''.join(parts)
             return fullData
         
         def processEquation(self, eq):
