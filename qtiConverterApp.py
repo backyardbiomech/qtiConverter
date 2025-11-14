@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-qtiConverterApp.py path/to/file
+qtiConverterApp.py path/to/file [--separator SEPARATOR] [--quiz-type {new,classic}]
 
 Create QTI zip files from text files to import to Canvas as quizzes.
 
@@ -10,6 +10,12 @@ Inputs
 
 ifile : string
         path to a properly formatted file containing questions and answers
+
+--separator : string, optional
+        separator between question/answer number and text (default: '.')
+        
+--quiz-type : string, optional
+        quiz type for Canvas: 'new' for New Quizzes (default) or 'classic' for Classic Quizzes
             
 Returns
 -------
@@ -18,8 +24,8 @@ zip file : saves a compressed (zip) file containing all material that needs to b
 Notes
 -----
 Any associated images must be saved as separate files (jpg or png) in the same folder as the text file.
- 
-Formatting guidelines for questions are availabe in the README.md file and on Bitbucket.
+
+Formatting guidelines for questions are available in the README.md file and on GitHub.
 
 Tested on macOS 10.12.6 and 10.13.6 and 14.4.1, 15.3.2
 Last edited 2025.04.20
