@@ -85,13 +85,14 @@ def _handle_error_message(message):
 
 
 class makeQti():
-        def __init__(self, ifile, sep):
+        def __init__(self, ifile, sep, quiz_type='new'):
             ifile = ifile.replace(r'\ ', ' ')
             self.ifile = Path(ifile)
             # initialize variables
             # get path to folder containing text questions and images
             self.fpath = self.ifile.parent
             self.sep = sep
+            self.quiz_type = quiz_type  # 'new' or 'classic'
             # make the outputfile and question bank name based on the input file
             self.bankName = str(self.ifile.name)[0:-4]
             # make a new directory within the current to contain the new files
@@ -179,6 +180,7 @@ class makeQti():
             report_lines.append("QTI Conversion Report")
             report_lines.append("=" * 50)
             report_lines.append(f"Generated for: {self.bankName}")
+            report_lines.append(f"Quiz Type: {self.quiz_type.capitalize()} Quizzes")
             report_lines.append("")
             
             # Question type summary
@@ -682,45 +684,82 @@ class makeQti():
                 ans = [self.processFormatting(x) for x in ans]
                 # put into dict
                 blankCorr[bName] = ans
-            questionTextResponse = ''
-            for blank, ans in blankCorr.items():
-                questionTextResponse += '''<response_lid ident="{}">
-                                        <material>
-                                            <mattext>{}</mattext>
-                                        </material>
-                                        <render_choice>
-                                        '''.format(blank,blank)
-                for i in range(len(ans)):
-                    resID = 'resp'+str(i)
-                    questionTextResponse += '''<response_label ident="{}">
-                                                <material>
-                                                    <mattext texttype="text/html">{}</mattext>
-                                                </material>
-                                            </response_label>
-                                            '''.format(resID, ans[i])
             
-                questionTextResponse +=''' </render_choice>
-                                        </response_lid>
-                                        '''
-            #get the score per blank
-            perBlank = 100/len(blankCorr)
-            questionTextResponse += '''</presentation>
-            <resprocessing>
-                <outcomes>
-                    <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
-                </outcomes>
-            '''
-            for blank,ans in blankCorr.items():
-                questionTextResponse += '''<respcondition>
-                                        <conditionvar>
-                                            <varequal respident="{}">{}</varequal>
-                                        </conditionvar>
-                                        <setvar varname="SCORE" action="Add">{}</setvar>
-                                    </respcondition>
-                '''.format(blank,'resp0',perBlank)
-            questionTextResponse += '''</resprocessing>
-                        </item>
-                        '''
+            # Generate different XML based on quiz type
+            if self.quiz_type == 'classic':
+                # Classic quizzes: use fill-in-the-blank text input format
+                questionTextResponse = ''
+                for blank, ans in blankCorr.items():
+                    questionTextResponse += '''<response_str ident="{}" rcardinality="Single">
+                                            <render_fib>
+                                                <response_label ident="{}_label"/>
+                                            </render_fib>
+                                        </response_str>
+                                            '''.format(blank, blank)
+                
+                #get the score per blank
+                perBlank = 100/len(blankCorr)
+                questionTextResponse += '''</presentation>
+                <resprocessing>
+                    <outcomes>
+                        <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                    </outcomes>
+                '''
+                # For classic quizzes, check all possible answers for each blank
+                for blank, ans in blankCorr.items():
+                    for answer in ans:
+                        questionTextResponse += '''<respcondition>
+                                            <conditionvar>
+                                                <varequal respident="{}">{}</varequal>
+                                            </conditionvar>
+                                            <setvar varname="SCORE" action="Add">{}</setvar>
+                                        </respcondition>
+                    '''.format(blank, html.escape(answer), perBlank)
+                questionTextResponse += '''</resprocessing>
+                            </item>
+                            '''
+            else:
+                # New quizzes: use dropdown/choice format (original implementation)
+                questionTextResponse = ''
+                for blank, ans in blankCorr.items():
+                    questionTextResponse += '''<response_lid ident="{}">
+                                            <material>
+                                                <mattext>{}</mattext>
+                                            </material>
+                                            <render_choice>
+                                            '''.format(blank,blank)
+                    for i in range(len(ans)):
+                        resID = 'resp'+str(i)
+                        questionTextResponse += '''<response_label ident="{}">
+                                                    <material>
+                                                        <mattext texttype="text/html">{}</mattext>
+                                                    </material>
+                                                </response_label>
+                                                '''.format(resID, ans[i])
+                
+                    questionTextResponse +=''' </render_choice>
+                                            </response_lid>
+                                            '''
+                #get the score per blank
+                perBlank = 100/len(blankCorr)
+                questionTextResponse += '''</presentation>
+                <resprocessing>
+                    <outcomes>
+                        <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+                    </outcomes>
+                '''
+                for blank,ans in blankCorr.items():
+                    questionTextResponse += '''<respcondition>
+                                            <conditionvar>
+                                                <varequal respident="{}">{}</varequal>
+                                            </conditionvar>
+                                            <setvar varname="SCORE" action="Add">{}</setvar>
+                                        </respcondition>
+                    '''.format(blank,'resp0',perBlank)
+                questionTextResponse += '''</resprocessing>
+                            </item>
+                            '''
+            
             #reformat answers to make html preview
             answers = []
             for blank, ans in blankCorr.items():
@@ -1478,10 +1517,12 @@ if __name__=="__main__":
                         help="txt file path and name to process")
     parser.add_argument("--separator", default='.',
                         help="string indicating separator between question/answer number/letter and text, usually '.' or ')'")
+    parser.add_argument("--quiz-type", choices=['new', 'classic'], default='new',
+                        help="quiz type for Canvas: 'new' for New Quizzes (default) or 'classic' for Classic Quizzes")
     
     args = parser.parse_args()
     for iFile in args.ifile:
 #     inputFile=args.ifile
         sep = args.separator
-        doIt = makeQti(iFile, sep)
+        doIt = makeQti(iFile, sep, quiz_type=args.quiz_type)
         doIt.run()

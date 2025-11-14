@@ -14,7 +14,7 @@ from pathlib import Path
 from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, 
                               QVBoxLayout, QLabel, QFileDialog, QWidget,
                               QListWidget, QHBoxLayout, QFrame, QDialog,
-                              QPlainTextEdit, QMessageBox)
+                              QPlainTextEdit, QMessageBox, QRadioButton, QButtonGroup)
 from PySide6.QtCore import Qt
 from qtiConverterApp import makeQti
 
@@ -131,6 +131,25 @@ class QtiConverterGUI(QMainWindow):
         desc_label.setAlignment(Qt.AlignCenter)
         main_layout.addWidget(desc_label)
         
+        # Quiz type selection
+        quiz_type_layout = QHBoxLayout()
+        quiz_type_label = QLabel("Quiz Type:")
+        quiz_type_layout.addWidget(quiz_type_label)
+        
+        self.new_quizzes_radio = QRadioButton("New Quizzes")
+        self.classic_quizzes_radio = QRadioButton("Classic Quizzes")
+        self.new_quizzes_radio.setChecked(True)  # Default to New Quizzes
+        
+        self.quiz_type_group = QButtonGroup()
+        self.quiz_type_group.addButton(self.new_quizzes_radio)
+        self.quiz_type_group.addButton(self.classic_quizzes_radio)
+        
+        quiz_type_layout.addWidget(self.new_quizzes_radio)
+        quiz_type_layout.addWidget(self.classic_quizzes_radio)
+        quiz_type_layout.addStretch()
+        
+        main_layout.addLayout(quiz_type_layout)
+        
         # File list widget
         self.file_list = QListWidget()
         main_layout.addWidget(self.file_list)
@@ -210,11 +229,14 @@ class QtiConverterGUI(QMainWindow):
         successful = 0
         all_errors = []
         
+        # Determine quiz type based on radio button selection
+        quiz_type = 'new' if self.new_quizzes_radio.isChecked() else 'classic'
+        
         # Process each selected file
         for file_path in self.selected_files:
             try:
                 # Default separator is '.'
-                converter = makeQti(file_path, '.')
+                converter = makeQti(file_path, '.', quiz_type=quiz_type)
                 converter.run()
                 
                 # Check for errors collected during conversion
