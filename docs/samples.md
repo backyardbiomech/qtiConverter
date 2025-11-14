@@ -41,11 +41,14 @@ C. Yet another correct answer
 ES  
 1\. This is the text for an essay question. Type as much as you want here. The students will get a text box to enter their answers, and you will need to manually grade those answers!
 
+### Important!: The blank identifiers MUST begin with a letter and have no spaces. 
+
 MB  
 1\. This is a fill in multiple blanks question. I like using MB questions even if I just have one blank instead of SA questions. Here is the first [blank1] and here is the second [blank2]. Students will get text boxes to fill for each. Put square brackets around any indicator word (no spaces!) and then use that below, followed by a colon, to show correct answers. Multiple correct answers for each blank should be on the same line and separated with commas. Canvas awards partial credit based on the number of blanks.  
 blank1: correct answer for 1, another correct answer for 1  
 blank2: correct answer for 2, another correct answer for 2
 
+### Important!: The blank identifiers MUST begin with a letter and have no spaces. 
 MD  
 1\. This is a multiple dropdown question. Here is the first [drop1] and here is another [drop2]. Notice the square brackets around the indicators (no spaces!). Use those indicators below, followed by a colon to provide the options you want students to have for each dropdown. Correct answers for each dropdown are indicated by \*. Canvas awards partial credit based on the number of dropdowns.  
 \*drop1: correct answer for 1  
