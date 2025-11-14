@@ -61,3 +61,6 @@ ENV/
 *.html
 *.zip
 *.xml
+
+# AI instructions (project-specific, not for version control)
+.github/*.md
