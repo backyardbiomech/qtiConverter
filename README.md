@@ -1,6 +1,6 @@
 # QTI converter
 
-This program will convert a simply formatted text (.txt or .md) document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank or as a quiz. **Additionally, a comprehensive report is automatically generated** that summarizes your question bank content, identifies potential issues, and provides detailed statistics.
+This program will convert a simply formatted text (.txt or .md) document containing most question types available in Canvas into a zip file that can be imported to Canvas to add the questions to a question bank or as a quiz. Additionally, a comprehensive report is automatically generated that summarizes your question bank content, identifies potential issues, and provides detailed statistics.
 
 This is updated to work with some of the more modern formats of questions available in "New Quizzes" like "hotspot" and "categorization". It *should* still be backward compatible with classic quizzes as long as you stick to question types found there. 
 
@@ -17,9 +17,8 @@ For more details click on the link for each step.
 1. [Installation:](./docs/installation.md) - download a packaged app or run from the command line
 2. [Preparing the document](docs/formatting.md) - make a markdown (or text) file that includes the questions, answers, and links to images
 3. [Importing to Canvas](docs/importing.md) - import the output to a specific quiz or to a question bank in Canvas
-4. [Conversion Report](docs/report_feature.md) - understand the automatically generated report that summarizes your question bank
-5. [Tips and FAQ](docs/FAQ.md) - Help, common causes of errors, etc
-6. [Sample question formatting](docs/samples.md) - samples of every question type to demonstrate formatting
+4. [Tips and FAQ](docs/FAQ.md) - Help, common causes of errors, etc
+5. [Sample question formatting](docs/samples.md) - samples of every question type to demonstrate formatting
 
 ## Question types supported
 Note: All question types support images as part of the question.

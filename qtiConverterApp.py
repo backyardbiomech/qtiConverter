@@ -93,7 +93,7 @@ class makeQti():
             self.fpath = self.ifile.parent
             self.sep = sep
             # make the outputfile and question bank name based on the input file
-            self.bankName = str(self.ifile.name)[0:-4]
+            self.bankName = self.ifile.stem
             # make a new directory within the current to contain the new files
             self.newDirPath = self.fpath / (self.bankName + '_export')
             self.newDirPath.mkdir(exist_ok = True)
