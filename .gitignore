@@ -60,3 +60,4 @@ ENV/
 # test exports
 *.html
 *.zip
+*.xml
