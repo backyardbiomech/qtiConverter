@@ -1396,13 +1396,13 @@ class makeQti():
             # get rid of hidden spaces on new lines
             data = re.sub(r'\ +\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden tabs before new lines
-            data = re.sub('\t+\n', '\n', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'\t+\n', '\n', data.strip(), flags=re.MULTILINE)
             # get rid of hidden spaces and tabsbefore lines
             data = re.sub(r'^[\ \t]+', '', data.strip(), flags=re.MULTILINE)
             # get rid of lines that begin with # as a comment indicator
-            data = re.sub('^#.*$', '', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'^#.*$', '', data.strip(), flags=re.MULTILINE)
             # combine multiple new lines into just the needed two
-            data = re.sub('\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
+            data = re.sub(r'\n{3,100}', '\n\n', data.strip(), flags=re.MULTILINE)
             self.data=data.split('\n\n')
         
         def addResMan(self, img):    
