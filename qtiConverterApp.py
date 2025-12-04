@@ -1353,9 +1353,10 @@ class makeQti():
             if len(self.imagePath) > 0 and self.questionType != 'HS':
                 # Generate image tags for all images in the list
                 # Don't wrap in <p> tags - just use <img> tags that will be properly escaped
+                # Limit width to 600px for reasonable display on laptop screens
                 image_tags = ''
                 for img in self.imagePath:
-                    image_tags += f'&lt;img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}"/&gt;'
+                    image_tags += f'&lt;img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}" style="max-width: 600px; height: auto;"/&gt;'
                 quest = image_tags + quest
             
             out1 = f'''
