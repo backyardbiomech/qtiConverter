@@ -142,9 +142,13 @@ class makeQti():
             """Return any errors that occurred during processing."""
             return self.errors
             
-        def update_report_data(self, question_type: str, has_image: bool, image_path: str = "", 
+        def update_report_data(self, question_type: str, has_image: bool, image_path = None, 
                              has_correct_answer: bool = True, multiple_correct: bool = False) -> None:
-            """Update report data for the current question."""
+            """Update report data for the current question.
+            
+            Args:
+                image_path: Can be a string (single image), list (multiple images), or None
+            """
             # Count question types
             if question_type in self.report_data['question_types']:
                 self.report_data['question_types'][question_type] += 1
@@ -155,11 +159,20 @@ class makeQti():
             self.report_data['total_questions'] += 1
             
             # Track images - only add if image exists
+            # Handle both string (legacy) and list (new multiple image support)
             if has_image and image_path:
-                image_full_path = self.fpath / image_path
-                if image_full_path.exists():  # Only track images that actually exist
-                    if image_path not in self.report_data['images_used']:
-                        self.report_data['images_used'].append(image_path)
+                # Convert to list if it's a string for uniform processing
+                image_paths = image_path if isinstance(image_path, list) else [image_path]
+                
+                for img_path in image_paths:
+                    if img_path:  # Skip empty strings
+                        image_full_path = self.fpath / img_path
+                        if image_full_path.exists():  # Only track images that actually exist
+                            if img_path not in self.report_data['images_used']:
+                                self.report_data['images_used'].append(img_path)
+                
+                # Only count the question once, even if it has multiple images
+                if image_paths:
                     self.report_data['questions_with_images'] += 1
             
             # Track questions with no correct answer
@@ -339,7 +352,7 @@ class makeQti():
 
             # if it is a two letter capital abbreviation, that is question type, set self.questionType in self.typeList
             self.questionType = ''
-            self.imagePath = ''
+            self.imagePath = []  # Changed to list to support multiple images
             self.qPts = '1'
             rws = 3
             try:
@@ -354,16 +367,18 @@ class makeQti():
                 rws -= 1
             except IndexError:
                 print(self.fullText)
-            # if it starts with image: that gives a link to the image, self.imagePath, advance self.imNum
+            # if it starts with image: that gives comma-separated image filenames
             for i in range(3-rws):
                 im = re.findall(r'^\s*image:\s*(.*)$', self.fullText[i])
                 if len(im)==1:
-                    self.imagePath = im[0]
-                    self.processImage(self.imagePath)
+                    # Split by comma and strip whitespace from each filename
+                    image_files = [img.strip() for img in im[0].split(',')]
+                    for imgpath in image_files:
+                        if len(imgpath) > 0:
+                            self.imagePath.append(imgpath)
+                            self.processImage(imgpath)
                     self.fullText.pop(i)
                     break
-                else:
-                    self.imagePath = ''
             rws -= 1
 
             # if it is a number inside of parentheses, with or without letters, consider that pts per question
@@ -863,10 +878,12 @@ class makeQti():
                 coordinates_str = self.fullText[1]
             
             # generate the responses
+            # Hotspot questions use only the first image
+            hotspot_image = self.imagePath[0] if len(self.imagePath) > 0 else ''
             questionTextResponse = f'''
             <render_hotspot>
                 <material>
-                  <matimage uri="$IMS-CC-FILEBASE$/Uploaded Media/{self.imagePath}"/>
+                  <matimage uri="$IMS-CC-FILEBASE$/Uploaded Media/{hotspot_image}"/>
                 </material>
                 <response_label ident="response1" rarea="bounded">{coordinates_str}</response_label>
               </render_hotspot>
@@ -1203,7 +1220,11 @@ class makeQti():
             
         def questionTextHtml(self, itid, quest, answers, corr):
             if len(self.imagePath) > 0:
-                quest = '<img src="{}" style="max-width: 100%; height: 500px" /><p>{}</>'.format(self.imagePath, html.unescape(quest))
+                # Generate preview HTML for all images
+                image_html = ''
+                for img in self.imagePath:
+                    image_html += f'<img src="{img}" style="max-width: 100%; height: 500px; margin: 5px;" />'
+                quest = image_html + '<p>' + html.unescape(quest) + '</p>'
             out = '''
                 <ul style="list-style-type:none;">
                 <li>{}: {}
@@ -1330,6 +1351,11 @@ class makeQti():
             # build the text for each question, starting with a question "header"
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0 and self.questionType != 'HS':
+                # Generate image tags for all images in the list
+                image_tags = ''
+                for img in self.imagePath:
+                    image_tags += f'<p><img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}"/></p>'
+                quest = image_tags + quest
                 quest = f'''&lt;img src="%24IMS-CC-FILEBASE%24/{self.imagePath}" style="max-width: 100%; height: 500px" /&gt;
                 &lt;p&gt;{quest}&lt;/p&gt;
                 '''
