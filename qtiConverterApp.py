@@ -1352,13 +1352,11 @@ class makeQti():
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0 and self.questionType != 'HS':
                 # Generate image tags for all images in the list
+                # Don't wrap in <p> tags - just use <img> tags that will be properly escaped
                 image_tags = ''
                 for img in self.imagePath:
-                    image_tags += f'<p><img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}"/></p>'
+                    image_tags += f'&lt;img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}"/&gt;'
                 quest = image_tags + quest
-                quest = f'''&lt;img src="%24IMS-CC-FILEBASE%24/{self.imagePath}" style="max-width: 100%; height: 500px" /&gt;
-                &lt;p&gt;{quest}&lt;/p&gt;
-                '''
             
             out1 = f'''
             <item ident="{itid}" title="Question">
