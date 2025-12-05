@@ -691,10 +691,10 @@ class makeQti():
             for a in range(1, len(self.fullText)):
                 ans = []
                 #get the blank name and a list of answers
-                bName = self.fullText[a].split(':',1)[0]
+                bName = self.fullText[a].split(':',1)[0].strip()
                 ans = self.fullText[a].split(':',1)[1].split(',')
                 ans = [x.strip() for x in ans]
-                ans = [self.processFormatting(x) for x in ans]
+                ans = [self.processFormatting(x).strip() for x in ans]
                 # put into dict
                 blankCorr[bName] = ans
             questionTextResponse = ''
@@ -1097,7 +1097,7 @@ class makeQti():
             corr = []
             # make a list of correct answers
             for a in range(1, len(self.fullText)):
-                answer = self.processFormatting(self.fullText[a].split(self.sep,1)[1])
+                answer = self.processFormatting(self.fullText[a].split(self.sep,1)[1].strip())
                 corr.append(answer)
                 
             # Update report data
