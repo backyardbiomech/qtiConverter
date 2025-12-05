@@ -1352,11 +1352,12 @@ class makeQti():
             # if there is an associated image, add it above the question text
             if len(self.imagePath) > 0 and self.questionType != 'HS':
                 # Generate image tags for all images in the list
-                # Don't wrap in <p> tags - just use <img> tags that will be properly escaped
-                # Limit width to 600px for reasonable display on laptop screens
+                # Each image on its own line with a break after, plus a blank paragraph between images and text
                 image_tags = ''
                 for img in self.imagePath:
-                    image_tags += f'&lt;img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}" style="max-width: 600px; height: auto;"/&gt;'
+                    image_tags += f'&lt;p&gt;&lt;img src="$IMS-CC-FILEBASE$/Uploaded Media/{img}" style="max-width: 800px; height: auto;"/&gt;&lt;/p&gt;'
+                # Add blank paragraph between images and question text
+                image_tags += '&lt;p&gt;&amp;nbsp;&lt;/p&gt;'
                 quest = image_tags + quest
             
             out1 = f'''

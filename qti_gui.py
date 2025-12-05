@@ -144,6 +144,13 @@ class QtiConverterGUI(QMainWindow):
         self.select_button.clicked.connect(self.select_files)
         button_layout.addWidget(self.select_button)
         
+        # Clear button
+        self.clear_button = QPushButton("Clear")
+        self.clear_button.setMinimumHeight(40)
+        self.clear_button.setEnabled(False)  # Initially disabled
+        self.clear_button.clicked.connect(self.clear_files)
+        button_layout.addWidget(self.clear_button)
+        
         # Convert button
         self.convert_button = QPushButton("Convert to QTI")
         self.convert_button.setMinimumHeight(40)
@@ -195,11 +202,20 @@ class QtiConverterGUI(QMainWindow):
             
             # Enable convert button if files are selected
             self.convert_button.setEnabled(len(self.selected_files) > 0)
+            self.clear_button.setEnabled(len(self.selected_files) > 0)
             self.status_label.setText(f"{len(self.selected_files)} files selected")
             
             # Remember the directory for future file dialogs
             if self.selected_files:
                 self.last_directory = os.path.dirname(self.selected_files[0])
+    
+    def clear_files(self):
+        """Clear all selected files from the list"""
+        self.file_list.clear()
+        self.selected_files = []
+        self.convert_button.setEnabled(False)
+        self.clear_button.setEnabled(False)
+        self.status_label.setText("All files cleared")
     
     def convert_files(self):
         if not self.selected_files:
