@@ -1,14 +1,9 @@
 MB
-1. This is a fill in multiple blanks question. Here is the first [blank1] and here is the second [blank2].
-blank1: correct answer for 1, another correct answer for 1
-blank2: correct answer for 2, another correct answer for 2
+1. This is a fill in multiple blanks question. Here is the first [response_blank1] and here is the second [response_blank2].
+response_blank1: correct answer for 1, another correct answer for 1
+response_blank2: correct answer for 2, another correct answer for 2
 
 MB
-1. **Modified True/False:** If the statement is true, write true in the blank. If it is false, replace the **bold** word(s) with the word(s) that will make the statement true.<br><br>9. [a9] In the expression $$x^3$$, the number 3 is the **power**. (1.2)<br><br>10. [a10] Expressed as a decimal, $$\frac{2}{11}$$ would be **repeating**. (1.1)
-a9: exponent
-a10: true
-
-MB
-1. **Modified True/False:** If the statement is true, write true in the blank. If it is false, replace the **bold** word(s) with the word(s) that will make the statement true.<br><br>9. [a9] In the expression $$x^3$$, the number 3 is the **power**. (1.2)<br><br>10. [a10] Expressed as a decimal, $$\frac{2}{11}$$ would be **repeating**. (1.1)
-[a9]: exponent
-[a10]: true
+1. **Modified True/False:** If the statement is true, write true in the blank. If it is false, replace the **bold** word(s) with the word(s) that will make the statement true.<br><br>9. [blank1] In the expression $$x^3$$, the number 3 is the **power**. (1.2)<br><br>10. [blank2] Expressed as a decimal, $$\frac{2}{11}$$ would be **repeating**. (1.1)
+blank1: exponent
+blank2: true

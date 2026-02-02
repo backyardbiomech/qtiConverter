@@ -1,0 +1,9 @@
+SA
+1. Test question with regex pattern
+A. (?i)corpus\s+callosum
+B. normal answer
+
+MB
+2. Multiple blanks with regex
+blank1: (?i)test\s+pattern, normal answer
+blank2: another answer

@@ -1,10 +1,11 @@
 QTI Conversion Report
 ==================================================
-Generated for: MBsample
+Generated for: regex_passthrough_test
 
 Question Types Summary:
 -------------------------
-MB (fill_in_multiple_blanks_question): 2 questions (100.0%)
+MB (fill_in_multiple_blanks_question): 1 questions (50.0%)
+SA (short_answer_question): 1 questions (50.0%)
 Total Questions: 2
 
 Images Summary:
