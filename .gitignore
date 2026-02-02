@@ -61,6 +61,7 @@ ENV/
 *.html
 *.zip
 *.xml
+*.qti
 
 # vscode and github stuff
 .github/*.md
