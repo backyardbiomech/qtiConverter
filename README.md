@@ -7,7 +7,7 @@ This is updated to work with some of the more modern formats of questions availa
 NOTE: With the classic quizzes Canvas import process will also make an actual quiz containing all of the questions in the bank. If you just want the question bank to pull from, I suggest deleting that quiz after import.
 
 + Written by Brandon E. Jackson, Ph.D.  
-+ last updated: 2025-04-30  
++ last updated: 2026-02-22 
 
 ![main screen](docs/images/mainWindow.png)
 
